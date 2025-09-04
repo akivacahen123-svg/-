@@ -5,27 +5,27 @@ import PromptForm from './components/PromptForm';
 import LoadingSpinner from './components/LoadingSpinner';
 import ResultsDisplay from './components/ResultsDisplay';
 import { generateContentIdeas, generateImageFromPrompt } from './services/geminiService';
-import type { GeneratedResult, ContentIdea } from './types';
+import type { GeneratedResult, ContentIdea, AspectRatio, TextStyle } from './types';
 
 const App: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [results, setResults] = useState<GeneratedResult[]>([]);
 
-    const handleSubmit = useCallback(async (userPrompt: string) => {
+    const handleSubmit = useCallback(async (userPrompt: string, aspectRatio: AspectRatio, wordLimit: number | null, textStyle: TextStyle) => {
         setIsLoading(true);
         setError(null);
         setResults([]);
 
         try {
-            const contentIdeas: ContentIdea[] = await generateContentIdeas(userPrompt);
+            const contentIdeas: ContentIdea[] = await generateContentIdeas(userPrompt, wordLimit, textStyle);
 
             if (!contentIdeas || contentIdeas.length === 0) {
                 throw new Error("לא התקבלו רעיונות מהמודל.");
             }
 
             const imagePromises = contentIdeas.map(idea => 
-                generateImageFromPrompt(idea.image_prompt)
+                generateImageFromPrompt(idea.image_prompt, aspectRatio)
             );
             
             const imageUrls = await Promise.all(imagePromises);
@@ -46,7 +46,7 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-50 text-gray-900">
+        <div className="min-h-screen bg-sky-50 text-gray-900">
             <Header />
             <main>
                 <PromptForm onSubmit={handleSubmit} isLoading={isLoading} />
@@ -61,7 +61,7 @@ const App: React.FC = () => {
                 
                 <ResultsDisplay results={results} />
             </main>
-            <footer className="text-center py-4 mt-8 border-t border-gray-200 bg-white">
+            <footer className="text-center py-4 mt-8 border-t border-sky-200 bg-white">
                 <p className="text-sm text-gray-500">פותח באמצעות Gemini API</p>
             </footer>
         </div>
