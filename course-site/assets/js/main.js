@@ -28,6 +28,20 @@
     });
   }
 
+  // ---------- אנימציית כניסה בגלילה ----------
+  // התוכן גלוי תמיד; כשאלמנט נכנס למסך הוא מקבל .in ומונפש פעם אחת.
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      if (el.getBoundingClientRect().top > window.innerHeight) io.observe(el);
+    });
+  }
+
   // ---------- גישה לקורס ----------
   // אותו גיבוב כמו fnv1a ב-build.py
   function fnv1a(text) {

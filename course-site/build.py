@@ -297,11 +297,11 @@ def header(active, prefix=""):
     <a class="logo" href="{prefix}index.html"><span class="logo-mark">✓</span>{COURSE}</a>
     <button class="nav-toggle" aria-label="תפריט" aria-expanded="false" aria-controls="nav"><span></span></button>
     <nav class="nav" id="nav">
-      {link("index.html", "הקורס", "home")}
+      {link("index.html", "בית", "home")}
+      {link("purchase.html", "הקורס המלא", "purchase")}
       {link("curriculum.html", "תוכנית הלימודים", "curriculum")}
-      {link("toolkit.html", "ערכת כלים", "toolkit")}
       {link("checklist.html", "צ׳ק ליסט חינמי", "checklist")}
-      <a class="btn btn-primary only-locked" href="{prefix}purchase.html">רכישת הקורס · ₪{PRICE}</a>
+      <a class="btn btn-primary only-locked" href="{prefix}purchase.html#join">להצטרפות</a>
       <a class="btn btn-primary only-access" href="{prefix}curriculum.html">הקורס שלי</a>
     </nav>
   </div>
@@ -399,7 +399,7 @@ def gate(prefix=""):
       <h2 id="gate-title">התוכן הזה פתוח לתלמידי הקורס</h2>
       <p>השיעור הראשון, הצ׳ק ליסט החינמי ומילון המונחים פתוחים לכולם. שאר 21 השיעורים ו-9 כלי העבודה — בקורס המלא.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="{prefix}purchase.html">לרכישת הקורס · ₪{PRICE}</a>
+        <a class="btn btn-primary" href="{prefix}purchase.html">לרכישת הקורס</a>
         <a class="btn btn-outline" href="{prefix}lessons/lesson-01.html">לשיעור הראשון — חינם</a>
       </div>
       {access_form("gate")}
@@ -484,28 +484,128 @@ def write(path, html):
 # עמוד הבית
 # ------------------------------------------------------------------
 
+TICKER = ["CPM", "CTR", "CPC", "CPL", "CPA", "ROAS", "KPI", "UTM", "GA4", "Pixel", "Conversions API", "CRM",
+          "Webhook", "LTV", "A/B Test", "Lookalike", "AI Max", "Advantage+", "Key events", "Funnel"]
+
+PAIN_ROWS = [
+    ("01", "money", "התקציב נגמר. התוצאות לא.",
+     "הכסף יוצא כל חודש, ואף אחד לא באמת מסביר לאן הוא הלך ולמה. עוד חודש, עוד ״ננסה קהל אחר״.",
+     ["₪4,800 הוצאה", "3 לקוחות", "?"]),
+    ("02", "doc", "מקבלים דוח מלא במספרים.",
+     "CTR, CPM, ROAS, Reach, Frequency — עשרה גרפים, ועדיין לא ברור אם הקמפיין הצליח ומה עושים מחר.",
+     ["CTR 1.4%", "CPM ₪38", "ROAS 2.1"]),
+    ("03", "question", "לא יודעים מה לשאול.",
+     "קשה לבדוק עבודה מקצועית כשלא מבינים מה קורה מאחורי הקמפיין. אז סומכים — ומקווים.",
+     ["פיקסל?", "UTM?", "CRM?"]),
+]
+
+HERO_CHIPS = [("CTR", "2.4%", "up"), ("עלות לליד", "₪48", "down"), ("ROAS", "4.2", "up")]
+
+
+TICKER = ["CPM", "CTR", "CPC", "CPL", "CPA", "ROAS", "KPI", "UTM", "GA4", "Pixel", "Conversions API", "CRM",
+          "Webhook", "LTV", "A/B Test", "Lookalike", "AI Max", "Advantage+", "Key events", "Funnel"]
+
+PAIN_ROWS = [
+    ("01", "money", "התקציב נגמר. התוצאות לא.",
+     "הכסף יוצא כל חודש, ואף אחד לא באמת מסביר לאן הוא הלך ולמה. עוד חודש, עוד ״ננסה קהל אחר״.",
+     ["₪4,800 הוצאה", "3 לקוחות", "?"]),
+    ("02", "doc", "מקבלים דוח מלא במספרים.",
+     "CTR, CPM, ROAS, Reach, Frequency — עשרה גרפים, ועדיין לא ברור אם הקמפיין הצליח ומה עושים מחר.",
+     ["CTR 1.4%", "CPM ₪38", "ROAS 2.1"]),
+    ("03", "question", "לא יודעים מה לשאול.",
+     "קשה לבדוק עבודה מקצועית כשלא מבינים מה קורה מאחורי הקמפיין. אז סומכים — ומקווים.",
+     ["פיקסל?", "UTM?", "CRM?"]),
+]
+
+AUDIENCE_V2 = [
+    ("briefcase", "בעלי עסקים", "שמוציאים כסף על פרסום ורוצים לדעת מה הם מקבלים בתמורה.",
+     "תדעו לקרוא דוח ולשאול את השאלות הנכונות"),
+    ("spark", "מתחילים מאפס", "שלא יודעים מה זה CPC, UTM או API — ורוצים להבין בלי להתבייש.",
+     "תבינו את כל המושגים והיגיון העבודה"),
+    ("handshake", "עובדים עם סוכנות או פרילנסר", "שרוצים להבין את הדוחות ולבדוק את העבודה שנעשית עבורם.",
+     "תדעו מה לבקש ואיך לזהות בעיה"),
+    ("rocket", "מנהלים קמפיינים לבד", "שרוצים לבנות, למדוד ולשפר בצורה מסודרת ולא לפי תחושה.",
+     "תקבלו שיטה, כלים וצ׳ק־ליסטים"),
+]
+
+HERO_CHIPS = [("CTR", "2.4%", "up"), ("עלות לליד", "₪48", "down"), ("ROAS", "4.2", "up")]
+
+
+def checklist_zone():
+    """אזור הצ׳ק ליסט החינמי — הבולט בעמוד: הבעיה ← פתרון חינמי ← טופס."""
+    items = [t for _, _, group in FREE_CHECKLIST for t, _ in group]
+    pick = [items[i] for i in (0, 1, 5, 8, 13, 16, 18)]
+    rows = "".join(f'<li style="--i:{k}"><i aria-hidden="true"></i><span>{inline(t)}</span></li>' for k, t in enumerate(pick))
+    groups = "".join(f'<span>{name}</span>' for name, _, _ in FREE_CHECKLIST)
+    return f'''<section class="zone zone-check" id="checklist">
+  <div class="blob b1" aria-hidden="true"></div><div class="blob b2" aria-hidden="true"></div>
+  <div class="container check-zone">
+    <div class="check-copy reveal">
+      <span class="free-badge">חינם · 20 בדיקות</span>
+      <h2>לפני שמעלים עוד קמפיין — <em>עוברים על הצ׳ק ליסט.</em></h2>
+      <p>20 הבדיקות שחוסכות את רוב הכסף שנשרף בקמפיינים: קישור שבור, טופס שלא נשלח, מדידה שלא עובדת, קהל לא נכון. 10 דקות לפני כל השקה.</p>
+      <div class="check-groups">{groups}</div>
+      <div class="sheet-mock" aria-hidden="true">
+        <div class="sheet-head"><b>צ׳ק ליסט למפרסמים</b><span class="sheet-prog"><i></i></span></div>
+        <ol>{rows}</ol>
+      </div>
+    </div>
+    <aside class="lead-panel check-form reveal" id="lead">
+      <h3>שלחו לי את הצ׳ק ליסט</h3>
+      <p>השאירו פרטים — ונשלח לכם את הצ׳ק ליסט החינמי עם הסבר לכל בדיקה, וגם פרטים על הקורס.</p>
+      <form class="lead-form" method="post">
+        <label class="sr-only" for="ck-name">שם מלא</label>
+        <input id="ck-name" name="name" type="text" autocomplete="name" placeholder="שם מלא" required>
+        <label class="sr-only" for="ck-phone">טלפון</label>
+        <input id="ck-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="טלפון" required>
+        <label class="sr-only" for="ck-email">אימייל</label>
+        <input id="ck-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="אימייל" required>
+        <button class="btn btn-primary btn-block" type="submit">שלחו לי את הצ׳ק ליסט — חינם</button>
+      </form>
+      <div class="lead-note">הפרטים נשמרים לצורך שליחת החומרים בלבד. <a href="privacy.html">מדיניות פרטיות</a></div>
+      <a class="peek" href="checklist.html">או הציצו בצ׳ק ליסט עכשיו ←</a>
+    </aside>
+  </div>
+</section>
+'''
+
+
 def build_index():
-    pains = "\n".join(f'      <article class="pain card">{icon(i)}<h3>{t}</h3><p>{d}</p></article>' for i, t, d in PAINS)
-    audience = "\n".join(f'      <article class="audience card">{icon(i)}<h3>{t}</h3><p>{d}</p></article>' for i, t, d in AUDIENCE)
+    ticker = "".join(f"<span>{t}</span>" for t in TICKER)
+    pains = "\n".join(
+        f'''      <article class="pain-row reveal" data-tone="{k + 1}">
+        <span class="pain-num" aria-hidden="true">{num}</span>
+        <div class="pain-body">{icon(ic, "icon")}<div><h3>{t}</h3><p>{d}</p></div></div>
+        <div class="pain-chips" aria-hidden="true">{"".join(f"<span>{c}</span>" for c in chips)}</div>
+      </article>'''
+        for k, (num, ic, t, d, chips) in enumerate(PAIN_ROWS))
+    audience = "\n".join(
+        f'''      <article class="aud reveal" data-tone="{k + 1}" style="--d:{k}">
+        {icon(i)}
+        <h3>{t}</h3>
+        <p>{d}</p>
+        <div class="aud-gain"><i class="check">✓</i>{gain}</div>
+      </article>'''
+        for k, (i, t, d, gain) in enumerate(AUDIENCE_V2))
     steps = "\n".join(
-        f'      <div class="step"><span class="n">{si + 1:02d}</span><h3>{name}</h3><p>{summary}</p>'
-        f'<span class="count">{len(items)} שיעורים</span></div>'
+        f'''      <li class="path-step reveal" style="--d:{si}">
+        <span class="path-dot">{si + 1}</span>
+        <div class="path-card"><h3>{name}</h3><p>{summary}</p></div>
+      </li>'''
         for si, (name, _, summary, items) in enumerate(STAGES))
-    fmt_cards = "\n".join(
-        f'      <div class="format card">{icon(i, "icon" + (" icon-teal" if k % 2 else ""))}<div><h3>{t}</h3><p>{d}</p></div></div>'
-        for k, (i, t, d) in enumerate(LESSON_FORMAT))
-    tools = "\n".join(
-        f'      <a class="tool card" href="tools/{slug}.html">{icon(ic, "icon" + (" icon-teal" if k % 2 else ""))}<div><h3>{name}</h3><p>{desc}</p></div></a>'
-        for k, (slug, name, ic, desc, _) in enumerate(TOOLS))
-    faq = "\n".join(f'    <details class="card"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ)
+    faq = "\n".join(f'    <details class="card"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ[:4])
+    chips = "".join(
+        f'<div class="metric-chip c{k + 1}"><span>{lbl}</span><strong dir="ltr">{val}</strong><i class="{trend}" aria-hidden="true"></i></div>'
+        for k, (lbl, val, trend) in enumerate(HERO_CHIPS))
 
     html = head(f"{COURSE} — קורס דיגיטלי מעשי",
                 "קורס דיגיטלי מעשי ב-22 שיעורים: להבין מה איש הפרסום עושה, מה קורה מאחורי הקמפיין, ואיך לנהל את כל המערכת — מהמודעה ועד המכירה.",
                 ld=[course_ld(), faq_ld()])
     html += header("home")
     html += f'''
-<main id="main">
+<main id="main" class="home">
 <section class="hero">
+  <div class="hero-chips" aria-hidden="true">{chips}</div>
   <div class="container hero-inner">
     <div class="hero-copy">
       <span class="tag tag-solid">קורס דיגיטלי מעשי · 22 שיעורים</span>
@@ -513,171 +613,80 @@ def build_index():
         <span class="accent">תבינו מה איש הפרסום עושה, ומה באמת קורה מאחורי הקמפיין</span></h1>
       <p class="hero-intro">איך לנהל את כל המערכת — מהמודעה ועד המכירה. בלי להפוך לאיש מדיה, אבל עם מספיק הבנה כדי לשאול את השאלות הנכונות ולהיות בשליטה על הכסף שלכם.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="purchase.html">להצטרפות לקורס · ₪{PRICE}</a>
-        <a class="btn btn-ghost" href="checklist.html">לצ׳ק ליסט החינמי</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><strong>22</strong><span>שיעורים קצרים</span></div>
-        <div class="stat"><strong>9</strong><span>כלי עבודה</span></div>
-        <div class="stat"><strong dir="ltr">~{HOURS}</strong><span>שעות סה״כ</span></div>
-        <div class="stat"><strong>{YEARS}</strong><span>שנות ניסיון במדיה</span></div>
+        <a class="btn btn-primary" href="#checklist">לצ׳ק ליסט החינמי</a>
+        <a class="btn btn-ghost" href="purchase.html">לפרטים על הקורס</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<div class="ticker" aria-hidden="true"><div class="ticker-track">{ticker}{ticker}</div></div>
+
+<section class="zone zone-dark pain-zone">
+  <div class="orb o1" aria-hidden="true"></div><div class="orb o2" aria-hidden="true"></div>
   <div class="container">
-    <div class="section-head">
-      <h2>מכירים את זה?</h2>
+    <div class="zone-head reveal">
+      <span class="eyebrow">נשמע מוכר?</span>
+      <h2>מכירים את <em>זה?</em></h2>
       <p>לפעמים בעל העסק מקבל דוח מלא במספרים, ועדיין לא באמת יודע מה קרה עם הכסף שלו.</p>
     </div>
-    <div class="pain-grid">
+    <div class="pain-rows">
 {pains}
     </div>
-    <div class="pain-answer">
-      <p>הקורס הזה בנוי בדיוק בשביל הנקודה הזאת: <span>להבין מספיק כדי להיות בשליטה.</span></p>
-      <a class="btn btn-primary" href="curriculum.html">מה לומדים בקורס?</a>
+    <div class="answer-band reveal">
+      <div><span class="eyebrow light">אפשר אחרת</span><p>מתחילים ב-20 בדיקות פשוטות — <strong>ומבינים מספיק כדי להיות בשליטה.</strong></p></div>
+      <a class="btn btn-light" href="#checklist">לצ׳ק ליסט החינמי</a>
     </div>
   </div>
 </section>
 
-<section class="section section-soft">
-  <div class="container board-grid">
-    <div>
-      <div class="section-head" style="margin-bottom:28px">
-        <h2>למי הקורס מיועד?</h2>
-      </div>
-      <div class="audience-grid audience-grid-2">
-{audience}
-      </div>
-      <div class="benefit-strip">
-        <span><i class="check">✓</i>22 שיעורים מסודרים</span>
-        <span><i class="check">✓</i>הסברים פשוטים וישימים</span>
-        <span><i class="check">✓</i>9 כלי עבודה</span>
-      </div>
-    </div>
-    <div class="products">
-      <article class="product card">
-        <div class="product-visual course-visual" aria-hidden="true">
-          <div class="course-window">
-            <div class="window-top"><span></span><span></span><span></span></div>
-            <div class="course-screen"><div class="play"></div><div class="course-bars"><i></i><i></i><i></i><i></i><i></i></div></div>
-          </div>
-          <div class="visual-badge teal start">22 שיעורים</div>
-        </div>
-        <div class="product-copy">
-          <span class="tag tag-teal">הקורס המלא · ₪{PRICE}</span>
-          <h3>מהמודעה ועד המכירה</h3>
-          <p>יסודות, קהל ותוכן, Meta וגוגל, מדידה, API, אוטומציות, CRM, דשבורדים ופרויקט גמר.</p>
-          <a class="link" href="purchase.html">להצטרפות ←</a>
-        </div>
-      </article>
-      <article class="product card">
-        <div class="product-visual checklist-visual" aria-hidden="true">
-          <div class="check-sheet">
-            <div class="sheet-dots"><span></span><span></span><span></span></div>
-            <div class="sheet-title">20 פעולות</div>
-            <div class="sheet-sub">לפני שמעלים קמפיין</div>
-            <div class="sheet-lines"><i></i><i></i><i></i><i></i></div>
-          </div>
-          <div class="visual-badge">חינם</div>
-        </div>
-        <div class="product-copy">
-          <span class="tag">צ׳ק ליסט חינמי</span>
-          <h3>20 פעולות לפני קמפיין</h3>
-          <p>רשימה ברורה שעוברים עליה לפני העלייה לאוויר — מטרה, קהל, קריאייטיב, תקציב ומדידה.</p>
-          <a class="link" href="checklist.html">לצ׳ק ליסט ←</a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="how">
+{checklist_zone()}
+<section class="zone zone-mesh">
   <div class="container">
-    <div class="section-head">
-      <span class="tag">כך לומדים</span>
-      <h2>לא קופצים ישר ל-Facebook Ads</h2>
+    <div class="zone-head reveal">
+      <span class="eyebrow">למי זה מתאים</span>
+      <h2>למי הקורס מיועד?</h2>
+      <p>לא צריך רקע בשיווק. צריך רצון להבין מה קורה עם הכסף שיוצא על פרסום.</p>
+    </div>
+    <div class="aud-grid">
+{audience}
+    </div>
+  </div>
+</section>
+
+<section class="zone zone-path" id="how">
+  <div class="container">
+    <div class="zone-head reveal">
+      <span class="eyebrow">כך לומדים</span>
+      <h2>לא קופצים ישר ל-<span dir="ltr">Facebook Ads</span></h2>
       <p>קודם מבינים מהו קמפיין, מטרות ומספרים. אחר כך קהל, מסר ותוכן — ורק אז נכנסים ל-Meta ולגוגל. אחרי שהקמפיין קיים לומדים למדוד, לחבר מערכות ולנהל.</p>
     </div>
-    <div class="flow">
+    <ol class="path">
 {steps}
-    </div>
+    </ol>
+    <div class="center-cta"><a class="btn btn-primary" href="purchase.html">לכל פרטי הקורס</a></div>
   </div>
 </section>
 
-<section class="section section-soft">
-  <div class="container">
-    <div class="section-head">
-      <span class="tag tag-teal">מבנה כל שיעור</span>
-      <h2>תמציתי. מדויק. ליישום מחר בבוקר.</h2>
-      <p>כל שיעור בנוי סביב מטרה אחת, ונגמר בצעדים שעושים בעסק — לא בעוד תיאוריה.</p>
-    </div>
-    <div class="format-grid">
-{fmt_cards}
-    </div>
-  </div>
-</section>
-
-<section class="section" id="curriculum">
-  <div class="container">
-    <div class="section-head">
-      <h2>22 שיעורים — מסודרים כמו קורס אמיתי</h2>
-      <p>לחצו על שלב כדי לראות את השיעורים שבו.</p>
-    </div>
-    <div class="modules">
-{module_list()}
-    </div>
-    <div class="center-cta"><a class="btn btn-outline" href="curriculum.html">לתוכנית הלימודים המלאה</a></div>
-  </div>
-</section>
-
-<section class="section section-soft" id="tools">
-  <div class="container">
-    <div class="section-head">
-      <span class="tag tag-teal">ערכת כלים</span>
-      <h2>9 כלים שעובדים — לא רק קבצים</h2>
-      <p>מחשבונים, מחוללים וצ׳ק־ליסטים שעובדים ישירות בדפדפן, שומרים את מה שהזנתם, ומוכנים להדפסה.</p>
-    </div>
-    <div class="tools-grid tools-grid-3">
-{tools}
-    </div>
-  </div>
-</section>
-
-<section class="section" id="about">
-  <div class="container about">
-    <div class="about-card">
+<section class="zone zone-dots" id="about">
+  <div class="container about about-v2">
+    <div class="about-card reveal">
       <div class="avatar">ע</div>
       <h3>{AUTHOR}</h3>
       <p>מדיה ודיגיטל</p>
-      <span class="big" dir="ltr">{YEARS}+</span>
-      <p>שנות ניסיון</p>
     </div>
-    <div class="about-copy">
-      <span class="tag">קצת עליי</span>
-      <h2 style="margin-top:14px">אני {AUTHOR}</h2>
+    <div class="about-copy reveal">
+      <span class="eyebrow">קצת עליי</span>
+      <h2 style="margin-top:10px">אני {AUTHOR}</h2>
       <p>אני עוסק במדיה ובדיגיטל כבר {YEARS} שנים. במהלך השנים יצא לי לראות מקרוב איך קמפיינים נבנים, איך תקציבים מתבזבזים, ואיך לפעמים בעל העסק מקבל דוח מלא במספרים ועדיין לא באמת יודע מה קרה עם הכסף שלו.</p>
       <div class="quote">בניתי את הקורס הזה כדי לא להפוך אותך לאיש מדיה, אלא לגרום לך להבין מספיק כדי לשאול את השאלות הנכונות, לבדוק עבודה מקצועית, לזהות בעיות ולהיות בשליטה על הכסף והנתונים שלך.</div>
     </div>
   </div>
 </section>
 
-<section class="section section-soft" id="price">
-  <div class="container pricing">
-    <div class="section-head" style="text-align:right;margin:0">
-      <h2>להיות בשליטה על הכסף והנתונים שלכם</h2>
-      <p>22 שיעורים, ששה שלבים ו-9 כלי עבודה — מהשאלה ״מה זה קמפיין?״ ועד מערכת שלמה שעובדת.</p>
-    </div>
-    {price_card()}
-  </div>
-</section>
-
-{lead_section()}
-<section class="section" id="faq">
+<section class="zone zone-light" id="faq">
   <div class="container">
-    <div class="section-head"><h2>שאלות נפוצות</h2></div>
+    <div class="zone-head reveal"><span class="eyebrow">שאלות ותשובות</span><h2>שאלות נפוצות</h2></div>
     <div class="faq">
 {faq}
     </div>
@@ -686,12 +695,12 @@ def build_index():
 
 <section class="section" style="padding-top:0">
   <div class="container">
-    <div class="cta-band">
-      <h2>אל תצאו פראיירים.</h2>
-      <p>לפני שמעלים עוד קמפיין — מבינים מה באמת צריך לעשות.</p>
+    <div class="cta-band reveal">
+      <h2>מוכנים להפסיק לנחש?</h2>
+      <p>22 שיעורים קצרים, 9 כלי עבודה ופרויקט גמר — מהמודעה ועד המכירה.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="purchase.html">להצטרפות לקורס · ₪{PRICE}</a>
-        <a class="btn btn-ghost" href="checklist.html">לצ׳ק ליסט החינמי</a>
+        <a class="btn btn-primary" href="purchase.html">לעמוד הקורס</a>
+        <a class="btn btn-ghost" href="#checklist">קודם הצ׳ק ליסט החינמי</a>
       </div>
     </div>
   </div>
@@ -712,7 +721,7 @@ def build_curriculum():
     html += "\n<main id=\"main\">\n" + page_hero(
         "תוכנית הלימודים",
         f"22 שיעורים בששה שלבים, כ-{HOURS} שעות בסך הכול. כל שלב נבנה על הקודם — כך שכשמגיעים למערכות, כבר מבינים מה עושים בהן ולמה.",
-        crumbs=[("הקורס", "index.html"), ("תוכנית הלימודים", None)])
+        crumbs=[("בית", "index.html"), ("תוכנית הלימודים", None)])
     html += f'''<section class="section">
   <div class="container">
     <div class="course-progress card">
@@ -853,7 +862,7 @@ def build_checklist():
     html += "\n<main id=\"main\">\n" + page_hero(
         "20 פעולות לפני שמעלים קמפיין",
         "הצ׳ק ליסט החינמי למפרסמים. עוברים עליו לפני כל השקה — מסמנים, ומשיקים רק כשהכול מסומן. הסימונים נשמרים בדפדפן שלכם.",
-        crumbs=[("הקורס", "index.html"), ("צ׳ק ליסט חינמי", None)], tag="חינם")
+        crumbs=[("בית", "index.html"), ("צ׳ק ליסט חינמי", None)], tag="חינם")
     html += f'''<section class="section">
   <div class="container checklist-layout">
     <div>
@@ -869,7 +878,7 @@ def build_checklist():
       <div class="upsell no-print">
         <strong>רוצים להבין למה כל בדיקה חשובה?</strong>
         <p>בקורס המלא: 22 שיעורים, 9 כלי עבודה, וצ׳ק־ליסט QA מורחב של 45 בדיקות.</p>
-        <a class="btn btn-primary btn-block" href="purchase.html">לקורס המלא · ₪{PRICE}</a>
+        <a class="btn btn-primary btn-block" href="purchase.html">לקורס המלא</a>
       </div>
     </aside>
   </div>
@@ -1128,7 +1137,7 @@ def build_tools():
     html += "\n<main id=\"main\">\n" + page_hero(
         "ערכת הכלים",
         "9 כלים שעובדים ישירות בדפדפן — בלי הרשמה ובלי להוריד קבצים. מה שאתם מזינים נשמר אצלכם במחשב, ואפשר להדפיס או לשמור כ-PDF.",
-        crumbs=[("הקורס", "index.html"), ("ערכת כלים", None)])
+        crumbs=[("בית", "index.html"), ("ערכת כלים", None)])
     html += f'''<section class="section"><div class="container"><div class="tools-grid tools-grid-3">
 {cards}
 </div></div></section>
@@ -1161,35 +1170,113 @@ def build_tools():
 
 def build_purchase():
     if PAYMENT_URL:
-        pay = f'<a class="btn btn-primary btn-block" href="{PAYMENT_URL}">לתשלום מאובטח · ₪{PRICE}</a>'
+        pay = f'<a class="btn btn-primary btn-block" href="{PAYMENT_URL}">לתשלום מאובטח</a>'
     else:
-        pay = (f'<a class="btn btn-primary btn-block" href="#lead">להרשמה לקורס · ₪{PRICE}</a>'
+        pay = ('<a class="btn btn-primary btn-block" href="#lead">להרשמה לקורס</a>'
                '<p class="muted small" style="margin-top:10px;text-align:center">השאירו פרטים ונחזור אליכם עם קישור לתשלום וגישה לקורס.</p>')
-    stages = "".join(
-        f'<li><span class="module-num">{si + 1}</span><div><b>{name}</b><span>{len(items)} שיעורים · {summary}</span></div></li>'
+    steps = "\n".join(
+        f'''      <li class="path-step reveal" style="--d:{si}">
+        <span class="path-dot">{si + 1}</span>
+        <div class="path-card"><h3>{name}</h3><p>{summary}</p><span class="count">{len(items)} שיעורים</span></div>
+      </li>'''
         for si, (name, _, summary, items) in enumerate(STAGES))
-    tools = "".join(f'<li><i class="check">✓</i>{name}</li>' for _, name, *_ in TOOLS)
-    fmt_cards = "".join(f'<div class="format">{icon(i)}<div><h3>{t}</h3><p>{d}</p></div></div>' for i, t, d in LESSON_FORMAT)
+    bento = "\n".join(
+        f'      <div class="bento-tile reveal" data-tile="{k + 1}">{icon(i)}<h3>{t}</h3><p>{d}</p></div>'
+        for k, (i, t, d) in enumerate(LESSON_FORMAT))
+    tools = "\n".join(
+        f'      <a class="glass-tool reveal" href="tools/{slug}.html" style="--d:{k}">{icon(ic)}<div><h3>{name}</h3><p>{desc}</p></div></a>'
+        for k, (slug, name, ic, desc, _) in enumerate(TOOLS))
     faq = "\n".join(f'    <details class="card"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ)
-    html = head(f"רכישת הקורס — {COURSE}", f"הקורס המלא: 22 שיעורים, 9 כלי עבודה ופרויקט גמר. ₪{PRICE}, תשלום אחד.",
+
+    html = head(f"הקורס המלא — {COURSE}", "הקורס המלא: 22 שיעורים בששה שלבים, 9 כלי עבודה ופרויקט גמר — מהמודעה ועד המכירה.",
                 ld=[course_ld(), faq_ld()])
     html += header("purchase")
-    html += "\n<main id=\"main\">\n" + page_hero(
-        "הקורס המלא",
-        "22 שיעורים תמציתיים, 9 כלי עבודה ופרויקט גמר — כדי שמחר בבוקר תדעו מה לבקש, מה לבדוק ואיך להפוך פרסום לכסף.",
-        crumbs=[("הקורס", "index.html"), ("רכישה", None)])
-    html += f'''<section class="section">
-  <div class="container purchase">
-    <div class="purchase-main">
-      <section class="card p-block"><h2>מה מקבלים</h2>
-        <ol class="stage-list">{stages}</ol>
-      </section>
-      <section class="card p-block"><h2>9 כלי עבודה</h2><ul class="tool-checks">{tools}</ul></section>
-      <section class="card p-block"><h2>בכל שיעור</h2>
-        <div class="format-grid format-grid-2">{fmt_cards}</div>
-      </section>
+    html += f'''
+<main id="main" class="course-page">
+<section class="hero course-hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <nav class="breadcrumbs"><a href="index.html">בית</a><span>/</span><span>הקורס המלא</span></nav>
+      <span class="tag tag-solid">הקורס המלא</span>
+      <h1 style="margin-top:18px">{COURSE}
+        <span class="accent">מהמודעה ועד המכירה — 22 שיעורים שעושים סדר</span></h1>
+      <p class="hero-intro">22 שיעורים תמציתיים, 9 כלי עבודה ופרויקט גמר — כדי שמחר בבוקר תדעו מה לבקש, מה לבדוק ואיך להפוך פרסום לכסף.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#join">להצטרפות לקורס</a>
+        <a class="btn btn-ghost" href="lessons/lesson-01.html">לשיעור הראשון — חינם</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>22</strong><span>שיעורים קצרים</span></div>
+        <div class="stat"><strong>6</strong><span>שלבי למידה</span></div>
+        <div class="stat"><strong>9</strong><span>כלי עבודה</span></div>
+      </div>
     </div>
-    <aside class="purchase-side">
+  </div>
+</section>
+
+<section class="zone zone-path">
+  <div class="container">
+    <div class="zone-head reveal">
+      <span class="eyebrow">המסלול</span>
+      <h2>ששה שלבים. כל שלב נבנה על הקודם.</h2>
+      <p>כשמגיעים למערכות — כבר מבינים מה עושים בהן ולמה.</p>
+    </div>
+    <ol class="path">
+{steps}
+    </ol>
+  </div>
+</section>
+
+<section class="zone zone-soft" id="curriculum">
+  <div class="big-num" aria-hidden="true">22</div>
+  <div class="container">
+    <div class="zone-head reveal">
+      <span class="eyebrow">תוכנית הלימודים</span>
+      <h2>כל 22 השיעורים</h2>
+      <p>כ-{HOURS} שעות בסך הכול. לחצו על שלב כדי לראות את השיעורים שבו.</p>
+    </div>
+    <div class="modules">
+{module_list()}
+    </div>
+  </div>
+</section>
+
+<section class="zone zone-light">
+  <div class="container">
+    <div class="zone-head reveal">
+      <span class="eyebrow">מבנה כל שיעור</span>
+      <h2>תמציתי. מדויק. ליישום מחר בבוקר.</h2>
+      <p>כל שיעור בנוי סביב מטרה אחת, ונגמר בצעדים שעושים בעסק — לא בעוד תיאוריה.</p>
+    </div>
+    <div class="bento">
+{bento}
+    </div>
+  </div>
+</section>
+
+<section class="zone zone-dark tools-zone" id="tools">
+  <div class="orb o3" aria-hidden="true"></div>
+  <div class="container">
+    <div class="zone-head reveal">
+      <span class="eyebrow">ערכת כלים</span>
+      <h2>9 כלים שעובדים — לא רק קבצים</h2>
+      <p>מחשבונים, מחוללים וצ׳ק־ליסטים שעובדים ישירות בדפדפן ושומרים את מה שהזנתם.</p>
+    </div>
+    <div class="glass-grid">
+{tools}
+    </div>
+  </div>
+</section>
+
+<section class="zone zone-gradient" id="join">
+  <div class="container pricing">
+    <div class="zone-head reveal" style="text-align:right;margin:0;justify-items:start">
+      <span class="eyebrow light">הצטרפות</span>
+      <h2>להיות בשליטה על הכסף והנתונים שלכם</h2>
+      <p>תשלום אחד, גישה מלאה, לומדים בקצב שלכם.</p>
+      <div class="card access-card join-access">{access_form("purchase")}</div>
+    </div>
+    <div class="reveal">
       <div class="price-card">
         <span class="tag">{COURSE}</span>
         <div class="price">₪{PRICE}<small>תשלום אחד</small></div>
@@ -1198,19 +1285,18 @@ def build_purchase():
           <li><i class="check">✓</i>9 כלי עבודה בדפדפן</li>
           <li><i class="check">✓</i>צ׳ק־ליסט QA של 45 בדיקות</li>
           <li><i class="check">✓</i>פרויקט גמר מודרך</li>
-          <li><i class="check">✓</i>לומדים בקצב שלכם</li>
+          <li><i class="check">✓</i>משימה ובוחן בכל שיעור</li>
         </ul>
         {pay}
       </div>
-      <a class="card mini-link" href="lessons/lesson-01.html">{icon("play", "icon icon-teal")}<div><b>לא בטוחים?</b><span>קראו את השיעור הראשון — חינם</span></div></a>
-      <div class="card access-card">{access_form("purchase")}</div>
-    </aside>
+    </div>
   </div>
 </section>
+
 {lead_section()}
-<section class="section" id="faq">
+<section class="zone zone-light" id="faq">
   <div class="container">
-    <div class="section-head"><h2>שאלות נפוצות</h2></div>
+    <div class="zone-head reveal"><span class="eyebrow">שאלות ותשובות</span><h2>שאלות נפוצות</h2></div>
     <div class="faq">
 {faq}
     </div>
@@ -1239,7 +1325,7 @@ def build_glossary():
     html += "\n<main id=\"main\">\n" + page_hero(
         "מילון מונחים",
         f"{len(items)} מונחים שכל מפרסם צריך להכיר — כל אחד במשפט אחד, עם קישור לשיעור שבו הוא מוסבר לעומק.",
-        crumbs=[("הקורס", "index.html"), ("מילון מונחים", None)])
+        crumbs=[("בית", "index.html"), ("מילון מונחים", None)])
     html += f'''<section class="section">
   <div class="container">
     <label class="glossary-search"><span class="sr-only">חיפוש מונח</span><input type="search" placeholder="חיפוש מונח… (CPC, UTM, ליד)" oninput="var q=this.value.toLowerCase();document.querySelectorAll('.term').forEach(function(t){{t.hidden=q&&t.textContent.toLowerCase().indexOf(q)<0}})"></label>
@@ -1305,7 +1391,7 @@ def build_welcome():
     html += '\n<main id="main">\n' + page_hero(
         "ברוכים הבאים לקורס",
         "אחרי התשלום מגיעים לכאן עם הגישה פתוחה. אם קיבלתם קוד גישה במייל — הזינו אותו כאן פעם אחת, והקורס ייפתח בדפדפן הזה.",
-        crumbs=[("הקורס", "index.html"), ("כניסה לקורס", None)])
+        crumbs=[("בית", "index.html"), ("כניסה לקורס", None)])
     html += f'''<section class="section">
   <div class="container welcome">
     <div class="card welcome-card only-access">
@@ -1347,7 +1433,7 @@ def build_welcome():
 def legal_page(path, title, intro, body, desc):
     html = head(f"{title} — {COURSE}", desc)
     html += header("legal")
-    html += '\n<main id="main">\n' + page_hero(title, intro, crumbs=[("הקורס", "index.html"), (title, None)])
+    html += '\n<main id="main">\n' + page_hero(title, intro, crumbs=[("בית", "index.html"), (title, None)])
     html += f'''<section class="section">
   <div class="container">
     <article class="card legal">
@@ -1603,7 +1689,7 @@ def build_landing():
 <section class="section section-soft">
   <div class="container">
     <div class="section-head">
-      <span class="tag">הקורס המלא · ₪{PRICE}</span>
+      <span class="tag">הקורס המלא</span>
       <h2>לא קופצים ישר ל-Facebook Ads</h2>
       <p>22 שיעורים בששה שלבים. קודם מבינים מטרות ומספרים, אחר כך קהל, מסר ותוכן — ורק אז נכנסים ל-Meta ולגוגל, למדידה ולמערכות.</p>
     </div>
@@ -1632,8 +1718,6 @@ def build_landing():
       <div class="avatar">ע</div>
       <h3>{AUTHOR}</h3>
       <p>מדיה ודיגיטל</p>
-      <span class="big" dir="ltr">{YEARS}+</span>
-      <p>שנות ניסיון</p>
     </div>
     <div class="about-copy">
       <span class="tag">קצת עליי</span>
