@@ -1087,19 +1087,6 @@ mark { background: #fff1b8; color: #5d4a1d; padding: 0 4px; border-radius: 4px; 
 @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(40px, 30px) scale(1.08); } 66% { transform: translate(-30px, 20px) scale(.95); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Hero: מדדים מרחפים */
-.hero-chips { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-.metric-chip { position: absolute; display: grid; grid-template-columns: auto auto; column-gap: 10px; align-items: center; padding: 12px 16px; border-radius: 16px; background: rgba(9, 25, 42, .55); border: 1px solid rgba(255, 255, 255, .18); backdrop-filter: blur(10px); color: #fff; box-shadow: 0 18px 40px rgba(0, 0, 0, .3); animation: bob 6s ease-in-out infinite; }
-.metric-chip span { grid-column: 1 / -1; font-size: 12px; color: #a9c2d8; }
-.metric-chip strong { font-size: 24px; letter-spacing: -.03em; }
-.metric-chip i { width: 0; height: 0; border-inline: 7px solid transparent; }
-.metric-chip i.up { border-bottom: 10px solid var(--mint); }
-.metric-chip i.down { border-top: 10px solid var(--mint); }
-.metric-chip.c1 { left: 8%; top: 22%; }
-.metric-chip.c2 { left: 22%; top: 48%; animation-delay: -2s; }
-.metric-chip.c3 { left: 6%; top: 66%; animation-delay: -4s; }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-
 /* פס מונחים נע */
 .ticker { position: relative; overflow: hidden; background: var(--deep); border-block: 1px solid rgba(255, 255, 255, .08); padding: 16px 0; direction: ltr; }
 .ticker::before, .ticker::after { content: ""; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 1; }
@@ -1254,7 +1241,6 @@ mark { background: #fff1b8; color: #5d4a1d; padding: 0 4px; border-radius: 4px; 
   .bento-tile[data-tile] { grid-column: span 1; }
   .bento-tile[data-tile="1"], .bento-tile[data-tile="6"] { grid-column: span 2; }
   .glass-grid { grid-template-columns: repeat(2, 1fr); }
-  .metric-chip.c2 { display: none; }
   .pain-row { grid-template-columns: 100px minmax(0, 1fr); }
   .pain-chips { grid-column: 2; flex-direction: row; flex-wrap: wrap; }
   .pain-num { font-size: 72px; }
@@ -1263,7 +1249,6 @@ mark { background: #fff1b8; color: #5d4a1d; padding: 0 4px; border-radius: 4px; 
   .zone { padding: 72px 0; }
   .zone-head { text-align: right; justify-items: start; margin-bottom: 34px; }
   .zone-head p { font-size: 16px; }
-  .hero-chips { display: none; }
   .aud-grid, .products-row, .glass-grid, .about-v2 { grid-template-columns: 1fr; }
   .path { grid-template-columns: 1fr; gap: 14px; }
   .path-step { grid-template-columns: 56px 1fr; justify-items: stretch; text-align: right; align-items: start; }
@@ -1282,10 +1267,10 @@ mark { background: #fff1b8; color: #5d4a1d; padding: 0 4px; border-radius: 4px; 
 
 /* בלי תנועה למי שביקש */
 @media (prefers-reduced-motion: reduce) {
-  .orb, .metric-chip, .ticker-track, .path::before, .path-dot::after, .answer-band::before, .zone-gradient::before, .zone-gradient .price-card, .cta-band::after, .pain-chips span { animation: none !important; }
+  .orb, .ticker-track, .path::before, .path-dot::after, .answer-band::before, .zone-gradient::before, .zone-gradient .price-card, .cta-band::after, .pain-chips span { animation: none !important; }
   .reveal.in { animation: none !important; }
 }
-.a11y-motion .orb, .a11y-motion .metric-chip, .a11y-motion .ticker-track, .a11y-motion .path::before, .a11y-motion .path-dot::after,
+.a11y-motion .orb, .a11y-motion .ticker-track, .a11y-motion .path::before, .a11y-motion .path-dot::after,
 .a11y-motion .answer-band::before, .a11y-motion .zone-gradient::before, .a11y-motion .zone-gradient .price-card, .a11y-motion .cta-band::after { animation: none !important; }
 
 /* =========================================================

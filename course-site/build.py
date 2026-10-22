@@ -499,8 +499,6 @@ PAIN_ROWS = [
      ["פיקסל?", "UTM?", "CRM?"]),
 ]
 
-HERO_CHIPS = [("CTR", "2.4%", "up"), ("עלות לליד", "₪48", "down"), ("ROAS", "4.2", "up")]
-
 
 TICKER = ["CPM", "CTR", "CPC", "CPL", "CPA", "ROAS", "KPI", "UTM", "GA4", "Pixel", "Conversions API", "CRM",
           "Webhook", "LTV", "A/B Test", "Lookalike", "AI Max", "Advantage+", "Key events", "Funnel"]
@@ -527,8 +525,6 @@ AUDIENCE_V2 = [
     ("rocket", "מנהלים קמפיינים לבד", "שרוצים לבנות, למדוד ולשפר בצורה מסודרת ולא לפי תחושה.",
      "תקבלו שיטה, כלים וצ׳ק־ליסטים"),
 ]
-
-HERO_CHIPS = [("CTR", "2.4%", "up"), ("עלות לליד", "₪48", "down"), ("ROAS", "4.2", "up")]
 
 
 def checklist_zone():
@@ -594,9 +590,6 @@ def build_index():
       </li>'''
         for si, (name, _, summary, items) in enumerate(STAGES))
     faq = "\n".join(f'    <details class="card"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ[:4])
-    chips = "".join(
-        f'<div class="metric-chip c{k + 1}"><span>{lbl}</span><strong dir="ltr">{val}</strong><i class="{trend}" aria-hidden="true"></i></div>'
-        for k, (lbl, val, trend) in enumerate(HERO_CHIPS))
 
     html = head(f"{COURSE} — קורס דיגיטלי מעשי",
                 "קורס דיגיטלי מעשי ב-22 שיעורים: להבין מה איש הפרסום עושה, מה קורה מאחורי הקמפיין, ואיך לנהל את כל המערכת — מהמודעה ועד המכירה.",
@@ -605,7 +598,6 @@ def build_index():
     html += f'''
 <main id="main" class="home">
 <section class="hero">
-  <div class="hero-chips" aria-hidden="true">{chips}</div>
   <div class="container hero-inner">
     <div class="hero-copy">
       <span class="tag tag-solid">קורס דיגיטלי מעשי · 22 שיעורים</span>
