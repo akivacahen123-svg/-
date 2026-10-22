@@ -67,17 +67,32 @@
     $$('[name]', form).forEach(function (el) { out[el.name] = el.type === 'checkbox' ? el.checked : el.value; });
     return out;
   }
+  // אישור בשתי לחיצות, בתוך הדף (במקום חלון confirm)
+  function confirmClick(btn, label, action) {
+    var original = btn.textContent, armed = false, t;
+    btn.addEventListener('click', function () {
+      if (!armed) {
+        armed = true; btn.textContent = label; btn.classList.add('is-armed');
+        t = setTimeout(function () { armed = false; btn.textContent = original; btn.classList.remove('is-armed'); }, 3000);
+        return;
+      }
+      clearTimeout(t); armed = false; btn.textContent = original; btn.classList.remove('is-armed');
+      action();
+    });
+  }
+
   function resetButton(key, form) {
     var b = $('[data-reset]');
     if (!b) return;
-    b.addEventListener('click', function () {
-      if (!confirm('לנקות את כל מה שהוזן בכלי הזה?')) return;
+    confirmClick(b, 'לחצו שוב לניקוי', function () {
       try { localStorage.removeItem('nf-' + key); } catch (e) { /* */ }
       if (form) form.reset();
       location.reload();
     });
   }
   $$('[data-print]').forEach(function (b) { b.addEventListener('click', function () { window.print(); }); });
+  // בתוך מסגרת (תצוגה מקדימה) אין אפשרות להדפיס — מסתירים את הכפתור
+  if (window.self !== window.top) $$('[data-print]').forEach(function (b) { b.hidden = true; });
 
   // ---------- צ׳ק־ליסטים (חינמי + QA) ----------
   function initChecklist(key) {
@@ -111,8 +126,7 @@
     var meta = $('#qa-meta');
     if (meta) persistForm(meta, key + '-meta');
     var r = $('[data-reset]');
-    if (r) r.addEventListener('click', function () {
-      if (!confirm('לאפס את כל הסימונים?')) return;
+    if (r) confirmClick(r, 'לחצו שוב לאיפוס', function () {
       state = {}; save(key, state); boxes.forEach(function (b) { b.checked = false; }); update();
     });
   }
@@ -305,8 +319,8 @@
       })));
     });
     persistForm(targets, 'tool-control-targets', draw);
-    var r = $('[data-reset]'); if (r) r.addEventListener('click', function () {
-      if (!confirm('למחוק את כל הטבלה?')) return; rows = [{ label: 'שבוע 1' }]; save('tool-control', rows); draw();
+    var r = $('[data-reset]'); if (r) confirmClick(r, 'לחצו שוב למחיקה', function () {
+      rows = [{ label: 'שבוע 1' }]; save('tool-control', rows); draw();
     });
     draw();
   }

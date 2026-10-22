@@ -27,8 +27,31 @@ YEARS = 7
 PRICE = 500
 # קישור לדף התשלום (סליקה). כל עוד ריק — כפתור התשלום מוביל לטופס השארת פרטים.
 PAYMENT_URL = ""
+# קוד הגישה לקורס. אחרי תשלום מפנים את הקונה ל: welcome.html?code=<הקוד>
+# (או שולחים לו את הקוד במייל, והוא מזין אותו באתר). כדי להחליף קוד — משנים כאן ומריצים שוב.
+ACCESS_CODE = "NF26-PRO"
+# כתובת האתר המלאה (עם / בסוף) — משמשת ל-SEO (canonical, sitemap) ולקישורים מדף הנחיתה.
+SITE_URL = "https://lp.kore.co.il/not-frayer11/"
+# פרטי קשר — מופיעים בהצהרת הנגישות, בתנאי השימוש ובמדיניות הפרטיות. חובה למלא לפני עלייה לאוויר.
+CONTACT_EMAIL = ""
+CONTACT_PHONE = ""
+# מדידה. ריק = לא נטען כלום ולא מוצג באנר עוגיות. כשממלאים — הקוד נטען רק אחרי הסכמת הגולש.
+GA4_ID = ""          # למשל G-XXXXXXX
+META_PIXEL_ID = ""   # למשל 1234567890
+LEGAL_UPDATED = "אוקטובר 2026"
 
 CONTENT = {**part1.LESSONS, **part2.LESSONS, **part3.LESSONS}
+
+
+def fnv1a(text):
+    """גיבוב קצר של קוד הגישה (זהה לפונקציה ב-main.js), כדי שהקוד עצמו לא יופיע בעמודים."""
+    h = 0x811C9DC5
+    for b in text.strip().upper().encode("utf-8"):
+        h = ((h ^ b) * 0x01000193) & 0xFFFFFFFF
+    return f"{h:08x}"
+
+
+ACCESS_HASH = fnv1a(ACCESS_CODE)
 
 # ------------------------------------------------------------------
 # אייקונים (קו, בסגנון דף הנחיתה)
@@ -57,6 +80,8 @@ ICONS = {
     "calc": '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
     "book": '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
     "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    "lock": '<rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>',
+    "a11y": '<circle cx="12" cy="4.5" r="2"/><path d="M4 8.5c2.6.8 5.3 1.2 8 1.2s5.4-.4 8-1.2M12 9.7V15m0 0-3.5 6M12 15l3.5 6"/>',
 }
 
 
@@ -230,7 +255,10 @@ def md(text):
 # רכיבים משותפים
 # ------------------------------------------------------------------
 
-def head(title, desc, prefix="", body_attr=""):
+def head(title, desc, prefix="", body_attr="", gated=False, ld=(), noindex=False):
+    import json
+    ld_html = "".join(f'\n  <script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in ld)
+    robots = '\n  <meta name="robots" content="noindex, follow">' if noindex else ""
     return f'''<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -238,15 +266,25 @@ def head(title, desc, prefix="", body_attr=""):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{escape(title)}</title>
   <meta name="description" content="{escape(desc)}">
+  <link rel="canonical" href="__CANONICAL__">{robots}
+  <meta name="theme-color" content="#10253b">
+  <link rel="icon" href="{prefix}assets/img/favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  <meta property="og:site_name" content="{COURSE}">
+  <meta property="og:url" content="__CANONICAL__">
   <meta property="og:title" content="{escape(title)}">
   <meta property="og:description" content="{escape(desc)}">
-  <meta property="og:image" content="{prefix}assets/img/hero-sm.jpg">
+  <meta property="og:image" content="{SITE_URL}assets/img/hero-sm.jpg">
+  <meta name="twitter:card" content="summary_large_image">{ld_html}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{prefix}assets/css/style.css">
+  <script>window.NF_ACCESS="{ACCESS_HASH}";(function(){{var ok=false;try{{ok=localStorage.getItem("nf-access")===window.NF_ACCESS}}catch(e){{}}document.documentElement.classList.add(ok?"has-access":"no-access")}})();</script>
 </head>
-<body{body_attr}>
+<body{body_attr}{' data-gated' if gated else ''}>
+<a class="skip-link" href="#main">דילוג לתוכן</a>
 '''
 
 
@@ -263,7 +301,8 @@ def header(active, prefix=""):
       {link("curriculum.html", "תוכנית הלימודים", "curriculum")}
       {link("toolkit.html", "ערכת כלים", "toolkit")}
       {link("checklist.html", "צ׳ק ליסט חינמי", "checklist")}
-      <a class="btn btn-primary" href="{prefix}purchase.html">רכישת הקורס · ₪{PRICE}</a>
+      <a class="btn btn-primary only-locked" href="{prefix}purchase.html">רכישת הקורס · ₪{PRICE}</a>
+      <a class="btn btn-primary only-access" href="{prefix}curriculum.html">הקורס שלי</a>
     </nav>
   </div>
 </header>
@@ -285,13 +324,27 @@ def footer(prefix="", scripts=()):
         <a href="{prefix}index.html#faq">שאלות נפוצות</a>
       </nav>
     </div>
+    <div class="legal-links">
+      <a href="{prefix}accessibility.html">הצהרת נגישות</a>
+      <a href="{prefix}terms.html">תנאי שימוש</a>
+      <a href="{prefix}privacy.html">מדיניות פרטיות</a>
+      <a href="{prefix}welcome.html">כניסה לקורס</a>
+    </div>
     <div class="copyright">© 2026 {AUTHOR} · {COURSE}</div>
   </div>
 </footer>
+<script>window.NF_CONFIG={{ga4:"{GA4_ID}",pixel:"{META_PIXEL_ID}",privacy:"{prefix}privacy.html",a11y:"{prefix}accessibility.html"}};</script>
 <script src="{prefix}assets/js/main.js"></script>{extra}
 </body>
 </html>
 '''
+
+
+def contact_line():
+    parts = []
+    parts.append(f"אימייל: <b dir=\"ltr\">{escape(CONTACT_EMAIL)}</b>" if CONTACT_EMAIL else '<mark>[להשלים: אימייל ליצירת קשר]</mark>')
+    parts.append(f"טלפון: <b dir=\"ltr\">{escape(CONTACT_PHONE)}</b>" if CONTACT_PHONE else '<mark>[להשלים: טלפון]</mark>')
+    return " · ".join(parts)
 
 
 def page_hero(title, intro, crumbs=(), tag="", prefix=""):
@@ -317,7 +370,7 @@ def module_list(prefix="", open_all=False, open_first=True):
     for si, (name, ic, summary, _) in enumerate(STAGES):
         lessons = [l for l in LESSONS if l["stage"] == si]
         items = "\n".join(
-            f'''          <li><a class="lesson" data-lesson="{l["n"]}" href="{prefix}lessons/{l["file"]}"><span class="lesson-num">{l["num"]}</span>'''
+            f'''          <li><a class="lesson" data-lesson="{l["n"]}"{"" if l["n"] == 1 else " data-locked"} href="{prefix}lessons/{l["file"]}"><span class="lesson-num">{l["num"]}</span>'''
             f'''<div><h4>{escape(l["title"])}</h4><p>{escape(l["desc"])}</p></div><span class="lesson-min">{l["minutes"]} דק׳</span></a></li>'''
             for l in lessons)
         first, last = lessons[0]["num"], lessons[-1]["num"]
@@ -334,6 +387,37 @@ def module_list(prefix="", open_all=False, open_first=True):
         </ol>
       </details>''')
     return "\n".join(out)
+
+
+def gate(prefix=""):
+    """מסך נעילה לעמודים שבתשלום — מוצג רק כשאין גישה."""
+    return f'''<section class="gate section" aria-labelledby="gate-title">
+  <div class="container">
+    <div class="gate-card card">
+      {icon("lock", "icon gate-icon")}
+      <span class="tag">הקורס המלא</span>
+      <h2 id="gate-title">התוכן הזה פתוח לתלמידי הקורס</h2>
+      <p>השיעור הראשון, הצ׳ק ליסט החינמי ומילון המונחים פתוחים לכולם. שאר 21 השיעורים ו-9 כלי העבודה — בקורס המלא.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{prefix}purchase.html">לרכישת הקורס · ₪{PRICE}</a>
+        <a class="btn btn-outline" href="{prefix}lessons/lesson-01.html">לשיעור הראשון — חינם</a>
+      </div>
+      {access_form("gate")}
+    </div>
+  </div>
+</section>
+'''
+
+
+def access_form(id_prefix):
+    return f'''<form class="access-form" data-access-form novalidate>
+        <label for="{id_prefix}-code">כבר רכשתם? הזינו את קוד הגישה</label>
+        <div class="access-row">
+          <input id="{id_prefix}-code" name="code" type="text" dir="ltr" autocomplete="off" placeholder="XXXX-XXX" required>
+          <button class="btn btn-primary" type="submit">כניסה</button>
+        </div>
+        <p class="access-msg" data-access-msg role="status"></p>
+      </form>'''
 
 
 def lead_section(prefix=""):
@@ -389,6 +473,8 @@ def price_card(prefix=""):
 
 
 def write(path, html):
+    url = SITE_URL + ("" if path == "index.html" else path)
+    html = html.replace("__CANONICAL__", url)
     p = ROOT / path
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(html, encoding="utf-8")
@@ -414,10 +500,11 @@ def build_index():
     faq = "\n".join(f'    <details class="card"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ)
 
     html = head(f"{COURSE} — קורס דיגיטלי מעשי",
-                "קורס דיגיטלי מעשי ב-22 שיעורים: להבין מה איש הפרסום עושה, מה קורה מאחורי הקמפיין, ואיך לנהל את כל המערכת — מהמודעה ועד המכירה.")
+                "קורס דיגיטלי מעשי ב-22 שיעורים: להבין מה איש הפרסום עושה, מה קורה מאחורי הקמפיין, ואיך לנהל את כל המערכת — מהמודעה ועד המכירה.",
+                ld=[course_ld(), faq_ld()])
     html += header("home")
     html += f'''
-<main>
+<main id="main">
 <section class="hero">
   <div class="container hero-inner">
     <div class="hero-copy">
@@ -622,7 +709,7 @@ def build_index():
 def build_curriculum():
     html = head(f"תוכנית הלימודים — {COURSE}", "22 שיעורים בששה שלבים: יסודות, קהל ותוכן, פלטפורמות, מדידה, מערכות, וניהול ושליטה.")
     html += header("curriculum")
-    html += "\n<main>\n" + page_hero(
+    html += "\n<main id=\"main\">\n" + page_hero(
         "תוכנית הלימודים",
         f"22 שיעורים בששה שלבים, כ-{HOURS} שעות בסך הכול. כל שלב נבנה על הקודם — כך שכשמגיעים למערכות, כבר מבינים מה עושים בהן ולמה.",
         crumbs=[("הקורס", "index.html"), ("תוכנית הלימודים", None)])
@@ -692,10 +779,11 @@ def build_lessons():
             tool_box = (f'<a class="tool-link card" href="../tools/{slug}.html">{icon(t[2], "icon icon-teal")}'
                         f'<div><span class="tag tag-teal">כלי עבודה לשיעור</span><h3>{t[1]}</h3><p>{t[3]}</p></div></a>')
 
-        html = head(f'{l["num"]}. {l["title"]} — {COURSE}', l["desc"], prefix="../")
+        html = head(f'{l["num"]}. {l["title"]} — {COURSE}', l["desc"], prefix="../", gated=l["n"] > 1, ld=lesson_ld(l))
         html += header("curriculum", prefix="../")
         html += f'''
-<main data-current-lesson="{l["n"]}">
+<main id="main" data-current-lesson="{l["n"]}">
+{gate("../") if l["n"] > 1 else ""}
 <section class="hero page-hero">
   <div class="container hero-inner">
     <div class="hero-copy">
@@ -762,7 +850,7 @@ def build_checklist():
                 "20 בדיקות שחייבים לעשות לפני שמעלים קמפיין בדיגיטל: מטרה, קהל, קריאייטיב, תקציב ומדידה.",
                 body_attr=' data-tool="free"')
     html += header("checklist")
-    html += "\n<main>\n" + page_hero(
+    html += "\n<main id=\"main\">\n" + page_hero(
         "20 פעולות לפני שמעלים קמפיין",
         "הצ׳ק ליסט החינמי למפרסמים. עוברים עליו לפני כל השקה — מסמנים, ומשיקים רק כשהכול מסומן. הסימונים נשמרים בדפדפן שלכם.",
         crumbs=[("הקורס", "index.html"), ("צ׳ק ליסט חינמי", None)], tag="חינם")
@@ -1032,12 +1120,12 @@ TOOL_INTRO = {
 
 def build_tools():
     cards = "\n".join(
-        f'''      <a class="tool card" href="tools/{slug}.html">{icon(ic, "icon" + (" icon-teal" if k % 2 else ""))}<div><h3>{name}</h3><p>{desc}</p>'''
+        f'''      <a class="tool card" data-locked href="tools/{slug}.html">{icon(ic, "icon" + (" icon-teal" if k % 2 else ""))}<div><h3>{name}</h3><p>{desc}</p>'''
         f'''<small class="muted">שיעורים {", ".join(f"{x:02d}" for x in ls)}</small></div></a>'''
         for k, (slug, name, ic, desc, ls) in enumerate(TOOLS))
     html = head(f"ערכת כלים — {COURSE}", "9 כלי עבודה למפרסמים: מחולל בריף, מחשבון תקציב, UTM, טבלת בקרה, אבחון, דשבורד, דוח חודשי, QA ופרויקט גמר.")
     html += header("toolkit")
-    html += "\n<main>\n" + page_hero(
+    html += "\n<main id=\"main\">\n" + page_hero(
         "ערכת הכלים",
         "9 כלים שעובדים ישירות בדפדפן — בלי הרשמה ובלי להוריד קבצים. מה שאתם מזינים נשמר אצלכם במחשב, ואפשר להדפיס או לשמור כ-PDF.",
         crumbs=[("הקורס", "index.html"), ("ערכת כלים", None)])
@@ -1051,9 +1139,9 @@ def build_tools():
 
     for slug, name, ic, desc, ls in TOOLS:
         lesson_links = " · ".join(f'<a href="../lessons/lesson-{x:02d}.html">שיעור {x:02d}</a>' for x in ls)
-        html = head(f"{name} — {COURSE}", desc, prefix="../", body_attr=f' data-tool="{slug}"')
+        html = head(f"{name} — {COURSE}", desc, prefix="../", body_attr=f' data-tool="{slug}"', gated=True, noindex=True)
         html += header("toolkit", prefix="../")
-        html += "\n<main>\n" + page_hero(name, TOOL_INTRO[slug],
+        html += "\n<main id=\"main\">\n" + gate("../") + page_hero(name, TOOL_INTRO[slug],
                                         crumbs=[("ערכת כלים", "toolkit.html")], prefix="../", tag="כלי עבודה")
         html += f'''<section class="section tool-section">
   <div class="container">
@@ -1083,9 +1171,10 @@ def build_purchase():
     tools = "".join(f'<li><i class="check">✓</i>{name}</li>' for _, name, *_ in TOOLS)
     fmt_cards = "".join(f'<div class="format">{icon(i)}<div><h3>{t}</h3><p>{d}</p></div></div>' for i, t, d in LESSON_FORMAT)
     faq = "\n".join(f'    <details class="card"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ)
-    html = head(f"רכישת הקורס — {COURSE}", f"הקורס המלא: 22 שיעורים, 9 כלי עבודה ופרויקט גמר. ₪{PRICE}, תשלום אחד.")
+    html = head(f"רכישת הקורס — {COURSE}", f"הקורס המלא: 22 שיעורים, 9 כלי עבודה ופרויקט גמר. ₪{PRICE}, תשלום אחד.",
+                ld=[course_ld(), faq_ld()])
     html += header("purchase")
-    html += "\n<main>\n" + page_hero(
+    html += "\n<main id=\"main\">\n" + page_hero(
         "הקורס המלא",
         "22 שיעורים תמציתיים, 9 כלי עבודה ופרויקט גמר — כדי שמחר בבוקר תדעו מה לבקש, מה לבדוק ואיך להפוך פרסום לכסף.",
         crumbs=[("הקורס", "index.html"), ("רכישה", None)])
@@ -1113,7 +1202,8 @@ def build_purchase():
         </ul>
         {pay}
       </div>
-      <a class="card mini-link" href="lessons/lesson-01.html">{icon("play", "icon icon-teal")}<div><b>לא בטוחים?</b><span>קראו את השיעור הראשון</span></div></a>
+      <a class="card mini-link" href="lessons/lesson-01.html">{icon("play", "icon icon-teal")}<div><b>לא בטוחים?</b><span>קראו את השיעור הראשון — חינם</span></div></a>
+      <div class="card access-card">{access_form("purchase")}</div>
     </aside>
   </div>
 </section>
@@ -1142,9 +1232,11 @@ def build_glossary():
         f'<div class="term card"><h3 dir="auto">{escape(t)}</h3><p>{inline(d)}</p>'
         f'<a href="lessons/lesson-{n:02d}.html">שיעור {n:02d} ←</a></div>'
         for t, d, n in items)
-    html = head(f"מילון מונחים — {COURSE}", "כל המונחים של עולם הפרסום בדיגיטל, בהסבר של משפט אחד.")
+    html = head(f"מילון מונחים — {COURSE}", "כל המונחים של עולם הפרסום בדיגיטל, בהסבר של משפט אחד.",
+                ld=[{"@context": "https://schema.org", "@type": "DefinedTermSet", "name": f"מילון מונחים — {COURSE}", "inLanguage": "he",
+                     "hasDefinedTerm": [{"@type": "DefinedTerm", "name": t, "description": d.replace("**", "")} for t, d, _ in GLOSSARY]}])
     html += header("glossary")
-    html += "\n<main>\n" + page_hero(
+    html += "\n<main id=\"main\">\n" + page_hero(
         "מילון מונחים",
         f"{len(items)} מונחים שכל מפרסם צריך להכיר — כל אחד במשפט אחד, עם קישור לשיעור שבו הוא מוסבר לעומק.",
         crumbs=[("הקורס", "index.html"), ("מילון מונחים", None)])
@@ -1162,6 +1254,436 @@ def build_glossary():
     write("glossary.html", html)
 
 
+# ------------------------------------------------------------------
+# נתונים מובנים (Schema.org) ל-SEO
+# ------------------------------------------------------------------
+
+def course_ld():
+    return {
+        "@context": "https://schema.org", "@type": "Course", "name": COURSE, "inLanguage": "he",
+        "description": "קורס דיגיטלי מעשי ב-22 שיעורים: יעדים ומספרים, קהל ותוכן, Meta ו-Google Ads, UTM ו-Analytics, API, אוטומציות, CRM, דשבורדים ופרויקט גמר.",
+        "url": SITE_URL,
+        "provider": {"@type": "Person", "name": AUTHOR},
+        "offers": {"@type": "Offer", "price": PRICE, "priceCurrency": "ILS", "category": "Paid",
+                   "availability": "https://schema.org/InStock", "url": SITE_URL + "purchase.html"},
+        "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "Online", "courseWorkload": f"PT{TOTAL_MIN}M"},
+        "syllabusSections": [{"@type": "Syllabus", "name": st[0], "description": st[2]} for st in STAGES],
+        "teaches": ["פרסום ממומן", "Meta Ads", "Google Ads", "UTM", "Google Analytics 4", "CRM", "אוטומציות שיווק"],
+    }
+
+
+def faq_ld():
+    return {"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQ]}
+
+
+def lesson_ld(l):
+    free = l["n"] == 1
+    page = {
+        "@context": "https://schema.org", "@type": "LearningResource", "name": l["title"], "description": l["desc"],
+        "inLanguage": "he", "learningResourceType": "Lesson", "timeRequired": f"PT{l['minutes']}M",
+        "isPartOf": {"@type": "Course", "name": COURSE, "url": SITE_URL},
+        "isAccessibleForFree": free,
+    }
+    if not free:
+        page["hasPart"] = {"@type": "WebPageElement", "isAccessibleForFree": False, "cssSelector": ".lesson-section"}
+    crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "הקורס", "item": SITE_URL},
+        {"@type": "ListItem", "position": 2, "name": "תוכנית הלימודים", "item": SITE_URL + "curriculum.html"},
+        {"@type": "ListItem", "position": 3, "name": l["title"], "item": SITE_URL + "lessons/" + l["file"]},
+    ]}
+    return [page, crumbs]
+
+
+# ------------------------------------------------------------------
+# כניסה לקורס (חזרה מדף התשלום)
+# ------------------------------------------------------------------
+
+def build_welcome():
+    html = head(f"כניסה לקורס — {COURSE}", "כניסה לקורס עם קוד הגישה.", noindex=True)
+    html += header("welcome")
+    html += '\n<main id="main">\n' + page_hero(
+        "ברוכים הבאים לקורס",
+        "אחרי התשלום מגיעים לכאן עם הגישה פתוחה. אם קיבלתם קוד גישה במייל — הזינו אותו כאן פעם אחת, והקורס ייפתח בדפדפן הזה.",
+        crumbs=[("הקורס", "index.html"), ("כניסה לקורס", None)])
+    html += f'''<section class="section">
+  <div class="container welcome">
+    <div class="card welcome-card only-access">
+      {icon("check", "icon icon-teal")}
+      <h2>הגישה שלכם פעילה</h2>
+      <p>22 שיעורים ו-9 כלי עבודה פתוחים. מומלץ להתחיל מהשיעור הראשון ולעבור שיעור ביום.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="lessons/lesson-01.html">להתחיל את הקורס</a>
+        <a class="btn btn-outline" href="toolkit.html">לערכת הכלים</a>
+      </div>
+    </div>
+    <div class="card welcome-card only-locked">
+      {icon("lock")}
+      <h2>כניסה עם קוד גישה</h2>
+      {access_form("welcome")}
+      <p class="muted small">אין לכם קוד? <a href="purchase.html">לרכישת הקורס</a>.</p>
+    </div>
+    <div class="card welcome-tips">
+      <h3>איך ללמוד נכון</h3>
+      <ul class="checks">
+        <li>שיעור אחד ביום — 6 עד 10 דקות.</li>
+        <li>לסיים כל שיעור במשימה ״למחר בבוקר״, על העסק שלכם.</li>
+        <li>לפתוח את הכלי שמצורף לשיעור ולמלא אותו.</li>
+        <li>הגישה וההתקדמות נשמרות בדפדפן. במחשב או בטלפון אחר — מזינים את הקוד שוב.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+'''
+    html += footer()
+    write("welcome.html", html)
+
+
+# ------------------------------------------------------------------
+# דפים משפטיים
+# ------------------------------------------------------------------
+
+def legal_page(path, title, intro, body, desc):
+    html = head(f"{title} — {COURSE}", desc)
+    html += header("legal")
+    html += '\n<main id="main">\n' + page_hero(title, intro, crumbs=[("הקורס", "index.html"), (title, None)])
+    html += f'''<section class="section">
+  <div class="container">
+    <article class="card legal">
+{body}
+      <p class="legal-date">עודכן לאחרונה: {LEGAL_UPDATED}</p>
+    </article>
+  </div>
+</section>
+</main>
+'''
+    html += footer()
+    write(path, html)
+
+
+def build_legal():
+    c = contact_line()
+    legal_page("accessibility.html", "הצהרת נגישות",
+               "אנחנו רוצים שכל אחד ואחת יוכלו ללמוד בקורס ולהשתמש באתר — כולל אנשים עם מוגבלות.",
+               f'''
+      <h2>מחויבות לנגישות</h2>
+      <p>האתר נבנה מתוך מטרה לעמוד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע״ג-2013, ובתקן הישראלי ת״י 5568 המבוסס על הנחיות WCAG 2.0 ברמה AA — ככל שהדבר אפשרי.</p>
+      <h2>מה עשינו באתר</h2>
+      <ul>
+        <li>מבנה כותרות היררכי, וציון שפה וכיוון (עברית, מימין לשמאל) בכל עמוד.</li>
+        <li>ניווט מלא במקלדת, עם סימון פוקוס ברור, וקישור ״דילוג לתוכן״ בתחילת כל עמוד.</li>
+        <li>תוויות לכל שדות הטפסים, והודעות שגיאה ואישור בטקסט.</li>
+        <li>ניגודיות צבעים מספקת בטקסט הרגיל, ופריסה שמתאימה את עצמה לטלפון, לטאבלט ולמחשב.</li>
+        <li>אייקונים דקורטיביים מוסתרים מקוראי מסך; כפתורים בלי טקסט מקבלים תיאור.</li>
+        <li>כיבוד הגדרת ״הפחתת תנועה״ של מערכת ההפעלה.</li>
+      </ul>
+      <h2>תפריט הנגישות</h2>
+      <p>בכל עמוד יש כפתור נגישות (בפינה התחתונה של המסך) שמאפשר: הגדלת טקסט בשלוש רמות, ריווח טקסט, ניגודיות גבוהה, גווני אפור, הדגשת קישורים, גופן קריא, עצירת אנימציות וסמן גדול. ההגדרות נשמרות בדפדפן.</p>
+      <h2>דפדפנים וטכנולוגיות מסייעות</h2>
+      <p>האתר מותאם לגרסאות העדכניות של Chrome, Safari, Edge ו-Firefox, ולקוראי המסך NVDA ו-VoiceOver.</p>
+      <h2>מגבלות ידועות</h2>
+      <ul>
+        <li>חלק מהטבלאות בשיעורים רחבות, ובטלפון נגללות לצדדים בתוך המסגרת שלהן.</li>
+        <li>כלי העבודה (מחשבונים וטבלאות) כוללים טבלאות אינטראקטיביות; אם משהו בהם לא נגיש לכם — נשמח לעזור.</li>
+        <li>תכנים חיצוניים (כמו מערכות סליקה) אינם בשליטתנו המלאה.</li>
+      </ul>
+      <p>אנחנו ממשיכים לשפר את הנגישות. אם נתקלתם בבעיה — נשמח שתספרו לנו.</p>
+      <h2>רכז/ת נגישות ופניות</h2>
+      <p>{AUTHOR} · {c}</p>
+      <p>בפנייה כדאי לציין: תיאור הבעיה, העמוד שבו נתקלתם בה, הדפדפן והטכנולוגיה המסייעת שבה השתמשתם. נשתדל להשיב תוך 14 ימי עבודה.</p>
+''', "הצהרת הנגישות של אתר הקורס: מה הונגש, תפריט הנגישות, מגבלות ידועות ופרטי רכז הנגישות.")
+
+    legal_page("terms.html", "תנאי שימוש",
+               "השימוש באתר ורכישת הקורס כפופים לתנאים הבאים. מומלץ לקרוא אותם לפני הרכישה.",
+               f'''
+      <p>האתר והקורס ״{COURSE}״ מופעלים על ידי {AUTHOR} (״המפעיל״). השימוש באתר מהווה הסכמה לתנאים אלה. התנאים מנוסחים בלשון רבים ופונים לכל המגדרים.</p>
+      <h2>1. השירות</h2>
+      <p>הקורס הוא קורס דיגיטלי ללמידה עצמית: שיעורים כתובים, בוחנים, משימות וכלי עבודה שפועלים בדפדפן. הצ׳ק ליסט, השיעור הראשון ומילון המונחים פתוחים לכולם ללא תשלום.</p>
+      <h2>2. רכישה וגישה</h2>
+      <ul>
+        <li>מחיר הקורס הוא {PRICE} ₪, כולל מע״מ ככל שחל, בתשלום אחד, אלא אם צוין אחרת בדף התשלום.</li>
+        <li>לאחר התשלום מתקבלת גישה לקורס באמצעות קוד גישה. הקוד אישי, ואין להעבירו או לפרסמו.</li>
+        <li>ההתקדמות בקורס ומה שמוזן בכלים נשמרים בדפדפן של המשתמש בלבד. ניקוי נתוני הדפדפן עלול למחוק אותם.</li>
+      </ul>
+      <h2>3. ביטול עסקה</h2>
+      <p>ביטול עסקה והחזר כספי יתאפשרו בהתאם להוראות חוק הגנת הצרכן, התשמ״א-1981 והתקנות שמכוחו, לרבות ההוראות לעניין עסקת מכר מרחוק. בקשת ביטול נשלחת בכתב לפרטי הקשר שבתחתית העמוד.</p>
+      <h2>4. קניין רוחני</h2>
+      <p>כל התכנים באתר — טקסטים, שיעורים, כלים, עיצוב וקוד — שייכים למפעיל ומוגנים בזכויות יוצרים. מותר להשתמש בהם לצורך לימוד אישי ועבודה בעסק של הרוכש. אסור להעתיק, להפיץ, למכור או לפרסם אותם, כולם או חלקם, ללא אישור בכתב.</p>
+      <h2>5. אחריות</h2>
+      <ul>
+        <li>התכנים בקורס הם מידע מקצועי כללי ואינם ייעוץ אישי, משפטי, חשבונאי או פיננסי.</li>
+        <li>תוצאות פרסום תלויות בגורמים רבים (מוצר, שוק, תקציב, ביצוע ופלטפורמות חיצוניות). המפעיל אינו מתחייב לתוצאה עסקית כלשהי.</li>
+        <li>פלטפורמות הפרסום משנות ממשקים וכללים מעת לעת, ולכן ייתכן שפרטים מסוימים בקורס ישתנו. נעדכן את התכנים ככל האפשר.</li>
+        <li>החישובים בכלי העבודה מבוססים על הנתונים שהמשתמש מזין, והאחריות לבדיקתם על המשתמש.</li>
+      </ul>
+      <h2>6. שימוש הוגן</h2>
+      <p>אין לעשות שימוש באתר שעלול לפגוע בפעולתו, לעקוף את מנגנון הגישה, או להעתיק תכנים באופן אוטומטי.</p>
+      <h2>7. פרטיות</h2>
+      <p>איסוף ושימוש במידע אישי מתוארים ב<a href="privacy.html">מדיניות הפרטיות</a>.</p>
+      <h2>8. שינויים בתנאים</h2>
+      <p>המפעיל רשאי לעדכן תנאים אלה. התנאים המחייבים הם אלה שפורסמו באתר במועד הרכישה.</p>
+      <h2>9. דין וסמכות שיפוט</h2>
+      <p>על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הבלעדית נתונה לבתי המשפט המוסמכים בישראל.</p>
+      <h2>10. יצירת קשר</h2>
+      <p>{AUTHOR} · {c}</p>
+''', "תנאי השימוש באתר ובקורס: רכישה וגישה, ביטול עסקה, קניין רוחני ואחריות.")
+
+    legal_page("privacy.html", "מדיניות פרטיות",
+               "מה אנחנו אוספים, למה, ומה הזכויות שלכם.",
+               f'''
+      <p>מדיניות זו מתארת כיצד {AUTHOR} (״המפעיל״) אוסף ומשתמש במידע אישי באתר ״{COURSE}״, בהתאם לחוק הגנת הפרטיות, התשמ״א-1981 והתקנות שמכוחו.</p>
+      <h2>1. איזה מידע נאסף</h2>
+      <ul>
+        <li><b>פרטים שאתם מוסרים</b> — שם, טלפון ואימייל, כשאתם ממלאים טופס באתר.</li>
+        <li><b>פרטי רכישה</b> — נמסרים לחברת הסליקה ומעובדים על ידה. פרטי כרטיס אשראי אינם נשמרים אצלנו.</li>
+        <li><b>מידע שנשמר רק אצלכם</b> — התקדמות בקורס, סימונים בצ׳ק ליסט, הגדרות נגישות ומה שמוזן בכלי העבודה נשמרים בדפדפן שלכם בלבד (Local Storage) ואינם נשלחים אלינו.</li>
+        <li><b>מידע סטטיסטי</b> — אם הופעלו כלי מדידה (כמו Google Analytics או פיקסל של Meta), הם נטענים רק אחרי שאישרתם זאת בבאנר העוגיות.</li>
+      </ul>
+      <h2>2. למה אנחנו משתמשים במידע</h2>
+      <ul>
+        <li>כדי לשלוח לכם את החומרים שביקשתם (כמו הצ׳ק ליסט) ולחזור אליכם בנוגע לקורס.</li>
+        <li>כדי לספק את הקורס, לתת גישה ולתת תמיכה.</li>
+        <li>כדי לשפר את האתר ואת הפרסום — רק במידע סטטיסטי ובהסכמה.</li>
+        <li>דיוור שיווקי יישלח רק אם הסכמתם לכך, בהתאם לסעיף 30א לחוק התקשורת (בזק ושידורים), התשמ״ב-1982. אפשר להסיר את עצמכם בכל עת.</li>
+      </ul>
+      <h2>3. העברת מידע לצדדים שלישיים</h2>
+      <p>איננו מוכרים מידע אישי. המידע עשוי להיות מעובד על ידי ספקי שירות שעובדים עבורנו — אחסון האתר ודפי הנחיתה, מערכת ניהול לקוחות (CRM), שירותי דיוור וחברת הסליקה — לצורך מתן השירות בלבד, או אם נדרש לפי דין.</p>
+      <h2>4. עוגיות</h2>
+      <p>האתר משתמש באחסון מקומי בדפדפן לצורך תפקוד (התקדמות, הגדרות). עוגיות מדידה ושיווק נטענות רק לאחר הסכמה, ואפשר לבחור ״רק הכרחיות״. אפשר גם לחסום או למחוק עוגיות בהגדרות הדפדפן.</p>
+      <h2>5. אבטחת מידע</h2>
+      <p>אנחנו נוקטים אמצעים סבירים להגנה על המידע. עם זאת, אין מערכת חסינה לחלוטין.</p>
+      <h2>6. הזכויות שלכם</h2>
+      <p>אתם רשאים לעיין במידע שנשמר עליכם, לבקש לתקנו או למחוק אותו, ולבקש להפסיק לקבל דיוור. פנו אלינו ונטפל בבקשה בהקדם.</p>
+      <h2>7. שינויים במדיניות</h2>
+      <p>נעדכן מדיניות זו בעת הצורך; הגרסה המעודכנת תפורסם בעמוד זה.</p>
+      <h2>8. יצירת קשר</h2>
+      <p>{AUTHOR} · {c}</p>
+''', "מדיניות הפרטיות של אתר הקורס: איזה מידע נאסף, למה, עם מי הוא משותף ומה הזכויות שלכם.")
+
+
+# ------------------------------------------------------------------
+# sitemap, robots, favicon
+# ------------------------------------------------------------------
+
+def build_seo_files():
+    pages = ["index.html", "curriculum.html", "checklist.html", "purchase.html", "toolkit.html", "glossary.html",
+             "accessibility.html", "terms.html", "privacy.html"] + [f"lessons/{l['file']}" for l in LESSONS]
+    prio = {"index.html": "1.0", "checklist.html": "0.9", "purchase.html": "0.9", "curriculum.html": "0.8"}
+    urls = "\n".join(
+        f"  <url><loc>{SITE_URL + ('' if p == 'index.html' else p)}</loc><priority>{prio.get(p, '0.6')}</priority></url>"
+        for p in pages)
+    (ROOT / "sitemap.xml").write_text(
+        f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}\n</urlset>\n',
+        encoding="utf-8")
+    from urllib.parse import urlparse
+    base = urlparse(SITE_URL).path or "/"
+    (ROOT / "robots.txt").write_text(
+        f"User-agent: *\nDisallow: {base}tools/\nDisallow: {base}welcome.html\n\nSitemap: {SITE_URL}sitemap.xml\n", encoding="utf-8")
+    (ROOT / "assets/img/favicon.svg").write_text(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+        '<stop offset="0" stop-color="#1677ff"/><stop offset="1" stop-color="#22c9bc"/></linearGradient></defs>'
+        '<rect width="64" height="64" rx="16" fill="url(#g)"/><path d="m18 33 9 9 19-20" fill="none" stroke="#fff" '
+        'stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>\n', encoding="utf-8")
+
+
+# ------------------------------------------------------------------
+# דף נחיתה (קובץ יחיד להעלאה ל-Lando)
+# ------------------------------------------------------------------
+
+def build_landing():
+    import base64
+    import json
+    css = (ROOT / "assets/css/style.css").read_text(encoding="utf-8")
+    hero = base64.b64encode((ROOT / "assets/img/hero.jpg").read_bytes()).decode()
+    hero_sm = base64.b64encode((ROOT / "assets/img/hero-sm.jpg").read_bytes()).decode()
+    css = css.replace("url('../img/hero.jpg')", f"url('data:image/jpeg;base64,{hero}')")
+    css = css.replace("url('../img/hero-sm.jpg')", f"url('data:image/jpeg;base64,{hero_sm}')")
+    js = (ROOT / "assets/js/main.js").read_text(encoding="utf-8")
+    site = SITE_URL
+
+    steps = "\n".join(
+        f'      <div class="step"><span class="n">{si + 1:02d}</span><h3>{name}</h3><p>{summary}</p>'
+        f'<span class="count">{len(items)} שיעורים</span></div>'
+        for si, (name, _, summary, items) in enumerate(STAGES))
+    groups = ""
+    k = 0
+    for gi, (name, ic, items) in enumerate(FREE_CHECKLIST):
+        li = ""
+        for t, _ in items:
+            k += 1
+            li += f"<li><em>{k:02d}</em>{inline(t)}</li>"
+        groups += f'<div class="lp-group card">{icon(ic, "icon" + (" icon-teal" if gi % 2 else ""))}<h3>{name}</h3><ul>{li}</ul></div>'
+    fmt_cards = "\n".join(
+        f'      <div class="format card">{icon(i, "icon" + (" icon-teal" if n % 2 else ""))}<div><h3>{t}</h3><p>{d}</p></div></div>'
+        for n, (i, t, d) in enumerate(LESSON_FORMAT))
+    faq = "\n".join(f'    <details class="card"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQ)
+
+    html = f'''<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>אל תצאו פראיירים | צ׳ק ליסט חינמי למפרסמים + קורס דיגיטלי</title>
+  <meta name="description" content="לפני שמעלים קמפיין בדיגיטל — מבינים מה באמת עושים. צ׳ק ליסט חינמי עם 20 פעולות לפני העלייה לאוויר, וקורס דיגיטלי של 22 שיעורים.">
+  <meta name="theme-color" content="#10253b">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  <meta property="og:title" content="אל תצאו פראיירים — צ׳ק ליסט חינמי למפרסמים">
+  <meta property="og:description" content="20 פעולות שחייבים לבדוק לפני שמעלים קמפיין בדיגיטל.">
+  <meta property="og:image" content="{site}assets/img/hero-sm.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{json.dumps(course_ld(), ensure_ascii=False)}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+{css}
+/* דף נחיתה */
+.lp-board {{ display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(320px, .9fr); gap: 28px; align-items: start; }}
+.lp-board .lead-panel {{ position: sticky; top: 24px; }}
+.lp-groups {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }}
+.lp-group {{ padding: 22px; }}
+.lp-group:hover {{ transform: none; }}
+.lp-group .icon {{ margin-bottom: 12px; width: 48px; height: 48px; }}
+.lp-group h3 {{ font-size: 19px; margin-bottom: 10px; }}
+.lp-group ul {{ list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }}
+.lp-group li {{ display: grid; grid-template-columns: 28px 1fr; font-size: 14.5px; line-height: 1.55; color: #34506b; }}
+.lp-group em {{ font-style: normal; font-weight: 700; color: #1d91d6; font-size: 12.5px; padding-top: 2px; }}
+.lp-group:last-child {{ grid-column: 1 / -1; }}
+.lp-top {{ display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }}
+.lp-top h2 {{ font-size: clamp(28px, 3vw, 38px); }}
+@media (max-width: 1000px) {{ .lp-board {{ grid-template-columns: minmax(0, 1fr); }} .lp-board .lead-panel {{ position: static; order: -1; }} }}
+@media (max-width: 700px) {{ .lp-groups {{ grid-template-columns: 1fr; }} }}
+  </style>
+  <script>window.NF_ACCESS="{ACCESS_HASH}";</script>
+</head>
+<body>
+<a class="skip-link" href="#main">דילוג לתוכן</a>
+<main id="main">
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <span class="tag tag-solid">צ׳ק ליסט חינמי · 20 פעולות</span>
+      <h1 style="margin-top:22px">אל תצאו פראיירים.
+        <span class="accent">מבינים מה באמת צריך לעשות לפני שמעלים קמפיין בדיגיטל</span></h1>
+      <p class="hero-intro">צ׳ק ליסט חינמי עם 20 פעולות שחייבים לבדוק לפני העלייה לאוויר — וקורס דיגיטלי של 22 שיעורים שעושה סדר בכל עולם הפרסום, מהמודעה ועד המכירה.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#lead">שלחו לי את הצ׳ק ליסט</a>
+        <a class="btn btn-ghost" href="{site}">לפרטים על הקורס</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="lead">
+  <div class="container lp-board">
+    <div>
+      <div class="lp-top"><h2>מה בודקים לפני שמשיקים?</h2><span class="tag tag-teal">20 פעולות · 5 תחומים</span></div>
+      <div class="lp-groups">{groups}</div>
+    </div>
+    <aside class="lead-panel">
+      <h3>רוצים את הצ׳ק ליסט ואת כל הפרטים על הקורס?</h3>
+      <p>מלאו פרטים וקבלו גישה לצ׳ק ליסט החינמי — עם ההסבר למה כל בדיקה חשובה — ולמידע נוסף על הקורס.</p>
+      <div class="lead-mini">{svg("play")}<div><strong>22 שיעורים + 9 כלי עבודה</strong><span>מהמודעה ועד המכירה</span></div></div>
+      <form class="lead-form" method="post">
+        <label class="sr-only" for="lp-name">שם מלא</label>
+        <input id="lp-name" name="name" type="text" autocomplete="name" placeholder="שם מלא" required>
+        <label class="sr-only" for="lp-phone">טלפון</label>
+        <input id="lp-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="טלפון" required>
+        <label class="sr-only" for="lp-email">אימייל</label>
+        <input id="lp-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="אימייל" required>
+        <button class="btn btn-primary btn-block" type="submit">שלחו לי את הצ׳ק ליסט ואת פרטי הקורס</button>
+      </form>
+      <div class="lead-note">הפרטים נשמרים לצורך שליחת החומרים בלבד. <a href="{site}privacy.html" style="text-decoration:underline">מדיניות פרטיות</a></div>
+    </aside>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="container">
+    <div class="section-head">
+      <span class="tag">הקורס המלא · ₪{PRICE}</span>
+      <h2>לא קופצים ישר ל-Facebook Ads</h2>
+      <p>22 שיעורים בששה שלבים. קודם מבינים מטרות ומספרים, אחר כך קהל, מסר ותוכן — ורק אז נכנסים ל-Meta ולגוגל, למדידה ולמערכות.</p>
+    </div>
+    <div class="flow">
+{steps}
+    </div>
+    <div class="center-cta"><a class="btn btn-outline" href="{site}curriculum.html">לתוכנית הלימודים המלאה</a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="tag tag-teal">מבנה כל שיעור</span>
+      <h2>תמציתי. מדויק. ליישום מחר בבוקר.</h2>
+    </div>
+    <div class="format-grid">
+{fmt_cards}
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="container about">
+    <div class="about-card">
+      <div class="avatar">ע</div>
+      <h3>{AUTHOR}</h3>
+      <p>מדיה ודיגיטל</p>
+      <span class="big" dir="ltr">{YEARS}+</span>
+      <p>שנות ניסיון</p>
+    </div>
+    <div class="about-copy">
+      <span class="tag">קצת עליי</span>
+      <h2 style="margin-top:14px">אני {AUTHOR}</h2>
+      <p>אני עוסק במדיה ובדיגיטל כבר {YEARS} שנים. ראיתי מקרוב איך קמפיינים נבנים, איך תקציבים מתבזבזים, ואיך בעל העסק מקבל דוח מלא במספרים ועדיין לא יודע מה קרה עם הכסף שלו.</p>
+      <div class="quote">הצ׳ק ליסט והקורס נבנו כדי שתבינו מספיק כדי לשאול את השאלות הנכונות, לבדוק עבודה מקצועית ולהיות בשליטה על הכסף והנתונים שלכם.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head"><h2>שאלות נפוצות</h2></div>
+    <div class="faq">
+{faq}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="cta-band">
+      <h2>אל תצאו פראיירים.</h2>
+      <p>20 בדיקות לפני כל קמפיין — בחינם.</p>
+      <div class="hero-actions"><a class="btn btn-primary" href="#lead">שלחו לי את הצ׳ק ליסט</a></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="legal-links">
+      <a href="{site}accessibility.html">הצהרת נגישות</a>
+      <a href="{site}terms.html">תנאי שימוש</a>
+      <a href="{site}privacy.html">מדיניות פרטיות</a>
+    </div>
+    <div class="copyright">© 2026 {AUTHOR} · {COURSE}</div>
+  </div>
+</footer>
+<script>window.NF_CONFIG={{ga4:"{GA4_ID}",pixel:"{META_PIXEL_ID}",privacy:"{site}privacy.html",a11y:"{site}accessibility.html"}};</script>
+<script>
+{js}
+</script>
+</body>
+</html>
+'''
+    (ROOT / "landing").mkdir(exist_ok=True)
+    (ROOT / "landing/index.html").write_text(html, encoding="utf-8")
+
+
 if __name__ == "__main__":
     build_index()
     build_curriculum()
@@ -1170,4 +1692,8 @@ if __name__ == "__main__":
     build_tools()
     build_purchase()
     build_glossary()
+    build_welcome()
+    build_legal()
+    build_seo_files()
+    build_landing()
     print(f"נבנו: index, curriculum, checklist, toolkit + {len(TOOLS)} כלים, purchase, glossary ו-22 שיעורים ({TOTAL_MIN} דקות קריאה)")
