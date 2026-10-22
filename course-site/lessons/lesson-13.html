@@ -42,6 +42,7 @@
 </header>
 
 <main id="main" data-current-lesson="13">
+<div class="read-progress" aria-hidden="true"><i></i></div>
 <section class="gate section" aria-labelledby="gate-title">
   <div class="container">
     <div class="gate-card card">
@@ -71,36 +72,53 @@
       <nav class="breadcrumbs"><a href="../curriculum.html">תוכנית הלימודים</a><span>/</span><span>שלב 5: מערכות</span></nav>
       <div class="lesson-tags"><span class="tag tag-solid">שיעור 13 מתוך 22</span><span class="tag tag-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 7 דק׳ קריאה</span></div>
       <h1 style="margin-top:16px">API וחיבור בין מערכות — מאפס</h1>
-      <p class="hero-intro">להבין מה קורה כשמערכת אחת ״מדברת״ עם אחרת — ולחבר בלי להיבהל.</p>
+      <p class="hero-intro">להבין מה קורה כשמערכת אחת ״מדברת״ עם אחרת — ולחבר בלי מתכנת ובלי להיבהל.</p>
     </div>
   </div>
 </section>
 <section class="section lesson-section">
   <div class="container lesson-layout">
     <div class="lesson-main">
+      <section class="story card">
+        <div class="story-who"><span class="story-avatar" aria-hidden="true">א</span><div><b>הסיפור של אהרן</b><small>מנהל מכללה ללימודי תעודה</small></div></div>
+        <h2>האקסל של יום ראשון</h2>
+        <p>כל בוקר, יועצת הלימודים של אהרן הורידה קובץ אקסל מפייסבוק, העתיקה את הלידים לקובץ אחר, ורק אז התחילה להתקשר.</p>
+<p>ביום עמוס, ליד מחכה <b>14 שעות</b> עד שמישהו בכלל רואה אותו.</p>
+<p>אהרן שאל את איש המחשבים: ״אפשר לחבר את זה אוטומטית?״</p>
+<p>התשובה: ״בטח, עם API וובהוק.״</p>
+<p>אהרן הנהן — ולא הבין מילה.</p>
+      </section>
       <div class="l-top">
-        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks"><li>להבין API, Webhook ו-JSON במילים פשוטות</li><li>למפות את זרימת הליד בין המערכות שלכם</li><li>לבנות חיבור ראשון בכלי ללא קוד</li></ul></div>
-        <div class="core"><span>השורה התחתונה</span><p>API הוא מלצר: אתם מבקשים, הוא מביא מהמטבח. Webhook הוא פעמון: המטבח מצלצל לכם כשהמנה מוכנה.</p></div>
+        <div class="outcomes card"><h3>בשיעור הזה תלמדו</h3><ul class="checks"><li>API, Webhook ו-JSON — במילים של בני אדם</li><li>איך לצייר מפה של הדרך שליד עובר</li><li>לחבר בלי לכתוב קוד</li></ul></div>
+        <div class="core"><span>אם תזכרו רק דבר אחד</span><p>API הוא מלצר: אתם מבקשים, הוא מביא מהמטבח. Webhook הוא פעמון: המטבח מצלצל לכם כשהמנה מוכנה.</p></div>
       </div>
       <article class="lesson-body card">
-<section class="l-sec"><h2>שלושה מושגים</h2><ul><li><b>API</b> — דלת מסודרת שדרכה מערכת אחת מבקשת או שולחת מידע למערכת אחרת. (״תביא לי את כל הלידים מהיום״)</li><li><b>Webhook</b> — הודעה אוטומטית שנשלחת <b>כשמשהו קורה</b>. (״נכנס ליד חדש!״)</li><li><b>JSON</b> — הפורמט שבו המידע נשלח. פשוט רשימה של שדה וערך:</li></ul>
-<div class="formula" dir="auto">{ "name": "דנה", "phone": "0501234567", "utm_source": "facebook" }</div>
-<p>זהו. כל השאר הוא פרטים.</p></section>
-<section class="l-sec"><h2>מפת הזרימה של ליד</h2><p>לפני שמחברים — מציירים. לכל ליד:</p>
-<ul><li><b>מקור</b>: טופס באתר / טופס מיידי בפייסבוק / וואטסאפ / טלפון.</li><li><b>יעד</b>: CRM, גיליון, מייל, וואטסאפ לאיש המכירות.</li><li><b>שדות</b>: שם, טלפון, מייל, UTM, שם הקמפיין, תאריך.</li><li><b>מה קורה בכישלון</b>: מי מקבל התראה אם החיבור נשבר?</li></ul></section>
-<section class="l-sec"><h2>לחבר בלי מתכנת</h2><p>כלים ללא קוד כמו <b>Make</b>, <b>Zapier</b> או <b>n8n</b> בנויים כך:</p>
-<ul><li><b>טריגר</b> (Webhook / ״ליד חדש בפייסבוק״) ←</li><li><b>פעולות</b> (הוסף ל-CRM, שלח הודעה, עדכן גיליון).</li></ul>
-<p>רוב מערכות ה-CRM ובוני האתרים כבר מציעים חיבור מוכן ל-Meta Lead Ads ולטפסים. התחילו ממה שמוכן.</p>
-<div class="tip"><b>טיפ</b>נקודת התורפה: חיבורים נשברים בשקט (טוקן שפג, שדה ששונה). קבעו בדיקה שבועית או התראה על כישלון.</div></section>
-        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>לידים מפייסבוק שהלכו לאיבוד</h2><p>עסק הוריד לידים מטפסים מיידיים פעם ביום, ידנית, לקובץ אקסל. ליד חיכה בממוצע 14 שעות. אחרי חיבור דרך Make: ליד נכנס ל-CRM ונשלח לאיש המכירות בוואטסאפ תוך פחות מדקה. אחוז היצירת קשר עלה מ-45% ל-80%.</p></section>
+<section class="l-sec"><h2>שלוש מילים מפחידות, שלושה רעיונות פשוטים</h2><div class="term-box"><span>רגע, מה זה <b dir="auto">API</b>?</span><p>דלת מסודרת שדרכה מערכת אחת מבקשת או שולחת מידע למערכת אחרת. ״תביא לי את כל הלידים מהיום.״</p></div>
+<div class="term-box"><span>רגע, מה זה <b dir="auto">Webhook</b>?</span><p>הודעה אוטומטית שנשלחת <b>ברגע שמשהו קורה.</b> ״נכנס ליד חדש!״</p></div>
+<div class="term-box"><span>רגע, מה זה <b dir="auto">JSON</b>?</span><p>השפה שבה המידע נשלח. פשוט רשימה של ״שדה: ערך״.</p></div>
+<div class="formula" dir="auto">{ "name": "דנה", "phone": "0501234567", "course": "הנהלת חשבונות" }</div>
+<div class="analogy"><span>תחשבו על זה ככה</span><p>במסעדה: אתם (מערכת אחת) מזמינים מהמלצר (API). כשהמנה מוכנה, הטבח מצלצל בפעמון (Webhook). והתפריט כתוב בשפה שכולם מבינים (JSON).</p></div>
+<p>זהו. כל השאר זה פרטים.</p></section>
+<section class="l-sec"><h2>קודם מציירים, אחר כך מחברים</h2><p>לפני שמחברים — מציירים את המסלול של ליד:</p>
+<ul><li><b>מאיפה הוא מגיע?</b> טופס באתר, טופס בפייסבוק, וואטסאפ, טלפון.</li><li><b>לאן הוא צריך להגיע?</b> CRM, גיליון, הודעה ליועצת.</li><li><b>אילו פרטים עוברים?</b> שם, טלפון, קורס, המדבקה (UTM), תאריך.</li><li><b>מה קורה אם החיבור נשבר?</b> מי מקבל התראה?</li></ul></section>
+<section class="l-sec"><h2>לחבר בלי מתכנת</h2><p>יש כלים שבנויים בדיוק לזה: <b>Make, Zapier, n8n.</b> כולם עובדים באותה צורה:</p>
+<ul><li><b>מתי?</b> (״נכנס ליד חדש בפייסבוק״)</li><li><b>מה לעשות?</b> (״הוסף ל-CRM, שלח וואטסאפ ליועצת״)</li></ul>
+<div class="analogy"><span>תחשבו על זה ככה</span><p>זה כמו מתכון: ״כש-X קורה, תעשה Y ואז Z.״</p></div>
+<p>רוב מערכות ה-CRM כבר מציעות חיבור מוכן לפייסבוק. <b>מתחילים ממה שכבר קיים.</b></p>
+<div class="tip"><b>טיפ</b>הסכנה: חיבורים נשברים בשקט. קובעים התראה כשמשהו נכשל, ובודקים פעם בשבוע.</div></section>
+        <section class="l-sec example"><span class="tag tag-teal">מה אהרן עשה</span><h2>דקה במקום 14 שעות</h2><p>אהרן ואיש המחשבים חיברו בעזרת Make:</p>
+<p><b>ליד חדש בפייסבוק ← נכנס ל-CRM עם כל הפרטים ← הודעת וואטסאפ ליועצת: ״ליד חדש: דנה, הנהלת חשבונות, 050...״</b></p>
+<p>עכשיו ליד מגיע ליועצת <b>תוך פחות מדקה.</b></p>
+<p>אחרי חודש: היועצת מצליחה לדבר עם 80% מהלידים, במקום 45%. אותם לידים, אותו תקציב. רק מהר יותר.</p></section>
         <section class="l-sec"><h2>פראייר מול מקצוען</h2>
-          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>מורידים לידים ידנית פעם ביום</td><td>חיבור אוטומטי בזמן אמת</td></tr><tr><td>מחברים בלי מפה</td><td>קודם מציירים מקור ← יעד ← שדות</td></tr><tr><td>אף אחד לא יודע כשהחיבור נשבר</td><td>התראה על כישלון + בדיקה שבועית</td></tr></tbody></table></div>
+          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>מורידים לידים ידנית פעם ביום</td><td>חיבור אוטומטי, תוך דקה</td></tr><tr><td>מחברים בלי לצייר קודם</td><td>מציירים: מאיפה ← לאן ← אילו פרטים</td></tr><tr><td>אף אחד לא יודע כשהחיבור נשבר</td><td>התראה + בדיקה שבועית</td></tr></tbody></table></div>
         </section>
       </article>
-      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>ציירו את מפת הזרימה של הליד בעסק שלכם</span></label></li><li><label class="task"><input type="checkbox"><span>רשמו אילו שדות חייבים לעבור (כולל UTM)</span></label></li><li><label class="task"><input type="checkbox"><span>בנו חיבור אחד: טופס ← CRM או גיליון, ובדקו עם ליד בדיקה</span></label></li></ol></section>
+      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>ציירו על דף את המסלול של ליד בעסק שלכם</span></label></li><li><label class="task"><input type="checkbox"><span>רשמו אילו פרטים חייבים לעבור (כולל המדבקה)</span></label></li><li><label class="task"><input type="checkbox"><span>בדקו אם ה-CRM שלכם מציע חיבור מוכן לפייסבוק</span></label></li></ol></section>
       
-      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה ההבדל בין API ל-Webhook?</p><div class="quiz-opts"><button type="button" class="quiz-opt">אין הבדל</button><button type="button" class="quiz-opt">ב-API מבקשים מידע; Webhook שולח מידע אוטומטית כשמשהו קורה</button><button type="button" class="quiz-opt">Webhook עובד רק בפייסבוק</button></div><p class="quiz-why" hidden>מלצר מול פעמון.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> מה זה JSON?</p><div class="quiz-opts"><button type="button" class="quiz-opt">שפת תכנות</button><button type="button" class="quiz-opt">פורמט פשוט של שדה וערך להעברת מידע</button><button type="button" class="quiz-opt">סוג של CRM</button></div><p class="quiz-why" hidden>רשימה מסודרת של שדות וערכים.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> מה הסיכון הכי נפוץ בחיבורים?</p><div class="quiz-opts"><button type="button" class="quiz-opt">שהם יקרים</button><button type="button" class="quiz-opt">שהם נשברים בשקט ואף אחד לא יודע</button><button type="button" class="quiz-opt">שהם איטיים מדי</button></div><p class="quiz-why" hidden>לכן מגדירים התראה על כישלון.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
+      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה ההבדל בין API ל-Webhook?</p><div class="quiz-opts"><button type="button" class="quiz-opt">אין הבדל</button><button type="button" class="quiz-opt">ב-API מבקשים מידע; Webhook מודיע לבד כשמשהו קורה</button><button type="button" class="quiz-opt">Webhook עובד רק בפייסבוק</button></div><p class="quiz-why" hidden>מלצר מול פעמון.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> מה זה JSON?</p><div class="quiz-opts"><button type="button" class="quiz-opt">שפת תכנות</button><button type="button" class="quiz-opt">פורמט פשוט של שדה וערך</button><button type="button" class="quiz-opt">סוג של CRM</button></div><p class="quiz-why" hidden>רשימה מסודרת של פרטים.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> מה הסכנה הכי נפוצה בחיבורים?</p><div class="quiz-opts"><button type="button" class="quiz-opt">שהם יקרים</button><button type="button" class="quiz-opt">שהם נשברים בשקט ואף אחד לא יודע</button><button type="button" class="quiz-opt">שהם איטיים</button></div><p class="quiz-why" hidden>לכן קובעים התראה.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
       <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
+      <a class="next-teaser" href="lesson-14.html"><span>בשיעור הבא · 14</span><b>אוטומציות ורובוטים</b><p>הליד מגיע ליועצת תוך דקה. אבל מה אם היא בשיעור, או בשיחה אחרת? בשיעור הבא: מערכת שעונה בשבילכם — ונשמעת כמו בן אדם.</p><i aria-hidden="true">←</i></a>
       <div class="lesson-nav"><a class="btn btn-primary" href="lesson-14.html"><span>השיעור הבא</span>14. אוטומציות ורובוטים</a><a class="btn btn-outline" href="lesson-12.html"><span>השיעור הקודם</span>12. Google Analytics — מה קורה אחרי הקליק</a></div>
     </div>
     <aside class="side card">

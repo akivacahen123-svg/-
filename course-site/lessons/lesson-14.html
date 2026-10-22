@@ -42,6 +42,7 @@
 </header>
 
 <main id="main" data-current-lesson="14">
+<div class="read-progress" aria-hidden="true"><i></i></div>
 <section class="gate section" aria-labelledby="gate-title">
   <div class="container">
     <div class="gate-card card">
@@ -71,32 +72,45 @@
       <nav class="breadcrumbs"><a href="../curriculum.html">תוכנית הלימודים</a><span>/</span><span>שלב 5: מערכות</span></nav>
       <div class="lesson-tags"><span class="tag tag-solid">שיעור 14 מתוך 22</span><span class="tag tag-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 7 דק׳ קריאה</span></div>
       <h1 style="margin-top:16px">אוטומציות ורובוטים</h1>
-      <p class="hero-intro">לבנות מסלול שבו כל ליד מטופל מהר, באותה איכות — גם כשאתם עסוקים.</p>
+      <p class="hero-intro">לבנות מסלול שבו כל ליד מקבל תגובה מהירה ואיכותית — גם כשאין אף אחד פנוי.</p>
     </div>
   </div>
 </section>
 <section class="section lesson-section">
   <div class="container lesson-layout">
     <div class="lesson-main">
+      <section class="story card">
+        <div class="story-who"><span class="story-avatar" aria-hidden="true">א</span><div><b>הסיפור של אהרן</b><small>מנהל מכללה ללימודי תעודה</small></div></div>
+        <h2>21:40, יום שלישי</h2>
+        <p>דנה, 32, עובדת בקופה בסופרמרקט. אחרי שהילדים נרדמו היא גוללת בפייסבוק, רואה את הסרטון של הבוגרת, ומשאירה פרטים.</p>
+<p><b>21:40.</b> המכללה סגורה.</p>
+<p>עד שהיועצת מתקשרת למחרת ב-11:00, דנה כבר השאירה פרטים בעוד שתי מכללות. אחת מהן שלחה לה הודעה עוד באותו ערב.</p>
+<p><b>תנחשו לאיזו מכללה היא הלכה.</b></p>
+      </section>
       <div class="l-top">
-        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks"><li>לתכנן רצף אוטומטי מליד ועד פגישה</li><li>לכתוב הודעות אוטומטיות שלא נשמעות כמו רובוט</li><li>לדעת מה לאטמט ומה להשאיר לבן אדם</li></ul></div>
-        <div class="core"><span>השורה התחתונה</span><p>מהירות התגובה היא אחד הגורמים הכי חזקים בסגירת ליד. אוטומציה לא מחליפה את השיחה — היא מוודאת שהשיחה קורית בזמן.</p></div>
+        <div class="outcomes card"><h3>בשיעור הזה תלמדו</h3><ul class="checks"><li>מסלול אוטומטי בסיסי שכל עסק צריך</li><li>איך לכתוב הודעה אוטומטית שלא נשמעת כמו רובוט</li><li>מה כן לאטמט — ומה אסור</li></ul></div>
+        <div class="core"><span>אם תזכרו רק דבר אחד</span><p>מי שעונה ראשון — לרוב מנצח. אוטומציה לא מחליפה את השיחה. היא מוודאת שהשיחה קורית בזמן.</p></div>
       </div>
       <article class="lesson-body card">
-<section class="l-sec"><h2>רצף בסיסי שכל עסק צריך</h2><div class="table-wrap"><table class="data"><thead><tr><th>זמן</th><th>מה קורה</th><th>ערוץ</th></tr></thead><tbody><tr><td>מיידי</td><td>הודעת ״קיבלנו, נחזור תוך X״</td><td>וואטסאפ / SMS</td></tr><tr><td>מיידי</td><td>משימה לאיש המכירות + התראה</td><td>CRM</td></tr><tr><td>אחרי 30 דקות בלי מענה</td><td>תזכורת למנהל</td><td>התראה</td></tr><tr><td>יום 1 בלי מענה</td><td>ניסיון שני + הודעה עם ערך (מדריך, סרטון)</td><td>וואטסאפ</td></tr><tr><td>יום 3</td><td>ניסיון שלישי, ואז סטטוס ״לא זמין״</td><td>CRM</td></tr><tr><td>אחרי פגישה</td><td>סיכום + הצעה + תזכורת</td><td>מייל / וואטסאפ</td></tr></tbody></table></div></section>
-<section class="l-sec"><h2>הודעה אוטומטית שנשמעת אנושית</h2><ul><li>שם פרטי + מי כותב: ״היי דנה, כאן עקיבא מ...״</li><li>מה יקרה ומתי: ״אחזור אלייך היום עד 17:00״.</li><li>דבר אחד שימושי: קישור, תשובה לשאלה נפוצה.</li><li>בלי סימני קריאה מיותרים ובלי ״לקוח יקר״.</li></ul>
-<div class="tip"><b>טיפ</b>בוואטסאפ עסקי, הודעות יזומות דורשות תבנית מאושרת ואישור של הלקוח לקבל הודעות. בדקו את הכללים לפני שבונים.</div></section>
-<section class="l-sec"><h2>מה לא לאטמט</h2><ul><li>שיחת מכירה עצמה.</li><li>תשובה לשאלה מורכבת או לתלונה.</li><li>כל דבר שבו טעות תביך (מחירים מותאמים, הבטחות).</li></ul>
-<p>אוטומציה מעולה ל: אישור, תזכורת, ניתוב, תיעוד, והחזרת מידע למערכות.</p></section>
-        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>קליניקה</h2><p>לפני: ליד נכנס למייל, המזכירה ראתה אותו מחר בבוקר. אחרי: ליד ← CRM ← וואטסאפ ללקוח עם קישור לתיאום תור ← משימה למזכירה. 40% מהלידים קובעים תור לבד דרך הקישור, עוד לפני שיחה.</p></section>
+<section class="l-sec"><h2>המסלול הבסיסי</h2><div class="term-box"><span>רגע, מה זה <b dir="auto">אוטומציה</b>?</span><p>פעולה שקורית לבד, בלי שמישהו לוחץ. ״כשנכנס ליד ← שלח לו הודעה.״</p></div>
+<div class="table-wrap"><table class="data"><thead><tr><th>מתי</th><th>מה קורה</th></tr></thead><tbody><tr><td>מיד</td><td>הודעה לליד: ״קיבלנו, נחזור אליך עד...״</td></tr><tr><td>מיד</td><td>משימה + התראה ליועצת</td></tr><tr><td>אחרי 30 דקות בלי מענה</td><td>תזכורת למנהל</td></tr><tr><td>למחרת</td><td>ניסיון שני + משהו שימושי (סרטון, מדריך)</td></tr><tr><td>יום 3</td><td>ניסיון אחרון, ואז ״לא זמין״</td></tr><tr><td>אחרי שיחה</td><td>סיכום + פרטי ההרשמה + תזכורת ליום הפתוח</td></tr></tbody></table></div></section>
+<section class="l-sec"><h2>הודעה שנשמעת אנושית</h2><ul><li><b>שם פרטי + מי כותב:</b> ״היי דנה, כאן אהרן מהמכללה.״</li><li><b>מה יקרה ומתי:</b> ״יועצת לימודים תתקשר אלייך מחר עד 12:00.״</li><li><b>משהו אחד שימושי:</b> ״בינתיים, הנה סרטון קצר על הקורס.״</li><li><b>בלי</b> ״לקוח יקר״ ובלי עשרה סימני קריאה.</li></ul>
+<div class="tip"><b>טיפ</b>וואטסאפ עסקי: הודעות שאתם יוזמים דורשות תבנית מאושרת והסכמה של הלקוח. <b>בודקים את הכללים לפני שבונים.</b></div></section>
+<section class="l-sec"><h2>מה לא לאטמט</h2><ul><li>את שיחת הייעוץ עצמה.</li><li>תשובה לשאלה מורכבת או לתלונה.</li><li>כל דבר שבו טעות תביך: מלגות, הנחות אישיות, הבטחות.</li></ul>
+<div class="analogy"><span>תחשבו על זה ככה</span><p>אוטומציה היא כמו פקיד קבלה מעולה: מקבל את הפנים, רושם, מתאם, מזכיר. אבל את ההחלטה — מקבל בן אדם.</p></div></section>
+        <section class="l-sec example"><span class="tag tag-teal">מה אהרן עשה</span><h2>21:41</h2><p>אהרן בנה מסלול פשוט:</p>
+<p><b>ליד נכנס ← תוך דקה, וואטסאפ: ״היי דנה, כאן אהרן מהמכללה 🙂 קיבלנו את הפרטים. יועצת לימודים תתקשר מחר בבוקר. בינתיים — הנה קישור לקביעת שיחה בזמן שנוח לך, וסרטון של 2 דקות על הקורס.״</b></p>
+<p>עכשיו כשדנה משאירה פרטים ב-21:40, היא מקבלת הודעה ב-21:41.</p>
+<p><b>30% מהלידים קובעים שיחה בעצמם</b>, עוד לפני שמישהו התקשר.</p></section>
         <section class="l-sec"><h2>פראייר מול מקצוען</h2>
-          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>הודעה רובוטית ארוכה</td><td>קצרה, אישית, עם צעד הבא ברור</td></tr><tr><td>מאטמטים את המכירה עצמה</td><td>מאטמטים את מה שמסביב לשיחה</td></tr><tr><td>שולחים בלי הסכמה</td><td>מקבלים הסכמה ושומרים על כללי הפלטפורמות</td></tr></tbody></table></div>
+          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>הודעה רובוטית וארוכה</td><td>קצרה, אישית, עם צעד הבא ברור</td></tr><tr><td>מאטמטים את השיחה עצמה</td><td>מאטמטים את כל מה שמסביב לשיחה</td></tr><tr><td>שולחים בלי הסכמה</td><td>מקבלים הסכמה, ושומרים על הכללים</td></tr></tbody></table></div>
         </section>
       </article>
-      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>כתבו את הרצף שלכם בטבלה: זמן ← מה קורה ← ערוץ</span></label></li><li><label class="task"><input type="checkbox"><span>כתבו הודעת ״קיבלנו״ אישית של עד 3 שורות</span></label></li><li><label class="task"><input type="checkbox"><span>הגדירו התראה למנהל כשליד לא טופל תוך 30 דקות</span></label></li></ol></section>
+      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>כתבו את המסלול שלכם: מתי ← מה קורה</span></label></li><li><label class="task"><input type="checkbox"><span>כתבו הודעת ״קיבלנו״ של עד 3 שורות</span></label></li><li><label class="task"><input type="checkbox"><span>הגדירו התראה למנהל כשליד לא טופל תוך 30 דקות</span></label></li></ol></section>
       
-      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה הכי חשוב לאטמט קודם?</p><div class="quiz-opts"><button type="button" class="quiz-opt">את שיחת המכירה</button><button type="button" class="quiz-opt">את התגובה המיידית והניתוב לאיש המכירות</button><button type="button" class="quiz-opt">את הדוח השנתי</button></div><p class="quiz-why" hidden>המהירות היא המנוף הכי גדול.</p></div><div class="quiz-q" data-answer="2"><p class="q"><b>2.</b> מה מהבאים לא כדאי לאטמט?</p><div class="quiz-opts"><button type="button" class="quiz-opt">אישור קבלת ליד</button><button type="button" class="quiz-opt">תזכורת לפגישה</button><button type="button" class="quiz-opt">מתן מחיר מותאם לעסקה מורכבת</button></div><p class="quiz-why" hidden>טעות שם עולה ביוקר.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> מה צריך לפני שליחת הודעות יזומות בוואטסאפ עסקי?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כלום</button><button type="button" class="quiz-opt">תבנית מאושרת ואישור של הלקוח</button><button type="button" class="quiz-opt">רק מספר טלפון</button></div><p class="quiz-why" hidden>יש כללים — ומי שלא עומד בהם נחסם.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
+      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה הכי חשוב לאטמט קודם?</p><div class="quiz-opts"><button type="button" class="quiz-opt">את שיחת הייעוץ</button><button type="button" class="quiz-opt">את התגובה המיידית וההתראה ליועצת</button><button type="button" class="quiz-opt">את הדוח השנתי</button></div><p class="quiz-why" hidden>המהירות היא המנוף הכי גדול.</p></div><div class="quiz-q" data-answer="2"><p class="q"><b>2.</b> מה לא כדאי לאטמט?</p><div class="quiz-opts"><button type="button" class="quiz-opt">אישור שהפרטים התקבלו</button><button type="button" class="quiz-opt">תזכורת ליום פתוח</button><button type="button" class="quiz-opt">הנחה אישית לסטודנט</button></div><p class="quiz-why" hidden>טעות שם עולה ביוקר.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> מה צריך לפני ששולחים הודעות יזומות בוואטסאפ עסקי?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כלום</button><button type="button" class="quiz-opt">תבנית מאושרת והסכמה של הלקוח</button><button type="button" class="quiz-opt">רק מספר טלפון</button></div><p class="quiz-why" hidden>יש כללים — ומי שלא עומד בהם נחסם.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
       <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
+      <a class="next-teaser" href="lesson-15.html"><span>בשיעור הבא · 15</span><b>CRM ואיכות לידים</b><p>הלידים מטופלים מהר. אבל עכשיו אהרן רוצה לדעת: איזה קמפיין מביא אנשים שבאמת נרשמים?</p><i aria-hidden="true">←</i></a>
       <div class="lesson-nav"><a class="btn btn-primary" href="lesson-15.html"><span>השיעור הבא</span>15. CRM ואיכות לידים</a><a class="btn btn-outline" href="lesson-13.html"><span>השיעור הקודם</span>13. API וחיבור בין מערכות — מאפס</a></div>
     </div>
     <aside class="side card">

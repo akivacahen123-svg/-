@@ -42,6 +42,7 @@
 </header>
 
 <main id="main" data-current-lesson="11">
+<div class="read-progress" aria-hidden="true"><i></i></div>
 <section class="gate section" aria-labelledby="gate-title">
   <div class="container">
     <div class="gate-card card">
@@ -71,32 +72,47 @@
       <nav class="breadcrumbs"><a href="../curriculum.html">תוכנית הלימודים</a><span>/</span><span>שלב 4: מדידה</span></nav>
       <div class="lesson-tags"><span class="tag tag-solid">שיעור 11 מתוך 22</span><span class="tag tag-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 6 דק׳ קריאה</span></div>
       <h1 style="margin-top:16px">UTM ותיוגים נכונים</h1>
-      <p class="hero-intro">שכל כניסה לאתר תגיע עם ״תעודת זהות״: מאיפה, מאיזה קמפיין ומאיזו מודעה.</p>
+      <p class="hero-intro">שכל אדם שנכנס לאתר יגיע עם ״מדבקה״ — מאיפה הוא בא, מאיזה קמפיין ומאיזו מודעה.</p>
     </div>
   </div>
 </section>
 <section class="section lesson-section">
   <div class="container lesson-layout">
     <div class="lesson-main">
+      <section class="story card">
+        <div class="story-who"><span class="story-avatar" aria-hidden="true">א</span><div><b>הסיפור של אהרן</b><small>מנהל מכללה ללימודי תעודה</small></div></div>
+        <h2>מאיפה הם באו?</h2>
+        <p>אהרן הסתכל בנתוני האתר. 40% מהכניסות הוגדרו כ: <b>״ישיר״.</b></p>
+<p>״ישיר״? אנשים פשוט הקלידו את כתובת המכללה מהזיכרון? לא סביר.</p>
+<p>הוא שלח השבוע ניוזלטר לבוגרים, פרסם בפייסבוק ובגוגל, ושם קישור בקבוצת וואטסאפ. אבל באתר הכול התערבב.</p>
+<p><b>בלי לדעת מאיפה אנשים באו — אי אפשר לדעת מה עובד.</b></p>
+      </section>
       <div class="l-top">
-        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks"><li>להבין את 5 הפרמטרים של UTM</li><li>לבנות שיטת תיוג אחידה לכל העסק</li><li>לבדוק שהתיוג באמת מגיע ל-Analytics ול-CRM</li></ul></div>
-        <div class="core"><span>השורה התחתונה</span><p>בלי UTM, חצי מהתנועה מופיעה כ״ישירה״ או ״לא ידוע״ — ואי אפשר לדעת מה הביא כסף.</p></div>
+        <div class="outcomes card"><h3>בשיעור הזה תלמדו</h3><ul class="checks"><li>מה זה UTM — במילים פשוטות</li><li>שיטה אחידה שכל העסק עובד לפיה</li><li>איך לבדוק שזה באמת עובד</li></ul></div>
+        <div class="core"><span>אם תזכרו רק דבר אחד</span><p>בלי תיוג, חצי מהאנשים מופיעים כ״ישיר״ או ״לא ידוע״ — ואי אפשר לדעת מה הביא כסף.</p></div>
       </div>
       <article class="lesson-body card">
-<section class="l-sec"><h2>5 הפרמטרים</h2><div class="table-wrap"><table class="data"><thead><tr><th>פרמטר</th><th>שואל</th><th>דוגמה</th></tr></thead><tbody><tr><td>utm_source</td><td>מאיפה?</td><td>facebook / google / newsletter</td></tr><tr><td>utm_medium</td><td>באיזה סוג ערוץ?</td><td>paid_social / cpc / email</td></tr><tr><td>utm_campaign</td><td>איזה קמפיין?</td><td>spring_sale_2026</td></tr><tr><td>utm_content</td><td>איזו מודעה?</td><td>video_testimonial_a</td></tr><tr><td>utm_term</td><td>איזו מילת מפתח?</td><td>(בעיקר בחיפוש)</td></tr></tbody></table></div>
-<div class="formula" dir="auto">https://site.co.il/offer?utm_source=facebook&amp;utm_medium=paid_social&amp;utm_campaign=spring_sale&amp;utm_content=video_a</div></section>
-<section class="l-sec"><h2>שיטה אחידה — חוקים</h2><ul><li><b>אותיות קטנות בלבד</b> (Facebook ו-facebook נספרים כשני מקורות).</li><li><b>בלי רווחים</b> — מקף תחתון או מקף.</li><li><b>באנגלית</b> — עברית ב-URL נשברת בחלק מהמערכות.</li><li>טבלה אחת משותפת עם כל הערכים המותרים. כולם משתמשים בה.</li><li>ב-Meta אפשר להשתמש בפרמטרים דינמיים כמו {{campaign.name}} ו-{{ad.name}} — חוסך עבודה ושגיאות.</li><li>בגוגל: תיוג אוטומטי (gclid) מחובר ל-Analytics, ו-UTM למקרים שצריך.</li></ul></section>
-<section class="l-sec"><h2>לוודא שזה עובד</h2><ul><li>לחצו על המודעה בתצוגה מקדימה ובדקו שה-UTM מופיע בשורת הכתובת.</li><li>ב-Analytics, בדוח ״בזמן אמת״, בדקו שהכניסה מופיעה עם המקור הנכון.</li><li>ודאו שהטופס <b>שומר את ה-UTM</b> ושולח אותו ל-CRM (בשדות נסתרים) — כך יודעים מאיזו מודעה הגיע כל לקוח משלם.</li></ul>
-<div class="tip"><b>טיפ</b>הפניות (redirect) באתר לפעמים ״מוחקות״ את ה-UTM. בדקו את הכתובת הסופית.</div></section>
-        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>ניוזלטר שנעלם</h2><p>חנות שלחה ניוזלטר עם קישורים בלי UTM. ב-Analytics המכירות הופיעו כ״ישיר״, והמסקנה הייתה ״הניוזלטר לא מוכר״. אחרי תיוג: הניוזלטר מביא 18% מהמכירות.</p></section>
+<section class="l-sec"><h2>UTM = מדבקה על הקישור</h2><div class="term-box"><span>רגע, מה זה <b dir="auto">UTM</b>?</span><p>תוספת קטנה בסוף הקישור, שמספרת לאתר מאיפה הגיע האדם.</p></div>
+<div class="analogy"><span>תחשבו על זה ככה</span><p>תחשבו על חבילות בדואר. בלי מדבקה עם כתובת השולח — אין לכם מושג מי שלח. UTM היא המדבקה.</p></div>
+<div class="table-wrap"><table class="data"><thead><tr><th>חלק</th><th>השאלה</th><th>דוגמה</th></tr></thead><tbody><tr><td>source</td><td>מאיפה?</td><td>facebook</td></tr><tr><td>medium</td><td>איזה סוג ערוץ?</td><td>paid_social</td></tr><tr><td>campaign</td><td>איזה קמפיין?</td><td>accounting_oct</td></tr><tr><td>content</td><td>איזו מודעה?</td><td>video_graduate</td></tr></tbody></table></div>
+<div class="formula" dir="auto">site.co.il/accounting?utm_source=facebook&amp;utm_medium=paid_social&amp;utm_campaign=accounting_oct&amp;utm_content=video_graduate</div>
+<p>נראה מסובך? בערכת הכלים יש מחולל שבונה את זה בשבילכם.</p></section>
+<section class="l-sec"><h2>חוקים פשוטים</h2><ul><li><b>אותיות קטנות בלבד.</b> Facebook ו-facebook נספרים כשני מקורות שונים.</li><li><b>בלי רווחים</b> — מקף תחתון במקום.</li><li><b>באנגלית בלבד.</b></li><li><b>טבלה אחת</b> עם כל הערכים, וכולם משתמשים רק בה.</li><li>בפייסבוק אפשר שהקמפיין ימלא את השם לבד. בגוגל יש תיוג אוטומטי.</li></ul></section>
+<section class="l-sec"><h2>לוודא שזה עובד</h2><ul><li>לוחצים על המודעה בעצמכם, ובודקים שהתוספת מופיעה בכתובת.</li><li>בודקים ב-Google Analytics שהכניסה מופיעה עם המקור הנכון.</li><li><b>הכי חשוב:</b> מוודאים שהטופס באתר <b>שומר את התוספת</b> ושולח אותה ל-CRM. ככה יודעים מאיזו מודעה הגיע כל נרשם.</li></ul>
+<div class="tip"><b>טיפ</b>לפעמים האתר ״מעביר״ את האדם לכתובת אחרת, ובדרך המדבקה נופלת. בודקים את הכתובת הסופית.</div></section>
+        <section class="l-sec example"><span class="tag tag-teal">מה אהרן עשה</span><h2>הניוזלטר שהתגלה</h2><p>אהרן תייג כל קישור. ניוזלטר, פייסבוק, גוגל, וואטסאפ — לכל אחד מדבקה משלו.</p>
+<p>אחרי חודש, ה״ישיר״ ירד מ-40% ל-8%.</p>
+<p>ואז הגיעה הפתעה: <b>הניוזלטר לבוגרים — זה שאהרן כמעט הפסיק לשלוח — הביא 18% מהנרשמים.</b> בוגרים שנרשמו לקורס המשך, או שהעבירו את הקישור לחבר.</p>
+<p>בלי המדבקות, הוא היה מבטל את הדבר שעבד.</p></section>
         <section class="l-sec"><h2>פראייר מול מקצוען</h2>
-          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>כל אחד מתייג איך שבא לו</td><td>טבלה אחת עם ערכים קבועים</td></tr><tr><td>Facebook, facebook, FB</td><td>facebook — תמיד, בדיוק כך</td></tr><tr><td>UTM נעצר באתר</td><td>שדות נסתרים בטופס שמעבירים אותו ל-CRM</td></tr></tbody></table></div>
+          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>כל אחד מתייג איך שבא לו</td><td>טבלה אחת עם ערכים קבועים</td></tr><tr><td>Facebook, facebook, FB</td><td>facebook — תמיד, בדיוק ככה</td></tr><tr><td>המדבקה נעצרת באתר</td><td>הטופס שומר אותה ושולח ל-CRM</td></tr></tbody></table></div>
         </section>
       </article>
-      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>קבעו ערכים קבועים ל-source ול-medium לכל ערוץ שלכם</span></label></li><li><label class="task"><input type="checkbox"><span>בנו קישורים עם מחולל ה-UTM בערכת הכלים</span></label></li><li><label class="task"><input type="checkbox"><span>שלחו ליד בדיקה ובדקו שה-UTM הגיע עד ה-CRM</span></label></li></ol></section>
+      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>קבעו ערכים קבועים לכל ערוץ שלכם</span></label></li><li><label class="task"><input type="checkbox"><span>בנו קישורים במחולל ה-UTM בערכת הכלים</span></label></li><li><label class="task"><input type="checkbox"><span>שלחו ליד בדיקה ובדקו שהמדבקה הגיעה עד ה-CRM</span></label></li></ol></section>
       <a class="tool-link card" href="../tools/utm.html"><div class="icon icon-teal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg></div><div><span class="tag tag-teal">כלי עבודה לשיעור</span><h3>מחולל UTM</h3><p>קישורים מתויגים נכון, בלי שגיאות, עם היסטוריה.</p></div></a>
-      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> איזה פרמטר מזהה את המודעה הספציפית?</p><div class="quiz-opts"><button type="button" class="quiz-opt">utm_source</button><button type="button" class="quiz-opt">utm_content</button><button type="button" class="quiz-opt">utm_medium</button></div><p class="quiz-why" hidden>content משמש להבדיל בין מודעות וגרסאות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> מה הבעיה עם utm_source=Facebook ו-utm_source=facebook?</p><div class="quiz-opts"><button type="button" class="quiz-opt">אין בעיה</button><button type="button" class="quiz-opt">נספרים כשני מקורות שונים</button><button type="button" class="quiz-opt">גוגל חוסם את זה</button></div><p class="quiz-why" hidden>הדוחות רגישים לאותיות גדולות וקטנות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> איך יודעים מאיזו מודעה הגיע לקוח משלם?</p><div class="quiz-opts"><button type="button" class="quiz-opt">מנחשים לפי התאריך</button><button type="button" class="quiz-opt">ה-UTM נשמר בטופס ונשלח ל-CRM</button><button type="button" class="quiz-opt">שואלים את פייסבוק</button></div><p class="quiz-why" hidden>שדות נסתרים בטופס סוגרים את המעגל.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
+      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> איזה חלק מזהה את המודעה הספציפית?</p><div class="quiz-opts"><button type="button" class="quiz-opt">source</button><button type="button" class="quiz-opt">content</button><button type="button" class="quiz-opt">medium</button></div><p class="quiz-why" hidden>content מבדיל בין מודעות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> מה הבעיה עם Facebook ו-facebook?</p><div class="quiz-opts"><button type="button" class="quiz-opt">אין בעיה</button><button type="button" class="quiz-opt">נספרים כשני מקורות שונים</button><button type="button" class="quiz-opt">גוגל חוסם את זה</button></div><p class="quiz-why" hidden>המערכות רגישות לאותיות גדולות וקטנות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> איך יודעים מאיזו מודעה הגיע נרשם?</p><div class="quiz-opts"><button type="button" class="quiz-opt">מנחשים לפי התאריך</button><button type="button" class="quiz-opt">הטופס שומר את המדבקה ושולח אותה ל-CRM</button><button type="button" class="quiz-opt">שואלים את פייסבוק</button></div><p class="quiz-why" hidden>המדבקה עוברת עם הליד עד הסוף.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
       <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
+      <a class="next-teaser" href="lesson-12.html"><span>בשיעור הבא · 12</span><b>Google Analytics — מה קורה אחרי הקליק</b><p>עכשיו אהרן יודע מאיפה אנשים באים. אבל מה הם עושים אחרי שהם נכנסים? ולמה פייסבוק אומר 120 לידים, כשבמערכת יש 64?</p><i aria-hidden="true">←</i></a>
       <div class="lesson-nav"><a class="btn btn-primary" href="lesson-12.html"><span>השיעור הבא</span>12. Google Analytics — מה קורה אחרי הקליק</a><a class="btn btn-outline" href="lesson-10.html"><span>השיעור הקודם</span>10. Google Ads מאפס</a></div>
     </div>
     <aside class="side card">

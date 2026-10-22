@@ -90,6 +90,17 @@
   }
   paintProgress();
 
+  // פס התקדמות קריאה בשיעור
+  var rp = document.querySelector('.read-progress i');
+  if (rp) {
+    var onScroll = function () {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      rp.style.width = (h > 0 ? Math.min(100, window.scrollY / h * 100) : 0) + '%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
   var lesson = document.querySelector('[data-current-lesson]');
   if (lesson) {
     var n = +lesson.getAttribute('data-current-lesson');

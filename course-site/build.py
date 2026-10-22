@@ -176,8 +176,8 @@ PAINS = [
 
 LESSON_FORMAT = [
     ("clock", "קצר וממוקד", f"כל שיעור {min(l['minutes'] for l in LESSONS)}–{max(l['minutes'] for l in LESSONS)} דקות קריאה, מטרה אחת."),
-    ("spark", "השורה התחתונה קודם", "העיקר מופיע בהתחלה — הפרטים אחריו."),
-    ("users", "דוגמה מהשטח", "מקרה אמיתי עם מספרים."),
+    ("spark", "שפה פשוטה", "דימויים מהחיים, והסבר קצר לכל מונח — בלי ז׳רגון."),
+    ("users", "סיפור שמלווה אתכם", "אהרן, מנהל מכללה, עובר את אותה דרך — שיעור אחרי שיעור."),
     ("alert", "פראייר מול מקצוען", "הטעויות הנפוצות — ומה עושים במקומן."),
     ("check", "משימה למחר בבוקר", "3 צעדים שמיישמים מיד בעסק."),
     ("question", "בדיקה עצמית", "3 שאלות עם הסבר, לוודא שזה נקלט."),
@@ -243,6 +243,13 @@ def md(text):
         elif line.startswith("! "):
             flush()
             out.append(f'<div class="tip"><b>טיפ</b>{inline(line[2:])}</div>')
+        elif line.startswith("> "):
+            flush()
+            out.append(f'<div class="analogy"><span>תחשבו על זה ככה</span><p>{inline(line[2:])}</p></div>')
+        elif line.startswith("? ") and "|" in line:
+            flush()
+            term, desc = (x.strip() for x in line[2:].split("|", 1))
+            out.append(f'<div class="term-box"><span>רגע, מה זה <b dir="auto">{inline(term)}</b>?</span><p>{inline(desc)}</p></div>')
         else:
             if ul or table:
                 flush()
@@ -748,7 +755,12 @@ def build_lessons():
 
         outcomes = "".join(f"<li>{inline(o)}</li>" for o in l["outcomes"])
         sections = "\n".join(f'<section class="l-sec"><h2>{inline(h)}</h2>{md(body)}</section>' for h, body in l["sections"])
-        ex_title, ex_body = l["example"]
+        st_title, st_body = l["story"]
+        end_title, end_body = l["story_end"]
+        teaser = ""
+        if next_l and l.get("next_hook"):
+            teaser = (f'<a class="next-teaser" href="{next_l["file"]}"><span>בשיעור הבא · {next_l["num"]}</span>'
+                      f'<b>{escape(next_l["title"])}</b><p>{inline(l["next_hook"])}</p><i aria-hidden="true">←</i></a>')
         mistakes = "".join(f'<tr><td>{inline(a)}</td><td>{inline(b)}</td></tr>' for a, b in l["mistakes"])
         tasks = "".join(f'<li><label class="task"><input type="checkbox"><span>{inline(t)}</span></label></li>' for t in l["tasks"])
         quiz = ""
@@ -767,6 +779,7 @@ def build_lessons():
         html += header("curriculum", prefix="../")
         html += f'''
 <main id="main" data-current-lesson="{l["n"]}">
+<div class="read-progress" aria-hidden="true"><i></i></div>
 {gate("../") if l["n"] > 1 else ""}
 <section class="hero page-hero">
   <div class="container hero-inner">
@@ -781,13 +794,18 @@ def build_lessons():
 <section class="section lesson-section">
   <div class="container lesson-layout">
     <div class="lesson-main">
+      <section class="story card">
+        <div class="story-who"><span class="story-avatar" aria-hidden="true">א</span><div><b>הסיפור של אהרן</b><small>מנהל מכללה ללימודי תעודה</small></div></div>
+        <h2>{inline(st_title)}</h2>
+        {md(st_body)}
+      </section>
       <div class="l-top">
-        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks">{outcomes}</ul></div>
-        <div class="core"><span>השורה התחתונה</span><p>{inline(l["core"])}</p></div>
+        <div class="outcomes card"><h3>בשיעור הזה תלמדו</h3><ul class="checks">{outcomes}</ul></div>
+        <div class="core"><span>אם תזכרו רק דבר אחד</span><p>{inline(l["core"])}</p></div>
       </div>
       <article class="lesson-body card">
 {sections}
-        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>{inline(ex_title)}</h2>{md(ex_body)}</section>
+        <section class="l-sec example"><span class="tag tag-teal">מה אהרן עשה</span><h2>{inline(end_title)}</h2>{md(end_body)}</section>
         <section class="l-sec"><h2>פראייר מול מקצוען</h2>
           <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody>{mistakes}</tbody></table></div>
         </section>
@@ -796,6 +814,7 @@ def build_lessons():
       {tool_box}
       <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2>{quiz}<p class="quiz-score" data-quiz-score hidden></p></section>
       <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
+      {teaser}
       <div class="lesson-nav">{nav}</div>
     </div>
     <aside class="side card">

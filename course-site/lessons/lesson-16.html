@@ -42,6 +42,7 @@
 </header>
 
 <main id="main" data-current-lesson="16">
+<div class="read-progress" aria-hidden="true"><i></i></div>
 <section class="gate section" aria-labelledby="gate-title">
   <div class="container">
     <div class="gate-card card">
@@ -71,30 +72,43 @@
       <nav class="breadcrumbs"><a href="../curriculum.html">תוכנית הלימודים</a><span>/</span><span>שלב 5: מערכות</span></nav>
       <div class="lesson-tags"><span class="tag tag-solid">שיעור 16 מתוך 22</span><span class="tag tag-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 6 דק׳ קריאה</span></div>
       <h1 style="margin-top:16px">דשבורדים</h1>
-      <p class="hero-intro">מסך אחד שבעל העסק מבין תוך דקה: האם אנחנו בכיוון, ואיפה הבעיה.</p>
+      <p class="hero-intro">מסך אחד שמבינים תוך דקה: אנחנו בכיוון? ואם לא — איפה זה נתקע?</p>
     </div>
   </div>
 </section>
 <section class="section lesson-section">
   <div class="container lesson-layout">
     <div class="lesson-main">
+      <section class="story card">
+        <div class="story-who"><span class="story-avatar" aria-hidden="true">א</span><div><b>הסיפור של אהרן</b><small>מנהל מכללה ללימודי תעודה</small></div></div>
+        <h2>ארבע לשוניות, כל בוקר</h2>
+        <p>כל בוקר, אהרן פותח את פייסבוק. אחר כך את גוגל. אחר כך את Analytics. אחר כך את ה-CRM.</p>
+<p>עשרים דקות של לחיצות. ובסוף הוא עדיין לא יודע לענות על השאלה הפשוטה:</p>
+<p><b>״המחזור של אוקטובר — נמלא אותו או לא?״</b></p>
+      </section>
       <div class="l-top">
-        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks"><li>לבחור 5–7 מדדים לדשבורד</li><li>לבנות דשבורד בשלוש שכבות: תוצאה ← משפך ← ערוצים</li><li>לחבר מקורות נתונים בלי עבודה ידנית</li></ul></div>
-        <div class="core"><span>השורה התחתונה</span><p>דשבורד טוב עונה על שלוש שאלות לפי הסדר: עמדנו ביעד? איפה במשפך זה נתקע? איזה ערוץ אחראי?</p></div>
+        <div class="outcomes card"><h3>בשיעור הזה תלמדו</h3><ul class="checks"><li>איזה 5–7 מספרים באמת צריך לראות</li><li>איך מסדרים דשבורד בשלוש שכבות</li><li>מאיפה מביאים את הנתונים בלי עבודה ידנית</li></ul></div>
+        <div class="core"><span>אם תזכרו רק דבר אחד</span><p>דשבורד טוב עונה על שלוש שאלות, לפי הסדר: עמדנו ביעד? איפה בשרשרת זה נתקע? איזה ערוץ אחראי?</p></div>
       </div>
       <article class="lesson-body card">
-<section class="l-sec"><h2>שלוש שכבות</h2><ul><li><b>שורה עליונה — תוצאה</b>: הכנסות, לקוחות חדשים, עלות ללקוח, ROAS. מול היעד.</li><li><b>אמצע — משפך</b>: חשיפות ← קליקים ← לידים ← רלוונטיים ← לקוחות, עם אחוז המעבר בין כל שלב.</li><li><b>תחתית — ערוצים</b>: Meta / גוגל / אורגני — הוצאה, לידים, לקוחות, עלות ללקוח.</li></ul></section>
-<section class="l-sec"><h2>כללי עיצוב</h2><ul><li><b>מול מה?</b> כל מספר מוצג מול יעד או מול התקופה הקודמת. מספר לבד לא אומר כלום.</li><li><b>צבע רק לחריגות</b> — ירוק/אדום רק כשמשהו בחוץ מהטווח.</li><li><b>מעט מדדים</b>. אם צריך לגלול — יש יותר מדי.</li><li><b>מקור אמת אחד</b> לכל מספר (כסף ולקוחות מה-CRM, הוצאה מהפלטפורמות).</li></ul></section>
-<section class="l-sec"><h2>כלים</h2><ul><li><b>Looker Studio</b> (חינם, של גוגל) — מתחבר ל-GA4, Google Ads ו-Google Sheets.</li><li><b>Google Sheets</b> כ״צומת״: מכניסים לשם נתונים מכל המערכות (ידנית או אוטומטית), והדשבורד קורא משם.</li><li>מחברים בתשלום (Supermetrics, Windsor ודומיהם) — חוסכים את העבודה הידנית מ-Meta.</li><li>להתחלה: גם <b>טבלה אחת מסודרת</b> עדיפה על אפס. בערכת הכלים יש דשבורד מוכן שעובד בדפדפן.</li></ul></section>
-        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>שאלה של דקה</h2><p>בעל עסק פותח את הדשבורד ביום ראשון: הכנסות 82% מהיעד (אדום). במשפך: לידים תקינים, אבל ״רלוונטיים ← לקוחות״ ירד מ-25% ל-12%. בערוצים: הירידה רק בלידים מטפסים מיידיים. תוך דקה יודעים מה לבדוק — בלי לפתוח אף מערכת.</p></section>
+<section class="l-sec"><h2>דשבורד = לוח השעונים של הרכב</h2><div class="term-box"><span>רגע, מה זה <b dir="auto">דשבורד</b>?</span><p>מסך אחד שמרכז את המספרים החשובים ממקומות שונים.</p></div>
+<div class="analogy"><span>תחשבו על זה ככה</span><p>בנהיגה לא פותחים את מכסה המנוע כל דקה. מסתכלים על הלוח: מהירות, דלק, נורה אדומה אם משהו לא בסדר. דשבורד טוב עושה בדיוק את זה לעסק.</p></div>
+<p>שלוש שכבות:</p>
+<ul><li><b>למעלה — התוצאה:</b> כמה נרשמו, כמה הכנסות, כמה עולה נרשם. מול היעד.</li><li><b>באמצע — השרשרת:</b> ראו ← לחצו ← לידים ← רלוונטיים ← נרשמו.</li><li><b>למטה — הערוצים:</b> פייסבוק, גוגל, ניוזלטר — מה כל אחד מביא.</li></ul></section>
+<section class="l-sec"><h2>כללים שהופכים דשבורד לשימושי</h2><ul><li><b>מול מה?</b> כל מספר מוצג מול יעד או מול החודש הקודם. מספר לבד לא אומר כלום.</li><li><b>צבע רק לחריגות.</b> ירוק ואדום — רק כשמשהו באמת לא בסדר.</li><li><b>מעט מספרים.</b> אם צריך לגלול — יש יותר מדי.</li><li><b>מקור אמת אחד</b> לכל מספר: נרשמים מה-CRM, הוצאה מהפלטפורמות.</li></ul></section>
+<section class="l-sec"><h2>איך בונים</h2><ul><li><b>Looker Studio</b> — כלי חינמי של גוגל, מתחבר ל-Analytics, Google Ads וגיליונות.</li><li><b>גיליון גוגל</b> כמרכז: מכניסים לשם נתונים מכל המערכות, והדשבורד קורא משם.</li><li><b>להתחלה:</b> גם טבלה אחת מסודרת עדיפה על כלום. בערכת הכלים יש דשבורד מוכן שעובד בדפדפן.</li></ul></section>
+        <section class="l-sec example"><span class="tag tag-teal">מה אהרן עשה</span><h2>דקה אחת ביום ראשון</h2><p>אהרן בנה דשבורד פשוט. ביום ראשון הוא פתח אותו:</p>
+<ul><li><b>נרשמים:</b> 18 מתוך 25. <b>72% מהיעד</b> — באדום.</li><li><b>השרשרת:</b> לידים — תקינים. אבל ״רלוונטיים ← נרשמו״ ירד מ-25% ל-12%.</li><li><b>ערוצים:</b> הירידה רק בלידים מהטופס בתוך פייסבוק.</li></ul>
+<p><b>תוך דקה</b> הוא ידע מה לבדוק — בלי לפתוח אף מערכת. התברר שהיועצת החדשה לא הכירה את המסלול של המלגות, ואנשים נבהלו מהמחיר.</p></section>
         <section class="l-sec"><h2>פראייר מול מקצוען</h2>
-          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>30 גרפים בעמוד אחד</td><td>5–7 מדדים, בשלוש שכבות</td></tr><tr><td>מספרים בלי יעד או השוואה</td><td>כל מספר מול יעד / תקופה קודמת</td></tr><tr><td>דשבורד שאף אחד לא מעדכן</td><td>חיבור אוטומטי, או רוטינה שבועית קבועה</td></tr></tbody></table></div>
+          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>30 גרפים בעמוד אחד</td><td>5–7 מספרים בשלוש שכבות</td></tr><tr><td>מספרים בלי יעד או השוואה</td><td>כל מספר מול יעד או חודש קודם</td></tr><tr><td>דשבורד שאף אחד לא מעדכן</td><td>חיבור אוטומטי, או שעה קבועה בשבוע</td></tr></tbody></table></div>
         </section>
       </article>
-      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>בחרו 5–7 מדדים לשורה העליונה ולמשפך</span></label></li><li><label class="task"><input type="checkbox"><span>מלאו את הדשבורד בערכת הכלים עם נתוני החודש האחרון</span></label></li><li><label class="task"><input type="checkbox"><span>קבעו מי מעדכן ומתי — ושמו את זה ביומן</span></label></li></ol></section>
+      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>בחרו 5–7 מספרים לשכבה העליונה ולשרשרת</span></label></li><li><label class="task"><input type="checkbox"><span>מלאו את הדשבורד בערכת הכלים עם נתוני החודש האחרון</span></label></li><li><label class="task"><input type="checkbox"><span>קבעו מי מעדכן ומתי — ושימו ביומן</span></label></li></ol></section>
       <a class="tool-link card" href="../tools/dashboard.html"><div class="icon icon-teal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="m12 14 4-5"/><circle cx="12" cy="14" r="1.2"/></svg></div><div><span class="tag tag-teal">כלי עבודה לשיעור</span><h3>דשבורד</h3><p>תמונת מצב במסך אחד: יעד, משפך וערוצים.</p></div></a>
-      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה צריך להופיע בשורה העליונה של דשבורד?</p><div class="quiz-opts"><button type="button" class="quiz-opt">CTR ו-CPM</button><button type="button" class="quiz-opt">תוצאה עסקית מול יעד: הכנסות, לקוחות, עלות ללקוח</button><button type="button" class="quiz-opt">מספר העוקבים</button></div><p class="quiz-why" hidden>קודם ״עמדנו ביעד?״, אחר כך ״למה?״.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> מתי להשתמש בצבע אדום בדשבורד?</p><div class="quiz-opts"><button type="button" class="quiz-opt">בכל מקום, שיהיה בולט</button><button type="button" class="quiz-opt">רק לחריגה מהטווח הרצוי</button><button type="button" class="quiz-opt">אף פעם</button></div><p class="quiz-why" hidden>צבע הוא אות. אם הכול צבעוני — שום דבר לא בולט.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> מה מקור האמת למספר הלקוחות?</p><div class="quiz-opts"><button type="button" class="quiz-opt">Meta</button><button type="button" class="quiz-opt">ה-CRM / מערכת התשלומים</button><button type="button" class="quiz-opt">Google Analytics</button></div><p class="quiz-why" hidden>הפלטפורמות מעריכות; ה-CRM יודע.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
+      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה צריך להופיע בשורה העליונה?</p><div class="quiz-opts"><button type="button" class="quiz-opt">CTR ו-CPM</button><button type="button" class="quiz-opt">התוצאה מול היעד: נרשמים, הכנסות, עלות לנרשם</button><button type="button" class="quiz-opt">מספר העוקבים</button></div><p class="quiz-why" hidden>קודם ״עמדנו ביעד?״ ורק אחר כך ״למה?״.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> מתי להשתמש באדום?</p><div class="quiz-opts"><button type="button" class="quiz-opt">בכל מקום, שיבלוט</button><button type="button" class="quiz-opt">רק כשמשהו חורג</button><button type="button" class="quiz-opt">אף פעם</button></div><p class="quiz-why" hidden>אם הכול צבעוני — שום דבר לא בולט.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> מאיפה לוקחים את מספר הנרשמים?</p><div class="quiz-opts"><button type="button" class="quiz-opt">פייסבוק</button><button type="button" class="quiz-opt">ה-CRM</button><button type="button" class="quiz-opt">Analytics</button></div><p class="quiz-why" hidden>הפלטפורמות מעריכות. ה-CRM יודע.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
       <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
+      <a class="next-teaser" href="lesson-17.html"><span>בשיעור הבא · 17</span><b>דוחות: מספרים שהופכים להחלטות</b><p>אהרן יודע לקרוא את המצב. עכשיו הוא רוצה שגם הדוח החודשי מאבי יגיד לו מה לעשות — ולא רק מה קרה.</p><i aria-hidden="true">←</i></a>
       <div class="lesson-nav"><a class="btn btn-primary" href="lesson-17.html"><span>השיעור הבא</span>17. דוחות: מספרים שהופכים להחלטות</a><a class="btn btn-outline" href="lesson-15.html"><span>השיעור הקודם</span>15. CRM ואיכות לידים</a></div>
     </div>
     <aside class="side card">

@@ -42,6 +42,7 @@
 </header>
 
 <main id="main" data-current-lesson="12">
+<div class="read-progress" aria-hidden="true"><i></i></div>
 <section class="gate section" aria-labelledby="gate-title">
   <div class="container">
     <div class="gate-card card">
@@ -71,33 +72,50 @@
       <nav class="breadcrumbs"><a href="../curriculum.html">תוכנית הלימודים</a><span>/</span><span>שלב 4: מדידה</span></nav>
       <div class="lesson-tags"><span class="tag tag-solid">שיעור 12 מתוך 22</span><span class="tag tag-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 8 דק׳ קריאה</span></div>
       <h1 style="margin-top:16px">Google Analytics — מה קורה אחרי הקליק</h1>
-      <p class="hero-intro">לדעת מה קורה אחרי הקליק — ולוודא שכל המרה נמדדת נכון.</p>
+      <p class="hero-intro">להבין מה קורה אחרי הקליק — ולוודא שכל ליד נספר פעם אחת, נכון.</p>
     </div>
   </div>
 </section>
 <section class="section lesson-section">
   <div class="container lesson-layout">
     <div class="lesson-main">
+      <section class="story card">
+        <div class="story-who"><span class="story-avatar" aria-hidden="true">א</span><div><b>הסיפור של אהרן</b><small>מנהל מכללה ללימודי תעודה</small></div></div>
+        <h2>120 או 64?</h2>
+        <p>פייסבוק אמר: <b>120 לידים החודש.</b></p>
+<p>במערכת של המכללה היו: <b>64.</b></p>
+<p>אבי אמר: ״פייסבוק תמיד מגזים.״ אהרן כבר לא הסתפק בתשובות כאלה.</p>
+<p>והנה מה שהוא גילה — ולמה זה הרבה יותר חשוב ממספר בדוח.</p>
+      </section>
       <div class="l-top">
-        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks"><li>להקים GA4 עם אירועים ואירועי מפתח (Key events)</li><li>לבדוק מדידה בזמן אמת לפני קמפיין</li><li>להבין למה Meta, גוגל ו-Analytics מראים מספרים שונים</li></ul></div>
-        <div class="core"><span>השורה התחתונה</span><p>כל אוטומציה של הפלטפורמות לומדת מההמרות שאתם מודדים. מדידה שבורה = המערכת לומדת את הדבר הלא נכון.</p></div>
+        <div class="outcomes card"><h3>בשיעור הזה תלמדו</h3><ul class="checks"><li>איך Google Analytics ״חושב״</li><li>מה זה פיקסל, ולמה הוא לא מספיק לבד</li><li>בדיקה של 5 דקות לפני כל קמפיין</li></ul></div>
+        <div class="core"><span>אם תזכרו רק דבר אחד</span><p>פייסבוק וגוגל לומדים מהתוצאות שאתם מודדים. מדידה שבורה = המערכת לומדת את הדבר הלא נכון, ומביאה לכם את האנשים הלא נכונים.</p></div>
       </div>
       <article class="lesson-body card">
-<section class="l-sec"><h2>איך GA4 חושב</h2><p>ב-GA4 <b>הכול הוא אירוע</b>: צפייה בעמוד, גלילה, לחיצה, שליחת טופס. אירועים שחשובים לעסק מסמנים כ-<b>אירועי מפתח (Key events)</b> — זה מה שבעבר נקרא ״המרות״.</p>
-<ul><li>התקנה: דרך Google Tag Manager (מומלץ) או התג של גוגל ישירות.</li><li>אירועים אוטומטיים: צפיות, גלילות, קליקים יוצאים (Enhanced measurement).</li><li>אירועים שאתם מגדירים: generate_lead, purchase, click_whatsapp, call.</li><li><b>עמוד תודה</b> אחרי טופס הוא הדרך הכי פשוטה ואמינה למדוד ליד.</li></ul></section>
-<section class="l-sec"><h2>הפיקסל וה-API של הפלטפורמות</h2><ul><li><b>Meta</b>: פיקסל בדפדפן + <b>Conversions API</b> מהשרת (הרבה בוני אתרים ו-CRM מציעים חיבור מוכן). השילוב מחזיר המרות שחוסמי פרסומות ו-iOS ״מעלימים״.</li><li><b>Google Ads</b>: מעקב המרות דרך התג או ייבוא מ-GA4. <b>Enhanced conversions</b> משפר דיוק.</li><li>הסכמה לקוקיז (Consent Mode) — באתרים שפונים לאירופה זו חובה, ומשפיעה על המדידה.</li></ul></section>
-<section class="l-sec"><h2>בדיקה לפני קמפיין — 5 דקות</h2><ul><li>פתחו את האתר ובצעו המרה אמיתית (ליד בדיקה).</li><li>GA4 ← דוח <b>בזמן אמת</b> / DebugView: האירוע מופיע?</li><li>Meta ← Events Manager ← <b>Test events</b>: האירוע מופיע?</li><li>Google Ads ← סטטוס פעולת ההמרה ״פעיל״/״מקליט״.</li><li>סמנו את ליד הבדיקה כ״בדיקה״ ב-CRM.</li></ul></section>
-<section class="l-sec"><h2>למה המספרים לא תואמים?</h2><div class="table-wrap"><table class="data"><thead><tr><th>הסיבה</th><th>הסבר</th></tr></thead><tbody><tr><td>חלון ייחוס</td><td>Meta סופרת המרה עד 7 ימים אחרי קליק (וגם אחרי צפייה). GA4 מייחס אחרת</td></tr><tr><td>מודל ייחוס</td><td>כל פלטפורמה ״לוקחת קרדיט״ לעצמה</td></tr><tr><td>חסימות ופרטיות</td><td>חלק מהמשתמשים לא נמדדים בכלל</td></tr><tr><td>כפילויות</td><td>אירוע שנשלח פעמיים (פיקסל + API בלי דה-דופליקציה)</td></tr></tbody></table></div>
-<div class="tip"><b>טיפ</b>פער של 10%–30% בין מערכות הוא נורמלי. <b>מקור האמת</b> לכסף הוא ה-CRM או מערכת התשלומים — לא הפלטפורמה.</div></section>
-        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>לידים כפולים</h2><p>Meta הראתה 120 לידים, ב-CRM היו 64. הסיבה: האירוע נשלח גם בטעינת עמוד התודה וגם בלחיצה על הכפתור. אחרי תיקון — Meta הראתה 66, והאלגוריתם התחיל לייעל לפי לידים אמיתיים. ה-CPL האמיתי ירד ב-20% תוך שבועיים.</p></section>
+<section class="l-sec"><h2>איך Google Analytics רואה את העולם</h2><div class="term-box"><span>רגע, מה זה <b dir="auto">Google Analytics</b>?</span><p>מערכת חינמית של גוגל שמראה מה אנשים עושים באתר: מאיפה באו, מה ראו, ומה עשו.</p></div>
+<p>ב-Analytics <b>הכול הוא ״אירוע״</b>: נכנסו לעמוד, גללו, לחצו, שלחו טופס.</p>
+<p>את האירועים החשובים באמת מסמנים כ<b>״אירועי מפתח״</b> — למשל: השאיר פרטים, נרשם, התקשר.</p>
+<div class="tip"><b>טיפ</b>הדרך הכי פשוטה ואמינה למדוד ליד: <b>עמוד ״תודה״</b> שמופיע אחרי שליחת הטופס.</div></section>
+<section class="l-sec"><h2>פיקסל — והבן הזוג שלו</h2><div class="term-box"><span>רגע, מה זה <b dir="auto">פיקסל</b>?</span><p>קוד קטן באתר שמדווח לפייסבוק ״מישהו השאיר פרטים״. ככה פייסבוק לומד את מי להביא.</p></div>
+<p>הבעיה: חלק מהדפדפנים והטלפונים חוסמים את הפיקסל. אז מוסיפים לו <b>בן זוג</b> — דיווח ישיר מהשרת של האתר.</p>
+<div class="term-box"><span>רגע, מה זה <b dir="auto">Conversions API</b>?</span><p>הדיווח מהשרת. לא צריך להבין איך — רק לדעת לבקש: ״תחברו פיקסל וגם API, בלי כפילויות.״</p></div></section>
+<section class="l-sec"><h2>בדיקה של 5 דקות לפני כל קמפיין</h2><ul><li>נכנסים לאתר ושולחים <b>ליד בדיקה</b> אמיתי.</li><li>ב-Analytics: הליד מופיע?</li><li>בפייסבוק: האירוע מופיע?</li><li>בגוגל: המדידה מסומנת כפעילה?</li><li>ב-CRM: מסמנים את הליד כ״בדיקה״.</li></ul>
+<div class="analogy"><span>תחשבו על זה ככה</span><p>זה כמו לבדוק שהשלט עובד לפני שמדליקים את הטלוויזיה בחדר של הילדים. חמש דקות שחוסכות חודש של ניחושים.</p></div></section>
+<section class="l-sec"><h2>למה המספרים אף פעם לא זהים</h2><ul><li><b>כל מערכת לוקחת קרדיט לעצמה.</b> פייסבוק סופר גם מי שרק ראה מודעה ונרשם אחרי שבוע.</li><li><b>חסימות ופרטיות</b> — חלק מהאנשים לא נמדדים בכלל.</li><li><b>כפילויות</b> — אותו ליד נספר פעמיים.</li></ul>
+<div class="tip"><b>טיפ</b>פער של 10%–30% בין מערכות זה נורמלי. <b>מקור האמת לכסף הוא ה-CRM</b> — לא פייסבוק ולא גוגל.</div></section>
+        <section class="l-sec example"><span class="tag tag-teal">מה אהרן עשה</span><h2>הליד שנספר פעמיים</h2><p>אהרן וצוות האתר בדקו. התברר שהליד נספר <b>פעמיים</b> — פעם כשנטען עמוד התודה, ופעם כשלחצו על כפתור השליחה.</p>
+<p>אחרי התיקון, פייסבוק הראה 66 לידים. כמעט כמו ה-CRM.</p>
+<p>אבל ההפתעה הגדולה הגיעה אחרי שבועיים: <b>המחיר לליד ירד ב-20%.</b></p>
+<p>למה? כי פייסבוק סוף סוף למד מהלידים האמיתיים — ולא ממספר מנופח.</p></section>
         <section class="l-sec"><h2>פראייר מול מקצוען</h2>
-          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>סומכים על המספרים של הפלטפורמה כמקור אמת</td><td>ה-CRM ומערכת התשלומים הם מקור האמת</td></tr><tr><td>מעלים קמפיין בלי ליד בדיקה</td><td>בדיקת 5 דקות לפני כל השקה</td></tr><tr><td>מסמנים כל קליק כהמרה</td><td>רק פעולות שקרובות לכסף הן אירועי מפתח</td></tr></tbody></table></div>
+          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>סומכים על פייסבוק כמקור האמת</td><td>ה-CRM הוא מקור האמת</td></tr><tr><td>מעלים קמפיין בלי ליד בדיקה</td><td>5 דקות בדיקה לפני כל קמפיין</td></tr><tr><td>מסמנים כל קליק כ״הצלחה״</td><td>רק פעולות שקרובות לכסף</td></tr></tbody></table></div>
         </section>
       </article>
-      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>ודאו שיש עמוד תודה אחרי כל טופס</span></label></li><li><label class="task"><input type="checkbox"><span>הגדירו אירוע מפתח אחד ראשי ב-GA4 (generate_lead או purchase)</span></label></li><li><label class="task"><input type="checkbox"><span>בצעו ליד בדיקה ובדקו אותו בשלוש המערכות</span></label></li></ol></section>
+      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>ודאו שיש עמוד ״תודה״ אחרי כל טופס</span></label></li><li><label class="task"><input type="checkbox"><span>בקשו ממי שמנהל את האתר: אירוע מפתח אחד ראשי ב-Analytics</span></label></li><li><label class="task"><input type="checkbox"><span>שלחו ליד בדיקה ובדקו אותו בשלוש המערכות</span></label></li></ol></section>
       
-      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה נקרא היום ב-GA4 ״אירוע מפתח״?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כל צפייה בעמוד</button><button type="button" class="quiz-opt">אירוע חשוב לעסק, כמו ליד או רכישה</button><button type="button" class="quiz-opt">אירוע שקרה בשעות הבוקר</button></div><p class="quiz-why" hidden>Key events הם מה שבעבר נקרא ״המרות״ ב-GA4.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> Meta מראה 100 לידים, ה-CRM מראה 70. מה מקור האמת?</p><div class="quiz-opts"><button type="button" class="quiz-opt">Meta</button><button type="button" class="quiz-opt">ה-CRM</button><button type="button" class="quiz-opt">הממוצע</button></div><p class="quiz-why" hidden>הכסף והלקוחות נמצאים ב-CRM. בודקים את הפער ומחפשים כפילויות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> למה מחברים Conversions API בנוסף לפיקסל?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כדי לשלם פחות</button><button type="button" class="quiz-opt">כדי להחזיר המרות שנחסמות בדפדפן</button><button type="button" class="quiz-opt">זה מחליף את Analytics</button></div><p class="quiz-why" hidden>השרת שולח את האירוע גם כשהדפדפן חוסם.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
+      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה זה ״אירוע מפתח״ ב-Analytics?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כל כניסה לעמוד</button><button type="button" class="quiz-opt">פעולה חשובה לעסק, כמו ליד או הרשמה</button><button type="button" class="quiz-opt">אירוע שקרה בבוקר</button></div><p class="quiz-why" hidden>האירועים שבאמת שווים כסף.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> פייסבוק אומר 100 לידים, ה-CRM אומר 70. מה נכון?</p><div class="quiz-opts"><button type="button" class="quiz-opt">פייסבוק</button><button type="button" class="quiz-opt">ה-CRM</button><button type="button" class="quiz-opt">הממוצע</button></div><p class="quiz-why" hidden>הלקוחות והכסף נמצאים ב-CRM. בודקים כפילויות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> למה מוסיפים דיווח מהשרת לפיקסל?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כדי לשלם פחות</button><button type="button" class="quiz-opt">כדי לספור גם לידים שהדפדפן חסם</button><button type="button" class="quiz-opt">זה מחליף את Analytics</button></div><p class="quiz-why" hidden>השרת מדווח גם כשהדפדפן חוסם.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
       <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
+      <a class="next-teaser" href="lesson-13.html"><span>בשיעור הבא · 13</span><b>API וחיבור בין מערכות — מאפס</b><p>המדידה של אהרן מדויקת. אבל הלידים עדיין מגיעים לאקסל, ומישהו צריך להעתיק אותם ידנית. בשיעור הבא — איך מערכות מדברות אחת עם השנייה.</p><i aria-hidden="true">←</i></a>
       <div class="lesson-nav"><a class="btn btn-primary" href="lesson-13.html"><span>השיעור הבא</span>13. API וחיבור בין מערכות — מאפס</a><a class="btn btn-outline" href="lesson-11.html"><span>השיעור הקודם</span>11. UTM ותיוגים נכונים</a></div>
     </div>
     <aside class="side card">
