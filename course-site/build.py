@@ -484,24 +484,10 @@ def write(path, html):
 # עמוד הבית
 # ------------------------------------------------------------------
 
-TICKER = ["CPM", "CTR", "CPC", "CPL", "CPA", "ROAS", "KPI", "UTM", "GA4", "Pixel", "Conversions API", "CRM",
-          "Webhook", "LTV", "A/B Test", "Lookalike", "AI Max", "Advantage+", "Key events", "Funnel"]
-
-PAIN_ROWS = [
-    ("01", "money", "התקציב נגמר. התוצאות לא.",
-     "הכסף יוצא כל חודש, ואף אחד לא באמת מסביר לאן הוא הלך ולמה. עוד חודש, עוד ״ננסה קהל אחר״.",
-     ["₪4,800 הוצאה", "3 לקוחות", "?"]),
-    ("02", "doc", "מקבלים דוח מלא במספרים.",
-     "CTR, CPM, ROAS, Reach, Frequency — עשרה גרפים, ועדיין לא ברור אם הקמפיין הצליח ומה עושים מחר.",
-     ["CTR 1.4%", "CPM ₪38", "ROAS 2.1"]),
-    ("03", "question", "לא יודעים מה לשאול.",
-     "קשה לבדוק עבודה מקצועית כשלא מבינים מה קורה מאחורי הקמפיין. אז סומכים — ומקווים.",
-     ["פיקסל?", "UTM?", "CRM?"]),
-]
-
-
-TICKER = ["CPM", "CTR", "CPC", "CPL", "CPA", "ROAS", "KPI", "UTM", "GA4", "Pixel", "Conversions API", "CRM",
-          "Webhook", "LTV", "A/B Test", "Lookalike", "AI Max", "Advantage+", "Key events", "Funnel"]
+TICKER = [("doc", "מבינים את הדוח"), ("question", "יודעים מה לשאול"), ("money", "שולטים בתקציב"),
+          ("check", "בודקים לפני שמשיקים"), ("chart", "מודדים מה עובד"), ("users", "מדברים לקהל הנכון"),
+          ("spark", "קריאייטיב שעוצר גלילה"), ("plug", "מערכות שמדברות ביניהן"), ("gauge", "מסך אחד ברור"),
+          ("handshake", "עובדים טוב עם הסוכנות")]
 
 PAIN_ROWS = [
     ("01", "money", "התקציב נגמר. התוצאות לא.",
@@ -567,7 +553,7 @@ def checklist_zone():
 
 
 def build_index():
-    ticker = "".join(f"<span>{t}</span>" for t in TICKER)
+    ticker = "".join(f'<span><b class="t-ic">{svg(ic)}</b>{t}</span>' for ic, t in TICKER)
     pains = "\n".join(
         f'''      <article class="pain-row reveal" data-tone="{k + 1}">
         <span class="pain-num" aria-hidden="true">{num}</span>
