@@ -523,9 +523,9 @@ def checklist_zone():
   <div class="blob b1" aria-hidden="true"></div><div class="blob b2" aria-hidden="true"></div>
   <div class="container check-zone">
     <div class="check-copy reveal">
-      <span class="free-badge">חינם · 20 בדיקות</span>
-      <h2>לפני שמעלים עוד קמפיין — <em>עוברים על הצ׳ק ליסט.</em></h2>
-      <p>20 הבדיקות שחוסכות את רוב הכסף שנשרף בקמפיינים: קישור שבור, טופס שלא נשלח, מדידה שלא עובדת, קהל לא נכון. 10 דקות לפני כל השקה.</p>
+      <span class="eyebrow">אפשר אחרת</span>
+      <h2>מתחילים ב-20 בדיקות פשוטות — <em>ומבינים מספיק כדי להיות בשליטה.</em></h2>
+      <p>הצ׳ק ליסט החינמי שחוסך את רוב הכסף שנשרף בקמפיינים: קישור שבור, טופס שלא נשלח, מדידה שלא עובדת, קהל לא נכון. 10 דקות לפני כל השקה.</p>
       <div class="check-groups">{groups}</div>
       <div class="sheet-mock" aria-hidden="true">
         <div class="sheet-head"><b>צ׳ק ליסט למפרסמים</b><span class="sheet-prog"><i></i></span></div>
@@ -533,6 +533,7 @@ def checklist_zone():
       </div>
     </div>
     <aside class="lead-panel check-form reveal" id="lead">
+      <span class="free-badge">חינם · 20 בדיקות</span>
       <h3>שלחו לי את הצ׳ק ליסט</h3>
       <p>השאירו פרטים — ונשלח לכם את הצ׳ק ליסט החינמי עם הסבר לכל בדיקה, וגם פרטים על הקורס.</p>
       <form class="lead-form" method="post">
@@ -610,10 +611,6 @@ def build_index():
     </div>
     <div class="pain-rows">
 {pains}
-    </div>
-    <div class="answer-band reveal">
-      <div><span class="eyebrow light">אפשר אחרת</span><p>מתחילים ב-20 בדיקות פשוטות — <strong>ומבינים מספיק כדי להיות בשליטה.</strong></p></div>
-      <a class="btn btn-light" href="#checklist">לצ׳ק ליסט החינמי</a>
     </div>
   </div>
 </section>
