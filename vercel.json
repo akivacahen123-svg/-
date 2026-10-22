@@ -1,6 +1,0 @@
-{
-  "framework": null,
-  "installCommand": "echo \"static site - no install\"",
-  "buildCommand": "echo \"static site - prebuilt by course-site/build.py\"",
-  "outputDirectory": "course-site"
-}
