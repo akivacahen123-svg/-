@@ -1,0 +1,605 @@
+/* =========================================================
+   אל תצאו פראיירים — מערכת עיצוב אחידה
+   מבוססת על דף הנחיתה (v13), נכתבה מחדש כשכבה אחת נקייה.
+   ========================================================= */
+
+:root {
+  /* צבעים */
+  --ink: #0c1d2e;
+  --navy: #10253b;
+  --navy-2: #193a58;
+  --blue: #1677ff;
+  --blue-2: #1b91ff;
+  --sky: #39b7ff;
+  --cyan: #36bdf4;
+  --teal: #22c9bc;
+  --teal-ink: #128f80;
+  --muted: #657b91;
+  --line: #dce7f0;
+  --line-2: #d8e8f5;
+  --soft: #f6fbff;
+  --soft-blue: #eef8ff;
+  --soft-teal: #ebfbf7;
+  --paper: #fff;
+
+  /* צללים, רדיוסים, רוחב */
+  --shadow-sm: 0 8px 24px rgba(16, 43, 69, .055);
+  --shadow: 0 14px 36px rgba(16, 43, 69, .08);
+  --shadow-lg: 0 22px 56px rgba(10, 35, 58, .14);
+  --r-sm: 14px;
+  --r: 22px;
+  --r-lg: 28px;
+  --max: 1240px;
+  --gutter: 24px;
+
+  --grad-cta: linear-gradient(135deg, #1677ff 0%, #1b91ff 58%, #22c9bc 145%);
+  --grad-dark: linear-gradient(160deg, #193a58 0%, #132e47 55%, #102940 100%);
+}
+
+/* ---------- בסיס ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body {
+  margin: 0;
+  font-family: 'IBM Plex Sans Hebrew', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button, input { font: inherit; }
+h1, h2, h3, h4 { margin: 0; letter-spacing: -.035em; line-height: 1.15; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
+
+.container { width: min(var(--max), 100% - var(--gutter) * 2); margin-inline: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- כפתורים ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 52px; padding: 12px 24px; border: 0; border-radius: var(--r-sm);
+  font-weight: 700; font-size: 15px; line-height: 1.3; cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--grad-cta); color: #fff; box-shadow: 0 14px 28px rgba(22, 119, 255, .22); }
+.btn-ghost { background: rgba(255, 255, 255, .1); color: #fff; border: 1px solid rgba(255, 255, 255, .28); }
+.btn-ghost:hover { background: rgba(255, 255, 255, .18); }
+.btn-outline { background: #fff; color: var(--navy); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.btn-block { width: 100%; }
+
+/* ---------- תגיות ---------- */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border-radius: 999px;
+  background: #eaf3ff; color: #176fd6; font-size: 12.5px; font-weight: 700;
+}
+.tag-teal { background: #e7fbf7; color: var(--teal-ink); }
+.tag-solid { background: var(--blue); color: #fff; }
+
+/* ---------- כותרת עליונה ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .container { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 70px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -.03em; }
+.logo-mark {
+  width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center;
+  background: var(--grad-cta); color: #fff; font-size: 17px;
+}
+.nav { display: flex; align-items: center; gap: 4px; }
+.nav a { padding: 9px 13px; border-radius: 10px; font-size: 15px; font-weight: 500; color: #2b4660; }
+.nav a:hover, .nav a[aria-current="page"] { background: var(--soft-blue); color: var(--blue); }
+.nav .btn { min-height: 44px; padding: 10px 18px; margin-inline-start: 8px; color: #fff; }
+.nav .btn:hover { background: var(--grad-cta); color: #fff; }
+.nav-toggle {
+  display: none; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 12px;
+  background: #fff; cursor: pointer; place-items: center;
+}
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
+  display: block; width: 18px; height: 2px; background: var(--navy); border-radius: 2px; position: relative; content: "";
+}
+.nav-toggle span::before { position: absolute; top: -6px; }
+.nav-toggle span::after { position: absolute; top: 6px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; overflow: hidden; color: #fff;
+  background: url('../img/hero.jpg') center / cover no-repeat, var(--navy);
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(270deg, rgba(4, 17, 30, .86) 0%, rgba(4, 17, 30, .66) 45%, rgba(4, 17, 30, .18) 100%);
+}
+.hero-inner { position: relative; padding: 110px 0 120px; }
+.hero-copy { max-width: 820px; }
+.hero h1 { font-size: clamp(40px, 5.4vw, 80px); line-height: 1.04; letter-spacing: -.055em; font-weight: 700; }
+.hero h1 .accent { display: block; margin-top: 22px; color: var(--sky); font-size: .62em; line-height: 1.15; letter-spacing: -.045em; }
+.hero-intro { margin-top: 26px; max-width: 680px; font-size: 18px; line-height: 1.85; color: rgba(255, 255, 255, .88); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 46px; }
+.stat {
+  min-width: 150px; padding: 14px 18px; border-radius: 16px;
+  background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .14);
+  backdrop-filter: blur(6px);
+}
+.stat strong { display: block; font-size: 30px; line-height: 1; letter-spacing: -.04em; }
+.stat span { display: block; margin-top: 6px; font-size: 13px; color: rgba(255, 255, 255, .78); }
+
+/* Hero קטן לעמודים פנימיים */
+.page-hero .hero-inner { padding: 72px 0 78px; }
+.page-hero h1 { font-size: clamp(36px, 4.4vw, 60px); }
+.breadcrumbs { display: flex; gap: 8px; margin-bottom: 16px; font-size: 14px; color: rgba(255, 255, 255, .72); }
+.breadcrumbs a:hover { color: #fff; }
+
+/* ---------- מקטעים ---------- */
+.section { padding: 96px 0; }
+.section-soft { background: linear-gradient(180deg, #f8fbfe 0%, #fff 100%); }
+.section-head { max-width: 760px; margin: 0 auto 46px; text-align: center; }
+.section-head .tag { margin-bottom: 14px; }
+.section-head h2 { font-size: clamp(32px, 3.6vw, 46px); line-height: 1.1; letter-spacing: -.04em; }
+.section-head p { margin-top: 14px; color: var(--muted); font-size: 18px; line-height: 1.8; }
+
+/* ---------- כרטיסים כלליים ---------- */
+.card {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 18px 38px rgba(16, 43, 69, .085); border-color: #cbddeb; }
+
+.icon {
+  width: 56px; height: 56px; border-radius: 17px; display: grid; place-items: center;
+  background: var(--soft-blue); flex-shrink: 0;
+}
+.icon svg { width: 28px; height: 28px; stroke: #2ba4ef; fill: none; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.icon-teal { background: var(--soft-teal); }
+.icon-teal svg { stroke: #17a98e; }
+
+/* "פראייר" — מקטע כאב */
+.pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.pain { padding: 28px; }
+.pain .icon { margin-bottom: 18px; background: #fff3f1; }
+.pain .icon svg { stroke: #e2583e; }
+.pain h3 { font-size: 21px; margin-bottom: 8px; }
+.pain p { color: var(--muted); font-size: 15.5px; line-height: 1.72; }
+.pain-answer {
+  margin-top: 22px; padding: 22px 26px; border-radius: var(--r);
+  background: var(--grad-dark); color: #fff;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+}
+.pain-answer p { font-size: 18px; font-weight: 600; }
+.pain-answer p span { color: var(--sky); }
+
+/* ---------- לוח מרכזי: תחומים + מוצרים ---------- */
+.board-grid { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(280px, .8fr); gap: 28px; align-items: start; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.feature { padding: 28px 22px; text-align: center; }
+.feature .icon { margin: 0 auto 18px; }
+.feature:nth-child(3n+2) .icon { background: var(--soft-teal); }
+.feature:nth-child(3n+2) .icon svg { stroke: #17a98e; }
+.feature h3 { font-size: 21px; margin-bottom: 8px; }
+.feature p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+.feature .count { display: inline-block; margin-top: 12px; font-size: 12.5px; font-weight: 700; color: var(--blue); }
+
+.benefit-strip {
+  margin-top: 16px; display: grid; grid-template-columns: repeat(3, 1fr); overflow: hidden;
+  border: 1px solid var(--line-2); border-radius: 20px;
+  background: linear-gradient(90deg, #eef7ff 0%, #f2fbff 55%, #effcf9 100%);
+  box-shadow: var(--shadow-sm);
+}
+.benefit-strip span {
+  min-height: 64px; display: flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 14px 16px; font-size: 14px; font-weight: 600; color: #284763; text-align: center;
+}
+.benefit-strip span + span { border-right: 1px solid var(--line-2); }
+.check {
+  width: 22px; height: 22px; min-width: 22px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--blue); color: #fff; font-size: 12px; font-style: normal;
+  box-shadow: 0 5px 12px rgba(22, 119, 255, .18);
+}
+
+.products { display: grid; gap: 18px; }
+.product { overflow: hidden; border-radius: 26px; box-shadow: var(--shadow); }
+.product-visual { position: relative; height: 176px; display: grid; place-items: center; border-bottom: 1px solid var(--line); }
+.visual-badge {
+  position: absolute; top: 16px; right: 16px; padding: 7px 12px; border-radius: 999px;
+  background: var(--blue); color: #fff; font-size: 12px; font-weight: 700;
+  box-shadow: 0 8px 18px rgba(22, 119, 255, .18);
+}
+.visual-badge.teal { background: #20c9b6; }
+.visual-badge.start { right: auto; left: 16px; }
+.product-copy { padding: 22px 24px 26px; }
+.product-copy .tag { margin-bottom: 10px; }
+.product-copy h3 { font-size: 22px; margin-bottom: 8px; }
+.product-copy p { color: var(--muted); font-size: 14.5px; line-height: 1.68; }
+.product-copy .link { display: inline-flex; margin-top: 14px; font-weight: 700; font-size: 14.5px; color: var(--blue); }
+.product-copy .link:hover { text-decoration: underline; }
+
+/* איור צ'ק ליסט */
+.checklist-visual { background: linear-gradient(145deg, #e9f7ff 0%, #eafbf7 100%); }
+.check-sheet {
+  width: 160px; padding: 16px; border-radius: 16px; background: #fff; transform: rotate(-5deg);
+  box-shadow: 0 18px 38px rgba(16, 43, 69, .16); border: 1px solid rgba(13, 29, 46, .06);
+}
+.sheet-dots { display: flex; gap: 5px; margin-bottom: 14px; }
+.sheet-dots span { width: 7px; height: 7px; border-radius: 50%; background: #dbe7f0; }
+.sheet-dots span:first-child { background: #38cbb7; }
+.sheet-title { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1; }
+.sheet-sub { font-size: 12px; font-weight: 600; color: #2194cd; margin: 6px 0 14px; }
+.sheet-lines { display: grid; gap: 10px; }
+.sheet-lines i { display: block; height: 9px; border-radius: 99px; background: #e7eef4; position: relative; margin-right: 28px; }
+.sheet-lines i::before {
+  content: '✓'; position: absolute; right: -28px; top: -6px; width: 20px; height: 20px; border-radius: 7px;
+  background: #e3fff6; color: #17a98e; display: grid; place-items: center; font-style: normal; font-size: 11px;
+}
+
+/* איור קורס */
+.course-visual { background: linear-gradient(145deg, #eaf4fb 0%, #dfeef9 100%); }
+.course-window { width: 220px; border-radius: 17px; overflow: hidden; background: #fff; transform: rotate(3deg); box-shadow: 0 18px 38px rgba(13, 39, 63, .2); }
+.window-top { height: 26px; background: #e9eff5; display: flex; align-items: center; gap: 5px; padding: 0 10px; }
+.window-top span { width: 7px; height: 7px; border-radius: 50%; background: #bac9d5; }
+.window-top span:first-child { background: var(--cyan); }
+.course-screen { height: 112px; background: linear-gradient(145deg, #123654, #17698d); position: relative; display: flex; align-items: end; padding: 14px; }
+.play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 48px; height: 48px; border: 2px solid #fff; border-radius: 50%; background: rgba(255, 255, 255, .12); }
+.play::after { content: ''; position: absolute; left: 19px; top: 13px; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+.course-bars { width: 100%; display: flex; align-items: end; gap: 7px; height: 48px; opacity: .62; }
+.course-bars i { width: 14px; border-radius: 5px 5px 0 0; background: var(--cyan); }
+.course-bars i:nth-child(1) { height: 16px; } .course-bars i:nth-child(2) { height: 26px; }
+.course-bars i:nth-child(3) { height: 38px; } .course-bars i:nth-child(4) { height: 31px; }
+.course-bars i:nth-child(5) { height: 46px; }
+
+/* ---------- תוכנית הלימודים ---------- */
+.modules { display: grid; gap: 14px; }
+.module { overflow: hidden; }
+.module:hover { transform: none; }
+.module summary {
+  list-style: none; cursor: pointer; display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center;
+  padding: 22px 24px;
+}
+.module summary::-webkit-details-marker { display: none; }
+.module-num {
+  width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
+  background: var(--soft-blue); color: var(--blue); font-weight: 700; font-size: 18px;
+}
+.module:nth-child(even) .module-num { background: var(--soft-teal); color: var(--teal-ink); }
+.module-title h3 { font-size: 21px; }
+.module-title p { margin-top: 4px; color: var(--muted); font-size: 14.5px; }
+.module-meta { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+.chev { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; transition: transform .25s ease; }
+.chev svg { width: 16px; height: 16px; stroke: var(--navy); fill: none; stroke-width: 2.4; }
+.module[open] .chev { transform: rotate(180deg); background: var(--soft-blue); border-color: #cfe4f4; }
+.lessons { margin: 0; padding: 0 24px 22px; list-style: none; display: grid; gap: 8px; }
+.lesson {
+  display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start;
+  padding: 14px 16px; border-radius: var(--r-sm); background: var(--soft); border: 1px solid #e8f0f7;
+}
+.lesson-num { font-size: 13px; font-weight: 700; color: #1d91d6; padding-top: 2px; }
+.lesson h4 { font-size: 16.5px; letter-spacing: -.02em; }
+.lesson p { margin-top: 3px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+/* תצוגה מקדימה של מודולים בדף הבית */
+.topics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.topic { padding: 22px; min-height: 160px; }
+.topic .n { font-size: 12px; font-weight: 700; color: #1d91d6; margin-bottom: 12px; }
+.topic h4 { font-size: 19px; margin-bottom: 6px; }
+.topic p { color: var(--muted); font-size: 14.5px; line-height: 1.65; }
+.center-cta { display: flex; justify-content: center; margin-top: 34px; }
+
+/* ---------- צ'ק ליסט ---------- */
+.checklist-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 28px; align-items: start; }
+.progress-card { position: sticky; top: 96px; padding: 26px; }
+.progress-card h3 { font-size: 20px; margin-bottom: 6px; }
+.progress-card p { color: var(--muted); font-size: 14.5px; }
+.progress-value { margin: 18px 0 10px; font-size: 44px; font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+.progress-value small { font-size: 18px; color: var(--muted); font-weight: 600; }
+.progress-bar { height: 10px; border-radius: 99px; background: #e7eef4; overflow: hidden; }
+.progress-bar i { display: block; height: 100%; width: 0; background: var(--grad-cta); border-radius: inherit; transition: width .3s ease; }
+.progress-card .btn { margin-top: 18px; }
+.progress-card .reset { margin-top: 10px; background: none; border: 0; color: var(--muted); font-size: 13.5px; cursor: pointer; text-decoration: underline; width: 100%; }
+
+.check-group { padding: 26px; }
+.check-group + .check-group { margin-top: 16px; }
+.check-group:hover { transform: none; }
+.check-group-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.check-group-head h2 { font-size: 23px; }
+.check-group-head p { color: var(--muted); font-size: 14px; }
+.check-item {
+  display: grid; grid-template-columns: 26px 1fr; gap: 14px; align-items: start;
+  padding: 14px 16px; border-radius: var(--r-sm); border: 1px solid #e8f0f7; background: var(--soft);
+  cursor: pointer; transition: background .2s ease, border-color .2s ease;
+}
+.check-item + .check-item { margin-top: 8px; }
+.check-item input { appearance: none; margin: 2px 0 0; width: 24px; height: 24px; border-radius: 8px; border: 2px solid #b9cbdb; background: #fff; cursor: pointer; display: grid; place-items: center; }
+.check-item input:checked { background: var(--teal); border-color: var(--teal); }
+.check-item input:checked::after { content: '✓'; color: #fff; font-size: 14px; font-weight: 700; }
+.check-item strong { display: block; font-size: 16px; letter-spacing: -.02em; }
+.check-item span { display: block; margin-top: 3px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.check-item:has(input:checked) { background: #f0fcf9; border-color: #c9efe6; }
+.check-item:has(input:checked) strong { color: var(--teal-ink); }
+
+/* ---------- טופס לידים ---------- */
+.lead-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 460px); gap: 40px; align-items: center; }
+.lead-copy h2 { font-size: clamp(32px, 3.4vw, 44px); line-height: 1.1; letter-spacing: -.04em; }
+.lead-copy > p { margin-top: 16px; color: var(--muted); font-size: 17px; line-height: 1.8; }
+.lead-list { margin: 24px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.lead-list li { display: flex; gap: 12px; align-items: center; font-weight: 600; color: #284763; }
+
+.lead-panel {
+  position: relative; overflow: hidden; padding: 32px; border-radius: var(--r-lg); color: #fff;
+  background: var(--grad-dark); border: 1px solid rgba(85, 158, 217, .18); box-shadow: var(--shadow-lg);
+}
+.lead-panel::before {
+  content: ""; position: absolute; width: 260px; height: 260px; border-radius: 50%; right: -130px; top: -140px;
+  background: radial-gradient(circle, rgba(54, 189, 244, .24), rgba(54, 189, 244, 0) 68%); pointer-events: none;
+}
+.lead-panel > * { position: relative; }
+.lead-panel h3 { font-size: 27px; line-height: 1.18; margin-bottom: 10px; }
+.lead-panel > p { color: #d1dfeb; font-size: 15px; line-height: 1.72; }
+.lead-mini {
+  display: flex; gap: 12px; align-items: center; margin: 18px 0; padding: 14px; border-radius: 14px;
+  background: rgba(255, 255, 255, .075); border: 1px solid rgba(255, 255, 255, .1);
+}
+.lead-mini svg { width: 22px; height: 22px; stroke: #67d7ff; fill: none; stroke-width: 2; flex-shrink: 0; }
+.lead-mini strong { display: block; font-size: 14px; }
+.lead-mini span { display: block; font-size: 12.5px; color: #a9bfd0; }
+.lead-form { display: grid; gap: 12px; }
+.lead-form input {
+  width: 100%; height: 54px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, .2);
+  background: #fff; color: #183149; font-size: 15px; outline: none; box-shadow: 0 8px 22px rgba(1, 16, 30, .08);
+}
+.lead-form input:focus { box-shadow: 0 0 0 3px rgba(57, 183, 255, .55); }
+.lead-form .btn { min-height: 58px; }
+.lead-note { margin-top: 14px; color: #a9bfd0; font-size: 12px; line-height: 1.6; }
+
+/* ---------- שאלות נפוצות ---------- */
+.faq { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
+.faq details { padding: 0; }
+.faq details:hover { transform: none; }
+.faq summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding: 20px 24px; font-weight: 700; font-size: 17.5px; letter-spacing: -.02em;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; font-size: 24px; font-weight: 400; color: var(--blue); line-height: 1; transition: transform .2s ease; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 24px 22px; color: var(--muted); font-size: 15.5px; line-height: 1.8; }
+
+/* ---------- באנר סיום ---------- */
+.cta-band {
+  position: relative; overflow: hidden; border-radius: var(--r-lg); padding: 56px; color: #fff;
+  background: url('../img/hero-sm.jpg') center / cover no-repeat, var(--navy);
+}
+.cta-band::before { content: ""; position: absolute; inset: 0; background: linear-gradient(270deg, rgba(4, 17, 30, .9), rgba(4, 17, 30, .55)); }
+.cta-band > * { position: relative; }
+.cta-band h2 { font-size: clamp(30px, 3.4vw, 44px); max-width: 680px; }
+.cta-band p { margin-top: 12px; max-width: 600px; color: rgba(255, 255, 255, .84); font-size: 17px; line-height: 1.8; }
+.cta-band .hero-actions { margin-top: 26px; }
+
+/* ---------- פוטר ---------- */
+.site-footer { padding: 46px 0 34px; border-top: 1px solid var(--line); background: var(--soft); }
+.footer-grid { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+.footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14.5px; color: #2b4660; }
+.footer-links a:hover { color: var(--blue); }
+.copyright { margin-top: 24px; color: #75889b; font-size: 13px; }
+
+/* =========================================================
+   רספונסיביות
+   ========================================================= */
+@media (max-width: 1100px) {
+  .board-grid { grid-template-columns: 1fr; }
+  .products { grid-template-columns: 1fr 1fr; }
+  .topics { grid-template-columns: repeat(2, 1fr); }
+  .lead-wrap { grid-template-columns: 1fr; }
+  .checklist-layout { grid-template-columns: 1fr; }
+  .progress-card { position: static; order: -1; }
+}
+
+@media (max-width: 900px) {
+  .nav-toggle { display: grid; }
+  .nav {
+    position: absolute; top: 100%; right: 0; left: 0; display: none; flex-direction: column; align-items: stretch;
+    padding: 12px var(--gutter) 20px; background: #fff; border-bottom: 1px solid var(--line); box-shadow: var(--shadow);
+  }
+  .nav.is-open { display: flex; }
+  .nav a { padding: 13px 12px; }
+  .nav .btn { margin: 8px 0 0; }
+  .pain-grid { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: 1fr 1fr; }
+  .benefit-strip { grid-template-columns: 1fr; }
+  .benefit-strip span { justify-content: flex-start; text-align: right; }
+  .benefit-strip span + span { border-right: 0; border-top: 1px solid var(--line-2); }
+}
+
+@media (max-width: 700px) {
+  :root { --gutter: 16px; }
+  .section { padding: 64px 0; }
+  .section-head { text-align: right; margin-bottom: 30px; }
+  .section-head p { font-size: 15.5px; }
+  .hero { background-image: url('../img/hero-sm.jpg'); background-position: 68% center; }
+  .hero::before { background: linear-gradient(180deg, rgba(4, 17, 30, .7) 0%, rgba(4, 17, 30, .82) 100%); }
+  .hero-inner { padding: 58px 0 54px; }
+  .hero h1 { font-size: clamp(36px, 10.5vw, 48px); }
+  .hero h1 .accent { margin-top: 18px; font-size: .64em; }
+  .hero-intro { font-size: 15.5px; line-height: 1.8; }
+  .hero-actions .btn { flex: 1 1 100%; }
+  .hero-stats { gap: 10px; margin-top: 34px; }
+  .stat { min-width: 0; flex: 1 1 0; padding: 12px; }
+  .stat strong { font-size: 24px; }
+  .stat span { font-size: 12px; }
+  .page-hero .hero-inner { padding: 48px 0 50px; }
+
+  /* כרטיסי תחום כשורות */
+  .feature-grid { grid-template-columns: 1fr; gap: 12px; }
+  .feature {
+    display: grid; grid-template-columns: 54px 1fr; grid-template-areas: 'icon title' 'icon text' 'icon count';
+    column-gap: 15px; row-gap: 3px; text-align: right; padding: 18px;
+  }
+  .feature .icon { grid-area: icon; width: 54px; height: 54px; margin: 0; align-self: start; }
+  .feature h3 { grid-area: title; font-size: 18px; margin: 0; }
+  .feature p { grid-area: text; font-size: 14px; line-height: 1.55; }
+  .feature .count { grid-area: count; margin-top: 4px; }
+
+  .products { grid-template-columns: 1fr; }
+  .topics { grid-template-columns: 1fr; gap: 10px; }
+  .topic { min-height: 0; padding: 18px; }
+  .pain { padding: 22px; }
+  .pain-answer { padding: 20px; }
+  .pain-answer .btn { width: 100%; }
+
+  .module summary { grid-template-columns: auto 1fr auto; gap: 12px; padding: 16px; }
+  .module-num { width: 44px; height: 44px; font-size: 16px; border-radius: 13px; }
+  .module-title h3 { font-size: 18px; }
+  .module-title p { font-size: 13.5px; }
+  .module-meta .count-label { display: none; }
+  .lessons { padding: 0 12px 14px; }
+  .lesson { grid-template-columns: 34px 1fr; padding: 12px; gap: 10px; }
+
+  .check-group { padding: 18px; }
+  .lead-panel { padding: 24px; }
+  .lead-panel h3 { font-size: 24px; }
+  .cta-band { padding: 34px 22px; border-radius: var(--r); }
+  .faq summary { padding: 18px; font-size: 16px; }
+  .faq details p { padding: 0 18px 18px; font-size: 15px; }
+}
+
+/* =========================================================
+   תוספות: מסלול לימוד, עליי, כלים, מחיר, עמוד שיעור
+   ========================================================= */
+
+/* למי מיועד */
+.audience-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.audience-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.audience { padding: 26px 22px; }
+.audience .icon { margin-bottom: 16px; }
+.audience:nth-child(even) .icon { background: var(--soft-teal); }
+.audience:nth-child(even) .icon svg { stroke: #17a98e; }
+.audience h3 { font-size: 20px; margin-bottom: 6px; }
+.audience p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+/* מסלול הלמידה */
+.flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; counter-reset: step; }
+.step {
+  position: relative; padding: 22px 18px; text-align: center; border-radius: var(--r);
+  background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+}
+.step:not(:last-child)::after {
+  content: '←'; position: absolute; left: -12px; top: 50%; transform: translate(-50%, -50%);
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; z-index: 1;
+  background: var(--blue); color: #fff; font-size: 13px; box-shadow: 0 5px 12px rgba(22, 119, 255, .25);
+}
+.step .n { font-size: 12px; font-weight: 700; color: #1d91d6; }
+.step h3 { margin-top: 6px; font-size: 18px; }
+.step p { margin-top: 6px; color: var(--muted); font-size: 13.5px; line-height: 1.55; }
+.step .count { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--teal-ink); background: var(--soft-teal); padding: 4px 10px; border-radius: 99px; }
+
+/* עליי */
+.about { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 44px; align-items: center; }
+.about-card {
+  padding: 32px; border-radius: var(--r-lg); color: #fff; text-align: center;
+  background: var(--grad-dark); box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+}
+.about-card::before {
+  content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%; left: -100px; bottom: -120px;
+  background: radial-gradient(circle, rgba(34, 201, 188, .25), rgba(34, 201, 188, 0) 68%);
+}
+.avatar {
+  width: 96px; height: 96px; margin: 0 auto 16px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--grad-cta); font-size: 36px; font-weight: 700; position: relative;
+}
+.about-card h3 { font-size: 24px; position: relative; }
+.about-card p { margin-top: 6px; color: #c6d5e4; font-size: 14.5px; position: relative; }
+.about-card .big { display: block; margin-top: 18px; font-size: 52px; font-weight: 700; letter-spacing: -.05em; line-height: 1; color: var(--sky); position: relative; }
+.about-copy h2 { font-size: clamp(30px, 3.2vw, 42px); }
+.about-copy p { margin-top: 16px; color: #3a5570; font-size: 17px; line-height: 1.9; }
+.about-copy .quote {
+  margin-top: 22px; padding: 18px 22px; border-radius: var(--r-sm); border-right: 4px solid var(--blue);
+  background: var(--soft-blue); color: var(--navy); font-weight: 600; font-size: 16.5px; line-height: 1.75;
+}
+
+/* קבצי עבודה */
+.tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.tool { display: flex; align-items: center; gap: 14px; padding: 18px; }
+.tool .icon { width: 46px; height: 46px; border-radius: 14px; }
+.tool .icon svg { width: 22px; height: 22px; }
+.tool h3 { font-size: 16.5px; letter-spacing: -.02em; }
+.tool p { color: var(--muted); font-size: 13px; }
+
+/* מחיר */
+.pricing { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 40px; align-items: center; }
+.price-card { padding: 34px; border-radius: var(--r-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--line); background: #fff; position: relative; overflow: hidden; }
+.price-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; background: var(--grad-cta); }
+.price-card .tag { margin-bottom: 14px; }
+.price { display: flex; align-items: baseline; gap: 8px; font-size: 64px; font-weight: 700; letter-spacing: -.05em; line-height: 1; }
+.price small { font-size: 16px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+.price-list { margin: 22px 0 24px; padding: 0; list-style: none; display: grid; gap: 11px; }
+.price-list li { display: flex; gap: 11px; align-items: center; font-size: 15px; font-weight: 500; color: #284763; }
+
+/* עמוד שיעור */
+.lesson-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px; align-items: start; }
+.lesson-body { padding: 34px; }
+.lesson-body:hover { transform: none; }
+.lesson-body h2 { font-size: 26px; margin-bottom: 12px; }
+.lesson-body > p { color: #3a5570; font-size: 17px; line-height: 1.9; }
+.content-slot {
+  margin-top: 26px; padding: 30px; border-radius: var(--r); border: 2px dashed #c9dcec; background: var(--soft);
+  color: var(--muted); text-align: center; font-size: 15px; line-height: 1.8;
+}
+.content-slot strong { display: block; color: var(--navy); font-size: 17px; margin-bottom: 4px; }
+.lesson-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+.lesson-nav .btn { flex: 1 1 220px; }
+.lesson-nav .btn span { display: block; font-size: 12px; font-weight: 500; opacity: .75; }
+.lesson-nav .btn { flex-direction: column; gap: 0; }
+.side { position: sticky; top: 96px; padding: 20px; }
+.side:hover { transform: none; }
+.side h3 { font-size: 16px; margin-bottom: 12px; }
+.side ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; max-height: calc(100vh - 200px); overflow: auto; }
+.side a { display: grid; grid-template-columns: 28px 1fr; gap: 8px; padding: 8px 10px; border-radius: 10px; font-size: 14px; color: #2b4660; }
+.side a:hover { background: var(--soft-blue); }
+.side a[aria-current="page"] { background: var(--blue); color: #fff; font-weight: 600; }
+.side a b { font-size: 12px; opacity: .7; padding-top: 2px; }
+.side .stage { margin: 12px 0 4px; padding: 0 10px; font-size: 11.5px; font-weight: 700; color: var(--teal-ink); letter-spacing: .02em; }
+.side .stage:first-child { margin-top: 0; }
+
+@media (max-width: 1100px) {
+  .audience-grid, .tools-grid { grid-template-columns: repeat(2, 1fr); }
+  .flow { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .step:nth-child(3)::after { display: none; }
+  .about, .pricing { grid-template-columns: 1fr; }
+  .about-card { max-width: 420px; }
+  .lesson-layout { grid-template-columns: 1fr; }
+  .side { position: static; }
+  .side ol { max-height: none; }
+}
+@media (max-width: 700px) {
+  .audience-grid, .tools-grid { grid-template-columns: 1fr; gap: 10px; }
+  .audience { display: grid; grid-template-columns: 54px 1fr; grid-template-areas: 'icon title' 'icon text'; column-gap: 15px; row-gap: 3px; padding: 18px; }
+  .audience .icon { grid-area: icon; width: 54px; height: 54px; margin: 0; }
+  .audience h3 { grid-area: title; font-size: 18px; margin: 0; }
+  .audience p { grid-area: text; font-size: 14px; }
+  .flow { grid-template-columns: 1fr; gap: 10px; }
+  .step { display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center; text-align: right; padding: 14px 16px; }
+  .step .n { width: 44px; height: 44px; border-radius: 13px; background: var(--soft-blue); display: grid; place-items: center; font-size: 15px; }
+  .step h3 { margin: 0; font-size: 17px; }
+  .step p { display: none; }
+  .step .count { margin: 0; }
+  .step:not(:last-child)::after { display: none; }
+  .about-card { max-width: none; padding: 26px; }
+  .about-copy p { font-size: 15.5px; }
+  .price { font-size: 54px; }
+  .price-card { padding: 26px 22px; }
+  .lesson-body { padding: 22px; }
+  .content-slot { padding: 22px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}
