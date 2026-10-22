@@ -598,7 +598,7 @@ def build_index():
   </div>
 </section>
 
-<div class="ticker" aria-hidden="true"><div class="ticker-track">{ticker}{ticker}</div></div>
+<div class="ticker" aria-hidden="true"><div class="ticker-track">{ticker * 2}{ticker * 2}</div></div>
 
 <section class="zone zone-dark pain-zone">
   <div class="orb o1" aria-hidden="true"></div><div class="orb o2" aria-hidden="true"></div>
