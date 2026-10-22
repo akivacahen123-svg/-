@@ -21,39 +21,53 @@
     <nav class="nav" id="nav">
       <a href="../index.html">הקורס</a>
       <a href="../curriculum.html" aria-current="page">תוכנית הלימודים</a>
-      <a href="../index.html#about">קצת עליי</a>
-      <a href="../index.html#faq">שאלות נפוצות</a>
-      <a class="btn btn-primary" href="../index.html#lead">רכישת הקורס · ₪500</a>
+      <a href="../toolkit.html">ערכת כלים</a>
+      <a href="../checklist.html">צ׳ק ליסט חינמי</a>
+      <a class="btn btn-primary" href="../purchase.html">רכישת הקורס · ₪500</a>
     </nav>
   </div>
 </header>
 
-<main>
+<main data-current-lesson="11">
 <section class="hero page-hero">
   <div class="container hero-inner">
     <div class="hero-copy">
       <nav class="breadcrumbs"><a href="../curriculum.html">תוכנית הלימודים</a><span>/</span><span>שלב 4: מדידה</span></nav>
-      <span class="tag tag-solid">שיעור 11 מתוך 22</span>
+      <div class="lesson-tags"><span class="tag tag-solid">שיעור 11 מתוך 22</span><span class="tag tag-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 6 דק׳ קריאה</span></div>
       <h1 style="margin-top:16px">UTM ותיוגים נכונים</h1>
-      <p class="hero-intro">איך לגרום לכל כניסה לאתר לשאת איתה מידע ברור על מקור התנועה, הקמפיין והמודעה.</p>
+      <p class="hero-intro">שכל כניסה לאתר תגיע עם ״תעודת זהות״: מאיפה, מאיזה קמפיין ומאיזו מודעה.</p>
     </div>
   </div>
 </section>
-<section class="section">
+<section class="section lesson-section">
   <div class="container lesson-layout">
-    <div>
+    <div class="lesson-main">
+      <div class="l-top">
+        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks"><li>להבין את 5 הפרמטרים של UTM</li><li>לבנות שיטת תיוג אחידה לכל העסק</li><li>לבדוק שהתיוג באמת מגיע ל-Analytics ול-CRM</li></ul></div>
+        <div class="core"><span>השורה התחתונה</span><p>בלי UTM, חצי מהתנועה מופיעה כ״ישירה״ או ״לא ידוע״ — ואי אפשר לדעת מה הביא כסף.</p></div>
+      </div>
       <article class="lesson-body card">
-        <h2>על השיעור</h2>
-        <p>איך לגרום לכל כניסה לאתר לשאת איתה מידע ברור על מקור התנועה, הקמפיין והמודעה.</p>
-        <!-- כאן נכנס תוכן השיעור: סרטון, טקסט, תרגילים וקבצים -->
-        <div class="content-slot"><strong>תוכן השיעור</strong>כאן ייכנסו הסרטון, ההסברים והתרגילים של השיעור.</div>
+<section class="l-sec"><h2>5 הפרמטרים</h2><div class="table-wrap"><table class="data"><thead><tr><th>פרמטר</th><th>שואל</th><th>דוגמה</th></tr></thead><tbody><tr><td>utm_source</td><td>מאיפה?</td><td>facebook / google / newsletter</td></tr><tr><td>utm_medium</td><td>באיזה סוג ערוץ?</td><td>paid_social / cpc / email</td></tr><tr><td>utm_campaign</td><td>איזה קמפיין?</td><td>spring_sale_2026</td></tr><tr><td>utm_content</td><td>איזו מודעה?</td><td>video_testimonial_a</td></tr><tr><td>utm_term</td><td>איזו מילת מפתח?</td><td>(בעיקר בחיפוש)</td></tr></tbody></table></div>
+<div class="formula" dir="auto">https://site.co.il/offer?utm_source=facebook&amp;utm_medium=paid_social&amp;utm_campaign=spring_sale&amp;utm_content=video_a</div></section>
+<section class="l-sec"><h2>שיטה אחידה — חוקים</h2><ul><li><b>אותיות קטנות בלבד</b> (Facebook ו-facebook נספרים כשני מקורות).</li><li><b>בלי רווחים</b> — מקף תחתון או מקף.</li><li><b>באנגלית</b> — עברית ב-URL נשברת בחלק מהמערכות.</li><li>טבלה אחת משותפת עם כל הערכים המותרים. כולם משתמשים בה.</li><li>ב-Meta אפשר להשתמש בפרמטרים דינמיים כמו {{campaign.name}} ו-{{ad.name}} — חוסך עבודה ושגיאות.</li><li>בגוגל: תיוג אוטומטי (gclid) מחובר ל-Analytics, ו-UTM למקרים שצריך.</li></ul></section>
+<section class="l-sec"><h2>לוודא שזה עובד</h2><ul><li>לחצו על המודעה בתצוגה מקדימה ובדקו שה-UTM מופיע בשורת הכתובת.</li><li>ב-Analytics, בדוח ״בזמן אמת״, בדקו שהכניסה מופיעה עם המקור הנכון.</li><li>ודאו שהטופס <b>שומר את ה-UTM</b> ושולח אותו ל-CRM (בשדות נסתרים) — כך יודעים מאיזו מודעה הגיע כל לקוח משלם.</li></ul>
+<div class="tip"><b>טיפ</b>הפניות (redirect) באתר לפעמים ״מוחקות״ את ה-UTM. בדקו את הכתובת הסופית.</div></section>
+        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>ניוזלטר שנעלם</h2><p>חנות שלחה ניוזלטר עם קישורים בלי UTM. ב-Analytics המכירות הופיעו כ״ישיר״, והמסקנה הייתה ״הניוזלטר לא מוכר״. אחרי תיוג: הניוזלטר מביא 18% מהמכירות.</p></section>
+        <section class="l-sec"><h2>פראייר מול מקצוען</h2>
+          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>כל אחד מתייג איך שבא לו</td><td>טבלה אחת עם ערכים קבועים</td></tr><tr><td>Facebook, facebook, FB</td><td>facebook — תמיד, בדיוק כך</td></tr><tr><td>UTM נעצר באתר</td><td>שדות נסתרים בטופס שמעבירים אותו ל-CRM</td></tr></tbody></table></div>
+        </section>
       </article>
+      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>קבעו ערכים קבועים ל-source ול-medium לכל ערוץ שלכם</span></label></li><li><label class="task"><input type="checkbox"><span>בנו קישורים עם מחולל ה-UTM בערכת הכלים</span></label></li><li><label class="task"><input type="checkbox"><span>שלחו ליד בדיקה ובדקו שה-UTM הגיע עד ה-CRM</span></label></li></ol></section>
+      <a class="tool-link card" href="../tools/utm.html"><div class="icon icon-teal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg></div><div><span class="tag tag-teal">כלי עבודה לשיעור</span><h3>מחולל UTM</h3><p>קישורים מתויגים נכון, בלי שגיאות, עם היסטוריה.</p></div></a>
+      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> איזה פרמטר מזהה את המודעה הספציפית?</p><div class="quiz-opts"><button type="button" class="quiz-opt">utm_source</button><button type="button" class="quiz-opt">utm_content</button><button type="button" class="quiz-opt">utm_medium</button></div><p class="quiz-why" hidden>content משמש להבדיל בין מודעות וגרסאות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> מה הבעיה עם utm_source=Facebook ו-utm_source=facebook?</p><div class="quiz-opts"><button type="button" class="quiz-opt">אין בעיה</button><button type="button" class="quiz-opt">נספרים כשני מקורות שונים</button><button type="button" class="quiz-opt">גוגל חוסם את זה</button></div><p class="quiz-why" hidden>הדוחות רגישים לאותיות גדולות וקטנות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> איך יודעים מאיזו מודעה הגיע לקוח משלם?</p><div class="quiz-opts"><button type="button" class="quiz-opt">מנחשים לפי התאריך</button><button type="button" class="quiz-opt">ה-UTM נשמר בטופס ונשלח ל-CRM</button><button type="button" class="quiz-opt">שואלים את פייסבוק</button></div><p class="quiz-why" hidden>שדות נסתרים בטופס סוגרים את המעגל.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
+      <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
       <div class="lesson-nav"><a class="btn btn-primary" href="lesson-12.html"><span>השיעור הבא</span>12. Google Analytics — מה קורה אחרי הקליק</a><a class="btn btn-outline" href="lesson-10.html"><span>השיעור הקודם</span>10. Google Ads מאפס</a></div>
     </div>
     <aside class="side card">
       <h3>כל השיעורים</h3>
+      <div class="side-progress"><span><b data-course-progress>0</b>/22 הושלמו</span><div class="progress-bar"><i data-course-bar></i></div></div>
       <ol>
-        <li class="stage">1. יסודות</li><li><a href="lesson-01.html"><b>01</b>מה זה בכלל קמפיין?</a></li><li><a href="lesson-02.html"><b>02</b>מטרות, יעדים ו-KPI</a></li><li><a href="lesson-03.html"><b>03</b>המספרים של קמפיין</a></li><li><a href="lesson-04.html"><b>04</b>תקציב וכלכלת קמפיין</a></li><li class="stage">2. קהל ותוכן</li><li><a href="lesson-05.html"><b>05</b>קהל יעד ומסרים</a></li><li><a href="lesson-06.html"><b>06</b>תוכן, כתבות ומדמי תוכן</a></li><li><a href="lesson-07.html"><b>07</b>SEO ותוכן שמוצאים בגוגל</a></li><li><a href="lesson-08.html"><b>08</b>קריאייטיב, באנרים וסרטונים</a></li><li class="stage">3. פלטפורמות</li><li><a href="lesson-09.html"><b>09</b>Meta — פייסבוק ואינסטגרם מאפס</a></li><li><a href="lesson-10.html"><b>10</b>Google Ads מאפס</a></li><li class="stage">4. מדידה</li><li><a href="lesson-11.html" aria-current="page"><b>11</b>UTM ותיוגים נכונים</a></li><li><a href="lesson-12.html"><b>12</b>Google Analytics — מה קורה אחרי הקליק</a></li><li class="stage">5. מערכות</li><li><a href="lesson-13.html"><b>13</b>API וחיבור בין מערכות — מאפס</a></li><li><a href="lesson-14.html"><b>14</b>אוטומציות ורובוטים</a></li><li><a href="lesson-15.html"><b>15</b>CRM ואיכות לידים</a></li><li><a href="lesson-16.html"><b>16</b>דשבורדים</a></li><li class="stage">6. ניהול ושליטה</li><li><a href="lesson-17.html"><b>17</b>דוחות: מספרים שהופכים להחלטות</a></li><li><a href="lesson-18.html"><b>18</b>אבחון קמפיין — למצוא את התקלה</a></li><li><a href="lesson-19.html"><b>19</b>ניהול שוטף ואופטימיזציה</a></li><li><a href="lesson-20.html"><b>20</b>AI ככלי עבודה של איש פרסום</a></li><li><a href="lesson-21.html"><b>21</b>פרויקט גמר — מקמפיין למערכת שלמה</a></li><li><a href="lesson-22.html"><b>22</b>צ׳ק־ליסט למפרסם — לפני שעולה קמפיין</a></li>
+        <li class="stage">1. יסודות</li><li><a data-lesson="1" href="lesson-01.html"><b>01</b>מה זה בכלל קמפיין?</a></li><li><a data-lesson="2" href="lesson-02.html"><b>02</b>מטרות, יעדים ו-KPI</a></li><li><a data-lesson="3" href="lesson-03.html"><b>03</b>המספרים של קמפיין</a></li><li><a data-lesson="4" href="lesson-04.html"><b>04</b>תקציב וכלכלת קמפיין</a></li><li class="stage">2. קהל ותוכן</li><li><a data-lesson="5" href="lesson-05.html"><b>05</b>קהל יעד ומסרים</a></li><li><a data-lesson="6" href="lesson-06.html"><b>06</b>תוכן, כתבות ומדמי תוכן</a></li><li><a data-lesson="7" href="lesson-07.html"><b>07</b>SEO ותוכן שמוצאים בגוגל</a></li><li><a data-lesson="8" href="lesson-08.html"><b>08</b>קריאייטיב, באנרים וסרטונים</a></li><li class="stage">3. פלטפורמות</li><li><a data-lesson="9" href="lesson-09.html"><b>09</b>Meta — פייסבוק ואינסטגרם מאפס</a></li><li><a data-lesson="10" href="lesson-10.html"><b>10</b>Google Ads מאפס</a></li><li class="stage">4. מדידה</li><li><a data-lesson="11" href="lesson-11.html" aria-current="page"><b>11</b>UTM ותיוגים נכונים</a></li><li><a data-lesson="12" href="lesson-12.html"><b>12</b>Google Analytics — מה קורה אחרי הקליק</a></li><li class="stage">5. מערכות</li><li><a data-lesson="13" href="lesson-13.html"><b>13</b>API וחיבור בין מערכות — מאפס</a></li><li><a data-lesson="14" href="lesson-14.html"><b>14</b>אוטומציות ורובוטים</a></li><li><a data-lesson="15" href="lesson-15.html"><b>15</b>CRM ואיכות לידים</a></li><li><a data-lesson="16" href="lesson-16.html"><b>16</b>דשבורדים</a></li><li class="stage">6. ניהול ושליטה</li><li><a data-lesson="17" href="lesson-17.html"><b>17</b>דוחות: מספרים שהופכים להחלטות</a></li><li><a data-lesson="18" href="lesson-18.html"><b>18</b>אבחון קמפיין — למצוא את התקלה</a></li><li><a data-lesson="19" href="lesson-19.html"><b>19</b>ניהול שוטף ואופטימיזציה</a></li><li><a data-lesson="20" href="lesson-20.html"><b>20</b>AI ככלי עבודה של איש פרסום</a></li><li><a data-lesson="21" href="lesson-21.html"><b>21</b>פרויקט גמר — מקמפיין למערכת שלמה</a></li><li><a data-lesson="22" href="lesson-22.html"><b>22</b>צ׳ק־ליסט למפרסם — לפני שעולה קמפיין</a></li>
       </ol>
     </aside>
   </div>
@@ -65,8 +79,10 @@
       <a class="logo" href="../index.html"><span class="logo-mark">✓</span>לא לצאת פראייר בפרסום</a>
       <nav class="footer-links">
         <a href="../curriculum.html">תוכנית הלימודים</a>
+        <a href="../toolkit.html">ערכת כלים</a>
+        <a href="../checklist.html">צ׳ק ליסט חינמי</a>
+        <a href="../glossary.html">מילון מונחים</a>
         <a href="../index.html#about">קצת עליי</a>
-        <a href="../index.html#lead">צ׳ק ליסט חינמי</a>
         <a href="../index.html#faq">שאלות נפוצות</a>
       </nav>
     </div>

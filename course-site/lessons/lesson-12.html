@@ -21,39 +21,54 @@
     <nav class="nav" id="nav">
       <a href="../index.html">הקורס</a>
       <a href="../curriculum.html" aria-current="page">תוכנית הלימודים</a>
-      <a href="../index.html#about">קצת עליי</a>
-      <a href="../index.html#faq">שאלות נפוצות</a>
-      <a class="btn btn-primary" href="../index.html#lead">רכישת הקורס · ₪500</a>
+      <a href="../toolkit.html">ערכת כלים</a>
+      <a href="../checklist.html">צ׳ק ליסט חינמי</a>
+      <a class="btn btn-primary" href="../purchase.html">רכישת הקורס · ₪500</a>
     </nav>
   </div>
 </header>
 
-<main>
+<main data-current-lesson="12">
 <section class="hero page-hero">
   <div class="container hero-inner">
     <div class="hero-copy">
       <nav class="breadcrumbs"><a href="../curriculum.html">תוכנית הלימודים</a><span>/</span><span>שלב 4: מדידה</span></nav>
-      <span class="tag tag-solid">שיעור 12 מתוך 22</span>
+      <div class="lesson-tags"><span class="tag tag-solid">שיעור 12 מתוך 22</span><span class="tag tag-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 8 דק׳ קריאה</span></div>
       <h1 style="margin-top:16px">Google Analytics — מה קורה אחרי הקליק</h1>
-      <p class="hero-intro">הקמת מדידה, אירועים, אירועי מפתח, בדיקה בזמן אמת וקריאת מקורות תנועה.</p>
+      <p class="hero-intro">לדעת מה קורה אחרי הקליק — ולוודא שכל המרה נמדדת נכון.</p>
     </div>
   </div>
 </section>
-<section class="section">
+<section class="section lesson-section">
   <div class="container lesson-layout">
-    <div>
+    <div class="lesson-main">
+      <div class="l-top">
+        <div class="outcomes card"><h3>בסוף השיעור תדעו</h3><ul class="checks"><li>להקים GA4 עם אירועים ואירועי מפתח (Key events)</li><li>לבדוק מדידה בזמן אמת לפני קמפיין</li><li>להבין למה Meta, גוגל ו-Analytics מראים מספרים שונים</li></ul></div>
+        <div class="core"><span>השורה התחתונה</span><p>כל אוטומציה של הפלטפורמות לומדת מההמרות שאתם מודדים. מדידה שבורה = המערכת לומדת את הדבר הלא נכון.</p></div>
+      </div>
       <article class="lesson-body card">
-        <h2>על השיעור</h2>
-        <p>הקמת מדידה, אירועים, אירועי מפתח, בדיקה בזמן אמת וקריאת מקורות תנועה.</p>
-        <!-- כאן נכנס תוכן השיעור: סרטון, טקסט, תרגילים וקבצים -->
-        <div class="content-slot"><strong>תוכן השיעור</strong>כאן ייכנסו הסרטון, ההסברים והתרגילים של השיעור.</div>
+<section class="l-sec"><h2>איך GA4 חושב</h2><p>ב-GA4 <b>הכול הוא אירוע</b>: צפייה בעמוד, גלילה, לחיצה, שליחת טופס. אירועים שחשובים לעסק מסמנים כ-<b>אירועי מפתח (Key events)</b> — זה מה שבעבר נקרא ״המרות״.</p>
+<ul><li>התקנה: דרך Google Tag Manager (מומלץ) או התג של גוגל ישירות.</li><li>אירועים אוטומטיים: צפיות, גלילות, קליקים יוצאים (Enhanced measurement).</li><li>אירועים שאתם מגדירים: generate_lead, purchase, click_whatsapp, call.</li><li><b>עמוד תודה</b> אחרי טופס הוא הדרך הכי פשוטה ואמינה למדוד ליד.</li></ul></section>
+<section class="l-sec"><h2>הפיקסל וה-API של הפלטפורמות</h2><ul><li><b>Meta</b>: פיקסל בדפדפן + <b>Conversions API</b> מהשרת (הרבה בוני אתרים ו-CRM מציעים חיבור מוכן). השילוב מחזיר המרות שחוסמי פרסומות ו-iOS ״מעלימים״.</li><li><b>Google Ads</b>: מעקב המרות דרך התג או ייבוא מ-GA4. <b>Enhanced conversions</b> משפר דיוק.</li><li>הסכמה לקוקיז (Consent Mode) — באתרים שפונים לאירופה זו חובה, ומשפיעה על המדידה.</li></ul></section>
+<section class="l-sec"><h2>בדיקה לפני קמפיין — 5 דקות</h2><ul><li>פתחו את האתר ובצעו המרה אמיתית (ליד בדיקה).</li><li>GA4 ← דוח <b>בזמן אמת</b> / DebugView: האירוע מופיע?</li><li>Meta ← Events Manager ← <b>Test events</b>: האירוע מופיע?</li><li>Google Ads ← סטטוס פעולת ההמרה ״פעיל״/״מקליט״.</li><li>סמנו את ליד הבדיקה כ״בדיקה״ ב-CRM.</li></ul></section>
+<section class="l-sec"><h2>למה המספרים לא תואמים?</h2><div class="table-wrap"><table class="data"><thead><tr><th>הסיבה</th><th>הסבר</th></tr></thead><tbody><tr><td>חלון ייחוס</td><td>Meta סופרת המרה עד 7 ימים אחרי קליק (וגם אחרי צפייה). GA4 מייחס אחרת</td></tr><tr><td>מודל ייחוס</td><td>כל פלטפורמה ״לוקחת קרדיט״ לעצמה</td></tr><tr><td>חסימות ופרטיות</td><td>חלק מהמשתמשים לא נמדדים בכלל</td></tr><tr><td>כפילויות</td><td>אירוע שנשלח פעמיים (פיקסל + API בלי דה-דופליקציה)</td></tr></tbody></table></div>
+<div class="tip"><b>טיפ</b>פער של 10%–30% בין מערכות הוא נורמלי. <b>מקור האמת</b> לכסף הוא ה-CRM או מערכת התשלומים — לא הפלטפורמה.</div></section>
+        <section class="l-sec example"><span class="tag tag-teal">דוגמה מהשטח</span><h2>לידים כפולים</h2><p>Meta הראתה 120 לידים, ב-CRM היו 64. הסיבה: האירוע נשלח גם בטעינת עמוד התודה וגם בלחיצה על הכפתור. אחרי תיקון — Meta הראתה 66, והאלגוריתם התחיל לייעל לפי לידים אמיתיים. ה-CPL האמיתי ירד ב-20% תוך שבועיים.</p></section>
+        <section class="l-sec"><h2>פראייר מול מקצוען</h2>
+          <div class="table-wrap"><table class="data vs"><thead><tr><th>✕ פראייר</th><th>✓ מקצוען</th></tr></thead><tbody><tr><td>סומכים על המספרים של הפלטפורמה כמקור אמת</td><td>ה-CRM ומערכת התשלומים הם מקור האמת</td></tr><tr><td>מעלים קמפיין בלי ליד בדיקה</td><td>בדיקת 5 דקות לפני כל השקה</td></tr><tr><td>מסמנים כל קליק כהמרה</td><td>רק פעולות שקרובות לכסף הן אירועי מפתח</td></tr></tbody></table></div>
+        </section>
       </article>
+      <section class="tasks card"><span class="tag">משימה למחר בבוקר</span><h2>3 צעדים ליישום</h2><ol class="task-list"><li><label class="task"><input type="checkbox"><span>ודאו שיש עמוד תודה אחרי כל טופס</span></label></li><li><label class="task"><input type="checkbox"><span>הגדירו אירוע מפתח אחד ראשי ב-GA4 (generate_lead או purchase)</span></label></li><li><label class="task"><input type="checkbox"><span>בצעו ליד בדיקה ובדקו אותו בשלוש המערכות</span></label></li></ol></section>
+      
+      <section class="quiz card"><span class="tag">בדיקה עצמית</span><h2>3 שאלות</h2><div class="quiz-q" data-answer="1"><p class="q"><b>1.</b> מה נקרא היום ב-GA4 ״אירוע מפתח״?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כל צפייה בעמוד</button><button type="button" class="quiz-opt">אירוע חשוב לעסק, כמו ליד או רכישה</button><button type="button" class="quiz-opt">אירוע שקרה בשעות הבוקר</button></div><p class="quiz-why" hidden>Key events הם מה שבעבר נקרא ״המרות״ ב-GA4.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>2.</b> Meta מראה 100 לידים, ה-CRM מראה 70. מה מקור האמת?</p><div class="quiz-opts"><button type="button" class="quiz-opt">Meta</button><button type="button" class="quiz-opt">ה-CRM</button><button type="button" class="quiz-opt">הממוצע</button></div><p class="quiz-why" hidden>הכסף והלקוחות נמצאים ב-CRM. בודקים את הפער ומחפשים כפילויות.</p></div><div class="quiz-q" data-answer="1"><p class="q"><b>3.</b> למה מחברים Conversions API בנוסף לפיקסל?</p><div class="quiz-opts"><button type="button" class="quiz-opt">כדי לשלם פחות</button><button type="button" class="quiz-opt">כדי להחזיר המרות שנחסמות בדפדפן</button><button type="button" class="quiz-opt">זה מחליף את Analytics</button></div><p class="quiz-why" hidden>השרת שולח את האירוע גם כשהדפדפן חוסם.</p></div><p class="quiz-score" data-quiz-score hidden></p></section>
+      <div class="complete-row"><button type="button" class="btn btn-outline complete-btn" data-complete>סיימתי את השיעור</button></div>
       <div class="lesson-nav"><a class="btn btn-primary" href="lesson-13.html"><span>השיעור הבא</span>13. API וחיבור בין מערכות — מאפס</a><a class="btn btn-outline" href="lesson-11.html"><span>השיעור הקודם</span>11. UTM ותיוגים נכונים</a></div>
     </div>
     <aside class="side card">
       <h3>כל השיעורים</h3>
+      <div class="side-progress"><span><b data-course-progress>0</b>/22 הושלמו</span><div class="progress-bar"><i data-course-bar></i></div></div>
       <ol>
-        <li class="stage">1. יסודות</li><li><a href="lesson-01.html"><b>01</b>מה זה בכלל קמפיין?</a></li><li><a href="lesson-02.html"><b>02</b>מטרות, יעדים ו-KPI</a></li><li><a href="lesson-03.html"><b>03</b>המספרים של קמפיין</a></li><li><a href="lesson-04.html"><b>04</b>תקציב וכלכלת קמפיין</a></li><li class="stage">2. קהל ותוכן</li><li><a href="lesson-05.html"><b>05</b>קהל יעד ומסרים</a></li><li><a href="lesson-06.html"><b>06</b>תוכן, כתבות ומדמי תוכן</a></li><li><a href="lesson-07.html"><b>07</b>SEO ותוכן שמוצאים בגוגל</a></li><li><a href="lesson-08.html"><b>08</b>קריאייטיב, באנרים וסרטונים</a></li><li class="stage">3. פלטפורמות</li><li><a href="lesson-09.html"><b>09</b>Meta — פייסבוק ואינסטגרם מאפס</a></li><li><a href="lesson-10.html"><b>10</b>Google Ads מאפס</a></li><li class="stage">4. מדידה</li><li><a href="lesson-11.html"><b>11</b>UTM ותיוגים נכונים</a></li><li><a href="lesson-12.html" aria-current="page"><b>12</b>Google Analytics — מה קורה אחרי הקליק</a></li><li class="stage">5. מערכות</li><li><a href="lesson-13.html"><b>13</b>API וחיבור בין מערכות — מאפס</a></li><li><a href="lesson-14.html"><b>14</b>אוטומציות ורובוטים</a></li><li><a href="lesson-15.html"><b>15</b>CRM ואיכות לידים</a></li><li><a href="lesson-16.html"><b>16</b>דשבורדים</a></li><li class="stage">6. ניהול ושליטה</li><li><a href="lesson-17.html"><b>17</b>דוחות: מספרים שהופכים להחלטות</a></li><li><a href="lesson-18.html"><b>18</b>אבחון קמפיין — למצוא את התקלה</a></li><li><a href="lesson-19.html"><b>19</b>ניהול שוטף ואופטימיזציה</a></li><li><a href="lesson-20.html"><b>20</b>AI ככלי עבודה של איש פרסום</a></li><li><a href="lesson-21.html"><b>21</b>פרויקט גמר — מקמפיין למערכת שלמה</a></li><li><a href="lesson-22.html"><b>22</b>צ׳ק־ליסט למפרסם — לפני שעולה קמפיין</a></li>
+        <li class="stage">1. יסודות</li><li><a data-lesson="1" href="lesson-01.html"><b>01</b>מה זה בכלל קמפיין?</a></li><li><a data-lesson="2" href="lesson-02.html"><b>02</b>מטרות, יעדים ו-KPI</a></li><li><a data-lesson="3" href="lesson-03.html"><b>03</b>המספרים של קמפיין</a></li><li><a data-lesson="4" href="lesson-04.html"><b>04</b>תקציב וכלכלת קמפיין</a></li><li class="stage">2. קהל ותוכן</li><li><a data-lesson="5" href="lesson-05.html"><b>05</b>קהל יעד ומסרים</a></li><li><a data-lesson="6" href="lesson-06.html"><b>06</b>תוכן, כתבות ומדמי תוכן</a></li><li><a data-lesson="7" href="lesson-07.html"><b>07</b>SEO ותוכן שמוצאים בגוגל</a></li><li><a data-lesson="8" href="lesson-08.html"><b>08</b>קריאייטיב, באנרים וסרטונים</a></li><li class="stage">3. פלטפורמות</li><li><a data-lesson="9" href="lesson-09.html"><b>09</b>Meta — פייסבוק ואינסטגרם מאפס</a></li><li><a data-lesson="10" href="lesson-10.html"><b>10</b>Google Ads מאפס</a></li><li class="stage">4. מדידה</li><li><a data-lesson="11" href="lesson-11.html"><b>11</b>UTM ותיוגים נכונים</a></li><li><a data-lesson="12" href="lesson-12.html" aria-current="page"><b>12</b>Google Analytics — מה קורה אחרי הקליק</a></li><li class="stage">5. מערכות</li><li><a data-lesson="13" href="lesson-13.html"><b>13</b>API וחיבור בין מערכות — מאפס</a></li><li><a data-lesson="14" href="lesson-14.html"><b>14</b>אוטומציות ורובוטים</a></li><li><a data-lesson="15" href="lesson-15.html"><b>15</b>CRM ואיכות לידים</a></li><li><a data-lesson="16" href="lesson-16.html"><b>16</b>דשבורדים</a></li><li class="stage">6. ניהול ושליטה</li><li><a data-lesson="17" href="lesson-17.html"><b>17</b>דוחות: מספרים שהופכים להחלטות</a></li><li><a data-lesson="18" href="lesson-18.html"><b>18</b>אבחון קמפיין — למצוא את התקלה</a></li><li><a data-lesson="19" href="lesson-19.html"><b>19</b>ניהול שוטף ואופטימיזציה</a></li><li><a data-lesson="20" href="lesson-20.html"><b>20</b>AI ככלי עבודה של איש פרסום</a></li><li><a data-lesson="21" href="lesson-21.html"><b>21</b>פרויקט גמר — מקמפיין למערכת שלמה</a></li><li><a data-lesson="22" href="lesson-22.html"><b>22</b>צ׳ק־ליסט למפרסם — לפני שעולה קמפיין</a></li>
       </ol>
     </aside>
   </div>
@@ -65,8 +80,10 @@
       <a class="logo" href="../index.html"><span class="logo-mark">✓</span>לא לצאת פראייר בפרסום</a>
       <nav class="footer-links">
         <a href="../curriculum.html">תוכנית הלימודים</a>
+        <a href="../toolkit.html">ערכת כלים</a>
+        <a href="../checklist.html">צ׳ק ליסט חינמי</a>
+        <a href="../glossary.html">מילון מונחים</a>
         <a href="../index.html#about">קצת עליי</a>
-        <a href="../index.html#lead">צ׳ק ליסט חינמי</a>
         <a href="../index.html#faq">שאלות נפוצות</a>
       </nav>
     </div>

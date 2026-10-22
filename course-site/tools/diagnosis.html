@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>אבחון קמפיין — לא לצאת פראייר בפרסום</title>
+  <meta name="description" content="מזינים מספרים — ומקבלים איפה זה נתקע ומה לבדוק.">
+  <meta property="og:title" content="אבחון קמפיין — לא לצאת פראייר בפרסום">
+  <meta property="og:description" content="מזינים מספרים — ומקבלים איפה זה נתקע ומה לבדוק.">
+  <meta property="og:image" content="../assets/img/hero-sm.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-tool="diagnosis">
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="../index.html"><span class="logo-mark">✓</span>לא לצאת פראייר בפרסום</a>
+    <button class="nav-toggle" aria-label="תפריט" aria-expanded="false" aria-controls="nav"><span></span></button>
+    <nav class="nav" id="nav">
+      <a href="../index.html">הקורס</a>
+      <a href="../curriculum.html">תוכנית הלימודים</a>
+      <a href="../toolkit.html" aria-current="page">ערכת כלים</a>
+      <a href="../checklist.html">צ׳ק ליסט חינמי</a>
+      <a class="btn btn-primary" href="../purchase.html">רכישת הקורס · ₪500</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero page-hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <nav class="breadcrumbs"><a href="../toolkit.html">ערכת כלים</a></nav><span class="tag tag-solid">כלי עבודה</span>
+      <h1 style="margin-top:16px">אבחון קמפיין</h1>
+      <p class="hero-intro">מזינים את המספרים של הקמפיין — והכלי עובר על המשפך לפי הסדר, מוצא את השלב החריג הראשון ואומר מה לבדוק.</p>
+    </div>
+  </div>
+</section>
+<section class="section tool-section">
+  <div class="container">
+    <p class="tool-lessons no-print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg> נלמד ב: <a href="../lessons/lesson-18.html">שיעור 18</a></p>
+<div class="tool-grid">
+  <form id="tool-form" class="tool-form card" autocomplete="off">
+    <h3 class="full">המספרים (שבוע אחרון)</h3>
+    <label class="field"><span>הוצאה (₪)</span><input name="spend" type="text" inputmode="decimal" placeholder="3000"></label>
+    <label class="field"><span>חשיפות</span><input name="imp" type="text" inputmode="decimal" placeholder="120000"></label>
+    <label class="field"><span>קליקים</span><input name="clicks" type="text" inputmode="decimal" placeholder="1200"></label>
+    <label class="field"><span>לידים</span><input name="leads" type="text" inputmode="decimal" placeholder="45"></label>
+    <label class="field"><span>לידים שנוצר איתם קשר</span><input name="contacted" type="text" inputmode="decimal" placeholder="30"></label>
+    <label class="field"><span>לקוחות</span><input name="customers" type="text" inputmode="decimal" placeholder="4"></label>
+    <details class="full thresholds"><summary>ספים (אפשר לשנות לפי הענף שלכם)</summary>
+      <div class="tool-form-inner">
+      <label class="field"><span>CTR מינימלי (%)</span><input name="th_ctr" type="text" inputmode="decimal" placeholder="" value="0.8"></label>
+      <label class="field"><span>המרה בדף מינימלית (%)</span><input name="th_cvr" type="text" inputmode="decimal" placeholder="" value="5"></label>
+      <label class="field"><span>יצירת קשר מינימלית (%)</span><input name="th_contact" type="text" inputmode="decimal" placeholder="" value="70"></label>
+      <label class="field"><span>סגירה מינימלית מתוך שיחות (%)</span><input name="th_close" type="text" inputmode="decimal" placeholder="" value="10"></label>
+      </div>
+    </details>
+  </form>
+  <div class="tool-out"><div class="card result-card" id="diag-out"></div><div class="tool-actions no-print"><button type="button" class="btn btn-outline" data-print>הדפסה / PDF</button><button type="button" class="btn btn-outline" data-reset>ניקוי</button></div></div>
+</div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <a class="logo" href="../index.html"><span class="logo-mark">✓</span>לא לצאת פראייר בפרסום</a>
+      <nav class="footer-links">
+        <a href="../curriculum.html">תוכנית הלימודים</a>
+        <a href="../toolkit.html">ערכת כלים</a>
+        <a href="../checklist.html">צ׳ק ליסט חינמי</a>
+        <a href="../glossary.html">מילון מונחים</a>
+        <a href="../index.html#about">קצת עליי</a>
+        <a href="../index.html#faq">שאלות נפוצות</a>
+      </nav>
+    </div>
+    <div class="copyright">© 2026 עקיבא כהן · לא לצאת פראייר בפרסום</div>
+  </div>
+</footer>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/tools.js"></script>
+</body>
+</html>
