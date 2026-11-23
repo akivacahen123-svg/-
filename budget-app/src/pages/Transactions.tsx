@@ -37,6 +37,7 @@ export default function Transactions() {
     <>
       <div className="page-head">
         <div>
+          <div className="eyebrow">הכסף שזז</div>
           <h1>תנועות</h1>
           <p>כל ההכנסות וההוצאות ממקור אחד. שינוי קטגוריה מלמד את המערכת לזהות את בית העסק בפעם הבאה.</p>
         </div>

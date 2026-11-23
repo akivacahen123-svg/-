@@ -38,12 +38,13 @@ export default function WealthPage() {
     <>
       <div className="page-head">
         <div>
+          <div className="eyebrow">התמונה הגדולה</div>
           <h1>הון משפחתי</h1>
           <p>תמונת מצב של נכסים וחובות. כדאי לעדכן פעם ברבעון.{data.holdingsDate && ` עודכן לאחרונה: ${data.holdingsDate}`}</p>
         </div>
       </div>
 
-      <div className="grid k4" style={{ marginBottom: 16, gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+      <div className="grid k3 rise" style={{ marginBottom: 16 }}>
         <div className="card stat"><div className="bar" style={{ background: 'var(--saving)' }} /><div className="label">נכסים</div><div className="value"><Money v={totalA} /></div></div>
         <div className="card stat"><div className="bar" style={{ background: 'var(--expense)' }} /><div className="label">חובות</div><div className="value"><Money v={-totalD} /></div></div>
         <div className="card stat"><div className="bar" style={{ background: 'var(--accent)' }} /><div className="label">שווי נקי</div><div className="value"><Money v={totalA + totalD} /></div></div>

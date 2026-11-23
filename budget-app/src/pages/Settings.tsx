@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
 import * as XLSX from 'xlsx';
 import { useStore } from '../lib/store';
+import { useConfirm } from '../components/ui';
 import type { AppData } from '../lib/types';
 
 export default function SettingsPage() {
-  const { data, setData, replaceAll, categoryById } = useStore();
+  const { data, setData, replaceAll, categoryById, clearDemo, loadDemo } = useStore();
+  const ask = useConfirm();
+  const [msg, setMsg] = React.useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const download = (blob: Blob, name: string) => {
@@ -38,9 +41,9 @@ export default function SettingsPage() {
     try {
       const parsed = JSON.parse(await f.text()) as AppData;
       if (!Array.isArray(parsed.transactions) || !Array.isArray(parsed.categories)) throw new Error('bad');
-      if (confirm(`לשחזר גיבוי עם ${parsed.transactions.length} תנועות? הנתונים הנוכחיים יוחלפו.`)) replaceAll(parsed);
+      if (await ask(`לשחזר גיבוי עם ${parsed.transactions.length} תנועות? הנתונים הנוכחיים יוחלפו.`)) replaceAll(parsed);
     } catch {
-      alert('קובץ הגיבוי לא תקין.');
+      setMsg('קובץ הגיבוי לא תקין. בחרו קובץ JSON שהורד מהמסך הזה.');
     }
   };
 
@@ -48,11 +51,13 @@ export default function SettingsPage() {
     <>
       <div className="page-head">
         <div>
+          <div className="eyebrow">הנתונים שלכם</div>
           <h1>הגדרות וגיבוי</h1>
           <p>הנתונים נשמרים רק בדפדפן הזה. כדי לעבור למחשב או לטלפון אחר, או סתם לשמור על הנתונים, ייצאו גיבוי.</p>
         </div>
       </div>
-      <div className="grid half">
+      {msg && <div className="note warn" style={{ marginBottom: 16 }}><span className="ic">!</span><span>{msg}</span></div>}
+      <div className="grid half rise">
         <div className="card">
           <h2>גיבוי ושחזור</h2>
           <div className="row">
@@ -83,7 +88,10 @@ export default function SettingsPage() {
           <h2 style={{ marginTop: 20 }}>שם המשפחה</h2>
           <input className="input" value={data.familyName} onChange={(e) => setData((d) => ({ ...d, familyName: e.target.value }))} placeholder="משפחת…" />
           <h2 style={{ marginTop: 20, color: 'var(--bad)' }}>איפוס</h2>
-          <button className="btn danger" onClick={() => { if (confirm('למחוק את כל הנתונים מהדפדפן? מומלץ להוריד גיבוי קודם.')) { localStorage.clear(); location.reload(); } }}>מחיקת כל הנתונים</button>
+          <div className="row">
+            <button className="btn danger" onClick={async () => { if (await ask('למחוק את כל הנתונים מהדפדפן? מומלץ להוריד גיבוי קודם.', true)) clearDemo(); }}>מחיקת כל הנתונים</button>
+            <button className="btn" onClick={async () => { if (await ask('לטעון את משפחת הדוגמה? הנתונים הנוכחיים יוחלפו.', true)) loadDemo(); }}>טעינת נתוני דוגמה</button>
+          </div>
         </div>
       </div>
     </>

@@ -4,7 +4,8 @@
  * Every row is shown for review before it is saved.
  */
 import * as pdfjs from 'pdfjs-dist';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+// worker served from cdnjs at the exact installed version (keeps the bundle small)
+const workerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs';
 import { parseAmount, parseDate } from './format';
 import type { StatementRow } from './statementImport';
 

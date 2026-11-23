@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Money } from '../components/ui';
+import { Money, useConfirm } from '../components/ui';
 import { buildIndex, groupsOf, irregularCategories, lastMonths } from '../lib/analytics';
 import { makeCategory } from '../lib/defaults';
 import { monthLabel } from '../lib/format';
@@ -10,6 +10,7 @@ const KIND_LABEL: Record<CategoryKind, string> = { income: 'הכנסות', expen
 
 export default function BudgetPage() {
   const { data, setData } = useStore();
+  const ask = useConfirm();
   const idx = useMemo(() => buildIndex(data), [data]);
   const last = idx.months[idx.months.length - 1];
   const [month, setMonth] = useState<string>(last ?? '');
@@ -55,6 +56,7 @@ export default function BudgetPage() {
     <>
       <div className="page-head">
         <div>
+          <div className="eyebrow">תכנון קדימה</div>
           <h1>בניית תקציב</h1>
           <p>תקציב חודשי לכל קטגוריה, לצד הממוצע בפועל ב-12 החודשים האחרונים{cur ? ` (עד ${monthLabel(cur)})` : ''}.</p>
         </div>
@@ -65,11 +67,11 @@ export default function BudgetPage() {
             </select>
           )}
           <button className="btn" onClick={() => fillAverage(true)}>מלא חסרים לפי ממוצע</button>
-          <button className="btn primary" onClick={() => { if (confirm('להחליף את כל סכומי התקציב בממוצע של 12 החודשים האחרונים?')) fillAverage(false); }}>מלא הכול לפי ממוצע 12 חודשים</button>
+          <button className="btn primary" onClick={async () => { if (await ask('להחליף את כל סכומי התקציב בממוצע של 12 החודשים האחרונים?')) fillAverage(false); }}>מלא הכול לפי ממוצע 12 חודשים</button>
         </div>
       </div>
 
-      <div className="grid k4" style={{ marginBottom: 16 }}>
+      <div className="grid k4 rise" style={{ marginBottom: 16 }}>
         {(['income', 'expense', 'saving', 'debt'] as const).map((k) => (
           <div className="card stat" key={k}>
             <div className="bar" style={{ background: k === 'income' ? 'var(--income)' : k === 'saving' ? 'var(--saving)' : 'var(--expense)' }} />

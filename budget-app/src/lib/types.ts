@@ -59,4 +59,6 @@ export interface AppData {
   familyName: string;
   holdings: Holding[];
   holdingsDate: string;
+  /** true while the sample family is loaded */
+  isDemo?: boolean;
 }

@@ -50,7 +50,7 @@ export function readWorkbook(buf: ArrayBuffer, fileName: string): XLSX.WorkBook 
   if (/\.csv$/i.test(fileName)) {
     // try UTF-8, fall back to Windows-1255 (Hebrew) when the text looks garbled
     let text = new TextDecoder('utf-8').decode(buf);
-    if (text.includes('�')) text = new TextDecoder('windows-1255').decode(buf);
+    if (text.includes(String.fromCharCode(0xfffd))) text = new TextDecoder('windows-1255').decode(buf);
     // raw: keep cells as text so 01/07/2026 is not read as January 7th (US order)
     return XLSX.read(text, { type: 'string', raw: true });
   }

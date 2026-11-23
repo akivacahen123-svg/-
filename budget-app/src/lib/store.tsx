@@ -3,6 +3,7 @@ import type { AppData, Category, ImportBatch, Transaction } from './types';
 import { DEFAULT_CATEGORIES } from './defaults';
 import { upsertRule } from './categorize';
 import { uid } from './format';
+import { demoData } from './demo';
 
 const KEY = 'family-budget:v1';
 
@@ -21,14 +22,18 @@ function emptyData(): AppData {
   };
 }
 
+export function freshData(): AppData {
+  return emptyData();
+}
+
 function load(): AppData {
   try {
     const raw = localStorage.getItem(KEY);
-    if (!raw) return emptyData();
+    if (!raw) return demoData();
     const parsed = JSON.parse(raw) as AppData;
     return { ...emptyData(), ...parsed };
   } catch {
-    return emptyData();
+    return demoData();
   }
 }
 
@@ -42,6 +47,8 @@ interface Store {
   undoBatch: (batchId: string) => void;
   categoryById: (id: string | null) => Category | undefined;
   replaceAll: (d: AppData) => void;
+  clearDemo: () => void;
+  loadDemo: () => void;
 }
 
 const Ctx = createContext<Store | null>(null);
@@ -68,7 +75,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       saveError,
       setData,
       addTransactions: (txs, batch) =>
-        setData((d) => {
+        setData((d0) => {
+          // the first real entry replaces the sample family
+          const d = d0.isDemo ? emptyData() : d0;
           const batchId = batch ? uid() : undefined;
           const withIds = txs.map((t) => ({ ...t, id: uid(), batch: batchId }));
           return {
@@ -95,6 +104,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         })),
       categoryById: (id) => (id ? catMap.get(id) : undefined),
       replaceAll: (d) => setState({ ...emptyData(), ...d }),
+      clearDemo: () => setState(emptyData()),
+      loadDemo: () => setState(demoData()),
     };
   }, [data, saveError, setData]);
 

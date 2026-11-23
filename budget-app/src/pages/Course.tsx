@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import type { Page } from '../App';
-import { COURSE, type Lesson } from '../content/course';
+import { COURSE, TIPS, type Lesson } from '../content/course';
+import { Carousel } from '../components/ui';
 import { useStore } from '../lib/store';
+
+const MODULE_TINTS: [string, string][] = [
+  ['var(--tint-teal)', 'var(--income)'],
+  ['var(--tint-coral)', 'var(--expense)'],
+  ['var(--tint-violet)', 'var(--saving)'],
+  ['var(--tint-butter)', '#d99a12'],
+  ['var(--accent-soft)', 'var(--accent)'],
+];
 
 export default function CoursePage({ go }: { go: (p: Page) => void }) {
   const { data, setData } = useStore();
@@ -28,6 +37,7 @@ export default function CoursePage({ go }: { go: (p: Page) => void }) {
     <>
       <div className="page-head">
         <div>
+          <div className="eyebrow">לומדים תוך כדי</div>
           <h1>קורס ניהול כלכלי למשפחה</h1>
           <p>{all.length} שיעורים קצרים, מהבסיס ועד חיסכון לטווח ארוך. כל שיעור מסתיים בצעד מעשי באפליקציה.</p>
         </div>
@@ -37,9 +47,31 @@ export default function CoursePage({ go }: { go: (p: Page) => void }) {
         </div>
       </div>
 
+      <div style={{ marginBottom: 18 }}>
+        <Carousel label="פרקי הקורס" slide="minmax(220px, 260px)" autoplay={0}>
+          {COURSE.map((m, mi) => {
+            const n = m.lessons.filter((l) => done.has(l.id)).length;
+            const palette = MODULE_TINTS[mi % MODULE_TINTS.length];
+            return (
+              <button key={m.id} className={`module-card ${m.id === mod.id ? 'on' : ''}`} style={{ background: palette[0] }}
+                onClick={() => setActive((m.lessons.find((l) => !done.has(l.id)) ?? m.lessons[0]).id)}>
+                <div className="mshape" style={{ background: palette[1] }} />
+                <span className="mnum" style={{ color: palette[1] }}>{mi + 1}</span>
+                <b>{m.title}</b>
+                <span className="small" style={{ color: 'var(--text-2)' }}>{m.lessons.length} שיעורים</span>
+                <div className="mprog">
+                  <div className="prog"><div style={{ width: `${(n / m.lessons.length) * 100}%`, background: palette[1] }} /></div>
+                  {n}/{m.lessons.length}
+                </div>
+              </button>
+            );
+          })}
+        </Carousel>
+      </div>
+
       <div className="grid" style={{ gridTemplateColumns: 'minmax(0, 1fr)', gap: 16 }}>
         <div className="grid course-grid">
-          <article className="card lesson-body">
+          <article className="card lesson-body" key={lesson.id} style={{ animation: 'rise .6s var(--ease) both' }}>
             <div className="small muted">{mod.title} · {lesson.minutes} דקות קריאה</div>
             <h2 style={{ fontSize: 22, margin: '4px 0 14px' }}>{lesson.title}</h2>
             <LessonBlocks lesson={lesson} />
@@ -58,6 +90,15 @@ export default function CoursePage({ go }: { go: (p: Page) => void }) {
             </div>
           </article>
 
+          <div className="stack" style={{ gap: 16 }}>
+          <div className="card">
+            <h2>טיפים קצרים</h2>
+            <Carousel label="טיפים" autoplay={5000}>
+              {TIPS.map((t, i) => (
+                <div key={i} className="slide-card tip"><div className="corner" /><span className="tag">טיפ {i + 1} מתוך {TIPS.length}</span><p>{t}</p></div>
+              ))}
+            </Carousel>
+          </div>
           <nav className="card" aria-label="תוכן הקורס">
             {COURSE.map((m, mi) => (
               <div className="module" key={m.id}>
@@ -71,6 +112,7 @@ export default function CoursePage({ go }: { go: (p: Page) => void }) {
               </div>
             ))}
           </nav>
+          </div>
         </div>
       </div>
     </>

@@ -1,23 +1,23 @@
 import React, { useMemo, useRef, useState } from 'react';
 import type { Page } from '../App';
-import { CategorySelect, Money } from '../components/ui';
+import { CategorySelect, Icons, Money, useConfirm } from '../components/ui';
 import QuickAdd from '../components/QuickAdd';
 import { importBudgetWorkbook, looksLikeBudgetWorkbook, type BudgetWorkbookResult } from '../lib/excelBudgetImport';
 import { detectTables, extractRows, readWorkbook, type ParsedTable, type StatementKind } from '../lib/statementImport';
 import { parseNotes } from '../lib/whatsapp';
 import { normalize, suggestCategory, upsertRule } from '../lib/categorize';
 import { monthKey, monthLabel } from '../lib/format';
-import { useStore } from '../lib/store';
+import { freshData, useStore } from '../lib/store';
 import type { Source, Transaction } from '../lib/types';
 
 type Mode = 'workbook' | 'bank' | 'credit' | 'pdf' | 'whatsapp';
 
-const MODES: { id: Mode; title: string; text: string }[] = [
-  { id: 'workbook', title: 'קובץ התקציב שלי', text: 'אקסל עם גיליון לכל שנה ועמודה לכל חודש' },
-  { id: 'bank', title: 'עו"ש מהבנק', text: 'קובץ Excel / CSV שהורדתם מאתר הבנק' },
-  { id: 'credit', title: 'כרטיס אשראי', text: 'פירוט חיובים מישראכרט, מקס, כאל וכו׳' },
-  { id: 'pdf', title: 'דוח PDF', text: 'סיכום עו"ש או חשבונית אשראי ב-PDF' },
-  { id: 'whatsapp', title: 'רישומי וואטסאפ', text: 'הדבקת הודעות או קובץ צ׳אט מיוצא' },
+const MODES: { id: Mode; title: string; text: string; icon: keyof typeof Icons; tint: string; ink: string }[] = [
+  { id: 'workbook', title: 'קובץ התקציב שלי', text: 'אקסל עם גיליון לכל שנה ועמודה לכל חודש', icon: 'sheet', tint: 'var(--tint-teal)', ink: 'var(--income)' },
+  { id: 'bank', title: 'עו"ש מהבנק', text: 'קובץ Excel / CSV שהורדתם מאתר הבנק', icon: 'bank', tint: 'var(--tint-violet)', ink: 'var(--saving)' },
+  { id: 'credit', title: 'כרטיס אשראי', text: 'פירוט חיובים מישראכרט, מקס, כאל וכו׳', icon: 'card', tint: 'var(--tint-coral)', ink: 'var(--expense)' },
+  { id: 'pdf', title: 'דוח PDF', text: 'סיכום עו"ש או חשבונית אשראי ב-PDF', icon: 'file', tint: 'var(--tint-butter)', ink: '#c08410' },
+  { id: 'whatsapp', title: 'רישומי וואטסאפ', text: 'הדבקת הודעות או קובץ צ׳אט מיוצא', icon: 'chat', tint: 'var(--good-bg)', ink: 'var(--good)' },
 ];
 
 interface Draft {
@@ -34,6 +34,7 @@ interface Draft {
 
 export default function ImportPage({ go }: { go: (p: Page) => void }) {
   const store = useStore();
+  const ask = useConfirm();
   const { data } = store;
   const [mode, setMode] = useState<Mode>('workbook');
   const [error, setError] = useState<string | null>(null);
@@ -147,7 +148,8 @@ export default function ImportPage({ go }: { go: (p: Page) => void }) {
   function commitWorkbook() {
     if (!wbResult) return;
     const r = wbResult;
-    store.setData((d) => {
+    store.setData((d0) => {
+      const d = d0.isDemo ? freshData() : d0;
       const keepIds = new Set(d.transactions.filter((t) => t.source !== 'excel' && t.categoryId).map((t) => t.categoryId!));
       const extra = d.categories.filter((c) => keepIds.has(c.id) || c.kind === 'transfer');
       const ids = new Set(r.categories.map((c) => c.id));
@@ -197,18 +199,23 @@ export default function ImportPage({ go }: { go: (p: Page) => void }) {
     <>
       <div className="page-head">
         <div>
+          <div className="eyebrow">כל המקורות במקום אחד</div>
           <h1>הזנה וייבוא</h1>
           <p>כל המקורות במקום אחד. הקבצים נקראים בדפדפן שלכם ולא נשלחים לשום מקום.</p>
         </div>
       </div>
 
       <div className="choice" style={{ marginBottom: 16 }}>
-        {MODES.map((m) => (
+        {MODES.map((m) => {
+          const I = Icons[m.icon];
+          return (
           <button key={m.id} className={mode === m.id ? 'on' : ''} onClick={() => { setMode(m.id); reset(); }}>
+            <span className="ch-ic" style={{ background: m.tint, color: m.ink }}><I /></span>
             <b>{m.title}</b>
             <span>{m.text}</span>
           </button>
-        ))}
+          );
+        })}
       </div>
 
       {done && (
@@ -240,7 +247,8 @@ export default function ImportPage({ go }: { go: (p: Page) => void }) {
           onDrop={(e) => { e.preventDefault(); setOver(false); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }}
         >
           <input ref={fileRef} type="file" accept={mode === 'pdf' ? '.pdf' : '.xlsx,.xls,.csv,.pdf,.txt'} onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ''; }} />
-          <b>{busy ? 'קורא את הקובץ…' : 'גררו לכאן קובץ, או לחצו לבחירה'}</b>
+          <div className="drop-ic"><Icons.upload /></div>
+          <b className="display" style={{ fontSize: 18, fontWeight: 600 }}>{busy ? 'קורא את הקובץ…' : 'גררו לכאן קובץ, או לחצו לבחירה'}</b>
           <div className="small muted" style={{ marginTop: 4 }}>
             {mode === 'workbook' && 'Excel עם גיליונות שנתיים (כמו קובץ "תקציב וביצועים"). ייבוא חוזר מחליף את הנתונים הקודמים מהאקסל.'}
             {mode === 'bank' && 'באתר הבנק: עו"ש ← תנועות בחשבון ← ייצוא ל-Excel. חיובי כרטיסי האשראי מסומנים אוטומטית כ"העברה" כדי שלא ייספרו פעמיים.'}
@@ -384,7 +392,7 @@ export default function ImportPage({ go }: { go: (p: Page) => void }) {
                     <td>{b.label}</td>
                     <td className="small muted">{new Date(b.createdAt).toLocaleDateString('he-IL')}</td>
                     <td className="n">{b.count} שורות</td>
-                    <td><button className="btn sm danger" onClick={() => { if (confirm('לבטל את הייבוא הזה ולמחוק את התנועות שלו?')) store.undoBatch(b.id); }}>ביטול ייבוא</button></td>
+                    <td><button className="btn sm danger" onClick={async () => { if (await ask('לבטל את הייבוא הזה ולמחוק את התנועות שלו?', true)) store.undoBatch(b.id); }}>ביטול ייבוא</button></td>
                   </tr>
                 ))}
               </tbody>
