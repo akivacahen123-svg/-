@@ -4,8 +4,8 @@
 :root {
   color-scheme: light;
   /* palette: mist ground, deep ink, teal / coral / violet as the money colours */
-  --bg: #eef1ec;
-  --bg-2: #e4e9e2;
+  --bg: #f5f7f6;
+  --bg-2: #eef1f5;
   --surface: rgba(255, 255, 255, 0.78);
   --surface-solid: #ffffff;
   --surface-2: #f3f5f1;
@@ -26,7 +26,8 @@
   --blob-1: #9fe0d3;
   --blob-2: #ffc2ad;
   --blob-3: #c9bdff;
-  --wash: rgba(238, 241, 236, 0.38);
+  --glow-1: rgba(0, 143, 131, 0.10);
+  --glow-2: rgba(115, 86, 232, 0.08);
   --good: #0a7a4b;
   --good-bg: #ddf3e6;
   --warn: #9a5a00;
@@ -67,7 +68,8 @@
     --blob-1: #0f5c55;
     --blob-2: #6b2c1d;
     --blob-3: #3d2f8a;
-    --wash: rgba(20, 19, 27, 0.42);
+    --glow-1: rgba(63, 194, 178, 0.10);
+    --glow-2: rgba(138, 118, 240, 0.10);
     --good: #57d08e;
     --good-bg: #173325;
     --warn: #f0b44c;
@@ -102,7 +104,8 @@
   --blob-1: #0f5c55;
   --blob-2: #6b2c1d;
   --blob-3: #3d2f8a;
-  --wash: rgba(20, 19, 27, 0.42);
+  --glow-1: rgba(63, 194, 178, 0.10);
+  --glow-2: rgba(138, 118, 240, 0.10);
   --good: #57d08e;
   --good-bg: #173325;
   --warn: #f0b44c;
@@ -130,15 +133,23 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing:
 .num { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; display: inline-block; }
 .display { font-family: var(--font-display); }
 
-/* background: an original painted finance scene (coins, growth line, grid), with a wash for legibility */
+/* background: clean and quiet — a soft wash, three hairline growth curves, a fading dot grid */
 .ambient {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; background-color: var(--bg);
-  background-image: linear-gradient(var(--wash), var(--wash)), url('./assets/bg-light.webp');
-  background-size: cover; background-position: center bottom;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%230b6b63' stroke-linecap='round'%3E%3Cpath stroke-opacity='0.22' stroke-width='1.6' d='M0 700 C220 690 300 620 480 630 S760 560 900 520 1180 470 1320 380 1520 300 1600 280'/%3E%3Cpath stroke-opacity='0.132' stroke-width='1.2' d='M0 780 C260 770 380 720 560 715 S860 650 1020 620 1300 560 1600 470'/%3E%3Cpath stroke-opacity='0.08800000000000001' stroke-width='1' d='M0 840 C300 835 460 800 680 790 S1000 740 1200 715 1450 660 1600 620'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(60% 50% at 85% 10%, var(--glow-1), transparent 70%),
+    radial-gradient(55% 55% at 10% 95%, var(--glow-2), transparent 70%),
+    linear-gradient(165deg, var(--bg) 0%, var(--bg-2) 100%);
+  background-size: 100% 100%, auto, auto, auto;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .ambient { background-image: linear-gradient(var(--wash), var(--wash)), url('./assets/bg-dark.webp'); } }
-:root[data-theme='dark'] .ambient { background-image: linear-gradient(var(--wash), var(--wash)), url('./assets/bg-dark.webp'); }
-@media (prefers-reduced-transparency: reduce) { .ambient { background-image: none; } }
+.ambient::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--text) 7%, transparent) 1px, transparent 1.2px); background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, #000, transparent 55%); -webkit-mask-image: linear-gradient(to bottom, #000, transparent 55%);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .ambient { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%235fd3c4' stroke-linecap='round'%3E%3Cpath stroke-opacity='0.22' stroke-width='1.6' d='M0 700 C220 690 300 620 480 630 S760 560 900 520 1180 470 1320 380 1520 300 1600 280'/%3E%3Cpath stroke-opacity='0.132' stroke-width='1.2' d='M0 780 C260 770 380 720 560 715 S860 650 1020 620 1300 560 1600 470'/%3E%3Cpath stroke-opacity='0.08800000000000001' stroke-width='1' d='M0 840 C300 835 460 800 680 790 S1000 740 1200 715 1450 660 1600 620'/%3E%3C/g%3E%3C/svg%3E"), radial-gradient(60% 50% at 85% 10%, var(--glow-1), transparent 70%), radial-gradient(55% 55% at 10% 95%, var(--glow-2), transparent 70%), linear-gradient(165deg, var(--bg) 0%, var(--bg-2) 100%); } }
+:root[data-theme='dark'] .ambient { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%235fd3c4' stroke-linecap='round'%3E%3Cpath stroke-opacity='0.22' stroke-width='1.6' d='M0 700 C220 690 300 620 480 630 S760 560 900 520 1180 470 1320 380 1520 300 1600 280'/%3E%3Cpath stroke-opacity='0.132' stroke-width='1.2' d='M0 780 C260 770 380 720 560 715 S860 650 1020 620 1300 560 1600 470'/%3E%3Cpath stroke-opacity='0.08800000000000001' stroke-width='1' d='M0 840 C300 835 460 800 680 790 S1000 740 1200 715 1450 660 1600 620'/%3E%3C/g%3E%3C/svg%3E"), radial-gradient(60% 50% at 85% 10%, var(--glow-1), transparent 70%), radial-gradient(55% 55% at 10% 95%, var(--glow-2), transparent 70%), linear-gradient(165deg, var(--bg) 0%, var(--bg-2) 100%); }
 
 /* layout */
 .app { display: grid; grid-template-columns: 260px minmax(0, 1fr); min-height: 100vh; gap: 8px; }
