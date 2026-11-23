@@ -28,6 +28,8 @@ export const Icons = {
   lock: P('M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4'),
   chevL: P('M15 18l-6-6 6-6'),
   chevR: P('M9 18l6-6-6-6'),
+  pause: P('M8 5v14M16 5v14'),
+  play: P('M7 4l13 8-13 8z'),
   spark: P('M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z'),
 };
 
@@ -71,11 +73,19 @@ export function Ring({ value, size = 132, stroke = 14, label, sub, track = 'rgba
   );
 }
 
+export type Design = 'vivid' | 'calm';
+export const DesignCtx = createContext<{ design: Design; setDesign: (d: Design) => void }>({ design: 'vivid', setDesign: () => {} });
+export const useDesign = () => useContext(DesignCtx);
+
 /** Scroll-snap carousel with dots, arrows and gentle autoplay (pauses on hover/focus). */
 export function Carousel({ children, slide = '100%', autoplay = 6500, label }: { children: React.ReactNode[]; slide?: string; autoplay?: number; label: string }) {
   const track = useRef<HTMLDivElement>(null);
   const [idx, setIdx] = useState(0);
   const paused = useRef(false);
+  const { design } = useDesign();
+  // the calm design never moves on its own; in the vivid one the viewer can stop it (WCAG 2.2.2)
+  const [stopped, setStopped] = useState(false);
+  const auto = design === 'calm' || stopped ? 0 : autoplay;
   const count = children.length;
   const go = useCallback((i: number) => {
     const el = track.current;
@@ -105,10 +115,10 @@ export function Carousel({ children, slide = '100%', autoplay = 6500, label }: {
     return () => el.removeEventListener('scroll', onScroll);
   }, []);
   useEffect(() => {
-    if (!autoplay || count < 2 || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
-    const id = setInterval(() => { if (!paused.current) go(idx + 1); }, autoplay);
+    if (!auto || count < 2 || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => { if (!paused.current) go(idx + 1); }, auto);
     return () => clearInterval(id);
-  }, [autoplay, count, idx, go]);
+  }, [auto, count, idx, go]);
   return (
     <div className="carousel" role="region" aria-roledescription="carousel" aria-label={label}
       onMouseEnter={() => (paused.current = true)} onMouseLeave={() => (paused.current = false)}
@@ -120,6 +130,11 @@ export function Carousel({ children, slide = '100%', autoplay = 6500, label }: {
             {children.map((_, i) => <button key={i} className={i === idx ? 'on' : ''} aria-label={`שקופית ${i + 1}`} onClick={() => go(i)} />)}
           </div>
           <div className="row" style={{ gap: 6 }}>
+            {autoplay > 0 && design !== 'calm' && (
+              <button className="btn icon sm" aria-label={stopped ? 'הפעלת החלפה אוטומטית' : 'עצירת החלפה אוטומטית'} aria-pressed={stopped} onClick={() => setStopped(!stopped)}>
+                {stopped ? <Icons.play width={16} /> : <Icons.pause width={16} />}
+              </button>
+            )}
             <button className="btn icon sm" aria-label="הקודם" onClick={() => go(idx - 1)}><Icons.chevR width={18} /></button>
             <button className="btn icon sm" aria-label="הבא" onClick={() => go(idx + 1)}><Icons.chevL width={18} /></button>
           </div>

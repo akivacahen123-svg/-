@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ConfirmProvider, Icons } from './components/ui';
+import { ConfirmProvider, DesignCtx, Icons, type Design } from './components/ui';
 import { useStore } from './lib/store';
 import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
@@ -43,8 +43,33 @@ function BrandMark() {
   );
 }
 
+function readDesign(): Design {
+  try {
+    return localStorage.getItem('family-budget:design') === 'calm' ? 'calm' : 'vivid';
+  } catch {
+    return 'vivid';
+  }
+}
+
+function DesignSwitch({ design, setDesign }: { design: Design; setDesign: (d: Design) => void }) {
+  return (
+    <div className="design-switch" role="group" aria-label="גרסת עיצוב">
+      <span className="small muted">עיצוב:</span>
+      <div className="seg">
+        <button className={design === 'vivid' ? 'on' : ''} aria-pressed={design === 'vivid'} onClick={() => setDesign('vivid')}>צבעוני</button>
+        <button className={design === 'calm' ? 'on' : ''} aria-pressed={design === 'calm'} onClick={() => setDesign('calm')}>רגוע</button>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [page, setPage] = useState<Page>(readHash);
+  const [design, setDesignState] = useState<Design>(readDesign);
+  useEffect(() => {
+    document.documentElement.dataset.design = design;
+    try { localStorage.setItem('family-budget:design', design); } catch { /* preference only */ }
+  }, [design]);
   const { data, saveError, clearDemo } = useStore();
 
   useEffect(() => {
@@ -60,8 +85,9 @@ export default function App() {
   const activeIdx = NAV.findIndex((n) => n.id === page);
 
   return (
+    <DesignCtx.Provider value={{ design, setDesign: setDesignState }}>
     <ConfirmProvider>
-      <div className="ambient" aria-hidden="true"><i /><i /><i /></div>
+      {design === 'vivid' && <div className="ambient" aria-hidden="true"><i /><i /><i /></div>}
       <div className="app">
         <aside className="side">
           <div className="brand">
@@ -87,6 +113,7 @@ export default function App() {
         </aside>
 
         <main className="main">
+          <DesignSwitch design={design} setDesign={setDesignState} />
           {data.isDemo && (
             <div className="demo-bar">
               <span><b>אלה נתוני דוגמה</b> של משפחה בדויה, כדי שתוכלו לראות איך הכול עובד. הייבוא או ההזנה הראשונים שלכם יחליפו אותם.</span>
@@ -121,5 +148,6 @@ export default function App() {
         </nav>
       </div>
     </ConfirmProvider>
+    </DesignCtx.Provider>
   );
 }
