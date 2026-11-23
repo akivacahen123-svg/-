@@ -9,7 +9,7 @@ import { TIPS } from '../content/course';
 const TONE_TAG = { good: 'מצוין', warn: 'לתשומת לב', info: 'תובנה' } as const;
 
 export default function Dashboard({ go }: { go: (p: Page) => void }) {
-  const { data } = useStore();
+  const { data, loadDemo } = useStore();
   const idx = useMemo(() => buildIndex(data), [data]);
   const lastMonth = idx.months[idx.months.length - 1];
   const [month, setMonth] = useState<string | undefined>(lastMonth);
@@ -22,6 +22,7 @@ export default function Dashboard({ go }: { go: (p: Page) => void }) {
         <p>כדי להתחיל, יבאו את קובץ התקציב שלכם מאקסל, קובץ מהבנק או מחברת האשראי, או הזינו הוצאה ראשונה.</p>
         <div className="row" style={{ justifyContent: 'center', marginTop: 16 }}>
           <button className="btn primary" onClick={() => go('import')}>להזנה וייבוא</button>
+          <button className="btn" onClick={loadDemo}>הצגת נתוני דוגמה</button>
           <button className="btn" onClick={() => go('course')}>להתחיל מהקורס</button>
         </div>
       </div>

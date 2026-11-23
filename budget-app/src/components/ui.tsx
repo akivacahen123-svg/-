@@ -126,9 +126,13 @@ export function Carousel({ children, slide = '100%', autoplay = 6500, label }: {
       <div className="carousel-track" ref={track} style={{ ['--slide' as string]: slide }}>{children}</div>
       {count > 1 && (
         <div className="carousel-nav">
-          <div className="dots">
-            {children.map((_, i) => <button key={i} className={i === idx ? 'on' : ''} aria-label={`שקופית ${i + 1}`} onClick={() => go(i)} />)}
-          </div>
+          {count > 6 ? (
+            <span className="small muted num" aria-live="polite">{idx + 1} / {count}</span>
+          ) : (
+            <div className="dots">
+              {children.map((_, i) => <button key={i} className={i === idx ? 'on' : ''} aria-label={`שקופית ${i + 1}`} onClick={() => go(i)} />)}
+            </div>
+          )}
           <div className="row" style={{ gap: 6 }}>
             {autoplay > 0 && design !== 'calm' && (
               <button className="btn icon sm" aria-label={stopped ? 'הפעלת החלפה אוטומטית' : 'עצירת החלפה אוטומטית'} aria-pressed={stopped} onClick={() => setStopped(!stopped)}>
