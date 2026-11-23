@@ -76,8 +76,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       setData,
       addTransactions: (txs, batch) =>
         setData((d0) => {
-          // the first real entry replaces the sample family
-          const d = d0.isDemo ? emptyData() : d0;
+          // importing a real file replaces the sample family; typing an entry by hand just adds to it
+          const d = d0.isDemo && batch ? emptyData() : d0;
           const batchId = batch ? uid() : undefined;
           const withIds = txs.map((t) => ({ ...t, id: uid(), batch: batchId }));
           return {

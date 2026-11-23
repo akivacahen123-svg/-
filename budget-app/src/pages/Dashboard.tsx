@@ -68,6 +68,7 @@ export default function Dashboard({ go }: { go: (p: Page) => void }) {
           <h1>{monthLabel(cur)}</h1>
         </div>
         <div className="row">
+          <button className="btn primary" onClick={() => go('budget')}><Icons.budget width={18} /> תכנון התקציב</button>
           <select className="input" id="dash-year" aria-label="שנה" value={year} onChange={(e) => {
             const ms = idx.months.filter((m) => m.startsWith(e.target.value));
             setMonth(ms[ms.length - 1]);

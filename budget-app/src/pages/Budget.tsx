@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { Money, useConfirm } from '../components/ui';
+import { createPortal } from 'react-dom';
+import { CategorySelect, Money, useConfirm } from '../components/ui';
+import type { Category } from '../lib/types';
 import { buildIndex, groupsOf, irregularCategories, lastMonths } from '../lib/analytics';
 import { makeCategory } from '../lib/defaults';
 import { monthLabel } from '../lib/format';
@@ -46,8 +48,34 @@ export default function BudgetPage() {
   const avg = { income: avgOf('income'), expense: avgOf('expense'), saving: avgOf('saving'), debt: avgOf('debt') };
   const irregular = cur ? irregularCategories(data, idx, cur) : [];
   const [showArchived, setShowArchived] = useState(false);
-  const visible = data.categories.filter((c) => showArchived || !c.archived || data.budget[c.id]);
+  const visible = data.categories.filter((c) => showArchived || !c.archived);
   const archivedCount = data.categories.filter((c) => c.archived).length;
+  const [removing, setRemoving] = useState<Category | null>(null);
+  const [moveTo, setMoveTo] = useState<string | null>(null);
+  const txCount = (id: string) => data.transactions.filter((t) => t.categoryId === id).length;
+  const doRemove = (mode: 'delete' | 'move' | 'hide') => {
+    const c = removing;
+    if (!c) return;
+    setData((d) => {
+      if (mode === 'hide') {
+        const b = { ...d.budget };
+        delete b[c.id];
+        return { ...d, budget: b, categories: d.categories.map((x) => (x.id === c.id ? { ...x, archived: true } : x)) };
+      }
+      const budget = { ...d.budget };
+      if (mode === 'move' && moveTo && budget[c.id]) budget[moveTo] = (budget[moveTo] ?? 0) + budget[c.id];
+      delete budget[c.id];
+      return {
+        ...d,
+        budget,
+        categories: d.categories.filter((x) => x.id !== c.id),
+        transactions: d.transactions.map((t) => (t.categoryId === c.id ? { ...t, categoryId: mode === 'move' ? moveTo : null } : t)),
+        rules: d.rules.map((r) => (r.categoryId === c.id ? { ...r, categoryId: mode === 'move' && moveTo ? moveTo : r.categoryId } : r)).filter((r) => r.categoryId !== c.id),
+      };
+    });
+    setRemoving(null);
+    setMoveTo(null);
+  };
   const groups = groupsOf(visible, ['income', 'expense', 'saving', 'debt']);
   const order: CategoryKind[] = ['income', 'expense', 'saving', 'debt'];
   groups.sort((a, b) => order.indexOf(a.kind) - order.indexOf(b.kind));
@@ -57,7 +85,7 @@ export default function BudgetPage() {
       <div className="page-head">
         <div>
           <div className="eyebrow">תכנון קדימה</div>
-          <h1>בניית תקציב</h1>
+          <h1>תכנון תקציב</h1>
           <p>תקציב חודשי לכל קטגוריה, לצד הממוצע בפועל ב-12 החודשים האחרונים{cur ? ` (עד ${monthLabel(cur)})` : ''}.</p>
         </div>
         <div className="row">
@@ -122,7 +150,13 @@ export default function BudgetPage() {
                         const overBy = bud && c.kind === 'expense' ? m - bud : 0;
                         return (
                           <tr key={c.id}>
-                            <td>{c.name}</td>
+                            <td>
+                              <span className="cat-cell">
+                                {c.name}
+                                {c.archived && <button className="btn sm" onClick={() => setData((d) => ({ ...d, categories: d.categories.map((x) => (x.id === c.id ? { ...x, archived: false } : x)) }))}>החזרה</button>}
+                                <button className="btn ghost icon cat-remove" aria-label={`הסרת הקטגוריה ${c.name}`} title="הסרת קטגוריה" onClick={() => { setRemoving(c); setMoveTo(null); }}>✕</button>
+                              </span>
+                            </td>
                             <td className="n muted"><Money v={a} /></td>
                             {cur && <td className="n" style={{ color: overBy > bud! * 0.1 ? 'var(--bad)' : undefined }}><Money v={m} /></td>}
                             <td className="n">
@@ -148,7 +182,7 @@ export default function BudgetPage() {
           {archivedCount > 0 && (
             <label className="row small muted" style={{ gap: 4, marginTop: 10 }}>
               <input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} />
-              הצגת {archivedCount} קטגוריות ישנות שלא היו בשימוש בשנתיים האחרונות
+              הצגת {archivedCount} קטגוריות מוסתרות או ישנות
             </label>
           )}
           <form className="row" style={{ marginTop: 14 }} onSubmit={(e) => {
@@ -205,6 +239,44 @@ export default function BudgetPage() {
           </div>
         </div>
       </div>
+      {removing && createPortal(
+        <div className="modal-back" onClick={() => setRemoving(null)}>
+          <div className="modal" role="dialog" aria-modal="true" aria-label="הסרת קטגוריה" onClick={(e) => e.stopPropagation()}>
+            <h2 style={{ marginTop: 0, fontSize: 20 }}>הסרת "{removing.name}"</h2>
+            {txCount(removing.id) === 0 ? (
+              <>
+                <p>אין בקטגוריה הזו תנועות. אפשר למחוק אותה.</p>
+                <div className="row" style={{ justifyContent: 'flex-end' }}>
+                  <button className="btn" onClick={() => setRemoving(null)}>ביטול</button>
+                  <button className="btn danger solid" onClick={() => doRemove('delete')}>מחיקה</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p>בקטגוריה יש {txCount(removing.id)} תנועות. מה לעשות איתן?</p>
+                <div className="stack">
+                  <div className="card" style={{ padding: 14 }}>
+                    <b>להעביר לקטגוריה אחרת ולמחוק</b>
+                    <div className="row" style={{ marginTop: 8 }}>
+                      <CategorySelect cats={data.categories.filter((x) => x.id !== removing.id && x.kind !== 'transfer')} value={moveTo} onChange={setMoveTo} />
+                      <button className="btn primary" disabled={!moveTo} onClick={() => doRemove('move')}>העברה ומחיקה</button>
+                    </div>
+                  </div>
+                  <div className="card" style={{ padding: 14 }}>
+                    <b>רק להסתיר</b>
+                    <p className="small muted" style={{ margin: '4px 0 8px' }}>הקטגוריה לא תופיע ברשימות, וההיסטוריה שלה תישמר. אפשר להחזיר אותה דרך "הצגת קטגוריות ישנות".</p>
+                    <button className="btn" onClick={() => doRemove('hide')}>הסתרה</button>
+                  </div>
+                </div>
+                <div className="row" style={{ justifyContent: 'flex-end', marginTop: 12 }}>
+                  <button className="btn" onClick={() => setRemoving(null)}>ביטול</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 }

@@ -5,7 +5,7 @@ import { todayISO } from '../lib/format';
 import { useStore } from '../lib/store';
 import { upsertRule } from '../lib/categorize';
 
-export default function QuickAdd() {
+export default function QuickAdd({ inModal = false }: { inModal?: boolean }) {
   const { data, addTransactions, setData } = useStore();
   const [date, setDate] = useState(todayISO());
   const [description, setDescription] = useState('');
@@ -34,8 +34,8 @@ export default function QuickAdd() {
   };
 
   return (
-    <form className="card" onSubmit={submit}>
-      <h2>הזנה מהירה</h2>
+    <form className={inModal ? 'quick-modal-form' : 'card'} onSubmit={submit}>
+      {!inModal && <h2>הזנה מהירה</h2>}
       <div className="row">
         <div className="seg" role="radiogroup" aria-label="סוג">
           <button type="button" className={direction === 'out' ? 'on' : ''} onClick={() => setDirection('out')}>הוצאה</button>
@@ -43,7 +43,7 @@ export default function QuickAdd() {
         </div>
         <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label="תאריך" />
         <input className="input" placeholder="תיאור (למשל: רמי לוי)" value={description} onChange={(e) => setDescription(e.target.value)} style={{ flex: '2 1 180px' }} />
-        <input className="input" placeholder="סכום ₪" inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} style={{ width: 110 }} />
+        <input className="input" autoFocus={inModal} placeholder="סכום ₪" inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} style={{ width: 110 }} />
         <CategorySelect cats={data.categories} value={effectiveCat} onChange={(id) => { setTouched(true); setCategoryId(id); }} />
         <button className="btn primary" type="submit" disabled={!valid}>הוספה</button>
       </div>

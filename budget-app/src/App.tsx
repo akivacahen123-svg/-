@@ -8,6 +8,7 @@ import BudgetPage from './pages/Budget';
 import CoursePage from './pages/Course';
 import WealthPage from './pages/Wealth';
 import SettingsPage from './pages/Settings';
+import QuickAdd from './components/QuickAdd';
 
 export type Page = 'dashboard' | 'transactions' | 'import' | 'budget' | 'course' | 'wealth' | 'backup';
 
@@ -15,7 +16,7 @@ const NAV: { id: Page; label: string; short: string; icon: keyof typeof Icons }[
   { id: 'dashboard', label: 'דשבורד', short: 'בית', icon: 'dashboard' },
   { id: 'transactions', label: 'תנועות', short: 'תנועות', icon: 'list' },
   { id: 'import', label: 'הזנה וייבוא', short: 'הזנה', icon: 'upload' },
-  { id: 'budget', label: 'בניית תקציב', short: 'תקציב', icon: 'budget' },
+  { id: 'budget', label: 'תכנון תקציב', short: 'תקציב', icon: 'budget' },
   { id: 'wealth', label: 'הון משפחתי', short: 'הון', icon: 'wealth' },
   { id: 'course', label: 'קורס ניהול כלכלי', short: 'קורס', icon: 'course' },
   { id: 'backup', label: 'גיבוי והגדרות', short: 'גיבוי', icon: 'settings' },
@@ -45,6 +46,13 @@ function BrandMark() {
 
 export default function App() {
   const [page, setPage] = useState<Page>(readHash);
+  const [adding, setAdding] = useState(false);
+  useEffect(() => {
+    if (!adding) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setAdding(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [adding]);
   const design: Design = 'vivid';
   const { data, saveError, clearDemo } = useStore();
 
@@ -91,7 +99,7 @@ export default function App() {
         <main className="main">
           {data.isDemo && (
             <div className="demo-bar">
-              <span><b>אלה נתוני דוגמה</b> של משפחה בדויה, כדי שתוכלו לראות איך הכול עובד. הייבוא או ההזנה הראשונים שלכם יחליפו אותם.</span>
+              <span><b>אלה נתוני דוגמה</b> של משפחה בדויה, כדי שתוכלו לראות איך הכול עובד. אפשר להוסיף כאן הוצאות לניסיון. ייבוא קובץ אמיתי יחליף את נתוני הדוגמה.</span>
               <span className="row">
                 <button className="btn sm primary" onClick={() => go('import')}>ייבוא הנתונים שלי</button>
                 <button className="btn sm ghost" onClick={clearDemo}>התחלה נקייה</button>
@@ -109,6 +117,21 @@ export default function App() {
             {page === 'backup' && <SettingsPage />}
           </div>
         </main>
+
+        <button className="fab" onClick={() => setAdding(true)} aria-haspopup="dialog">
+          <Icons.plus /> <span>הוספת הוצאה / הכנסה</span>
+        </button>
+        {adding && (
+          <div className="modal-back" onClick={() => setAdding(false)}>
+            <div className="modal quick-modal" role="dialog" aria-modal="true" aria-label="הוספת הוצאה או הכנסה" onClick={(e) => e.stopPropagation()}>
+              <div className="row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
+                <h2 style={{ margin: 0, fontSize: 20 }}>הוספת הוצאה או הכנסה</h2>
+                <button className="btn icon ghost" aria-label="סגירה" onClick={() => setAdding(false)}>✕</button>
+              </div>
+              <QuickAdd inModal />
+            </div>
+          </div>
+        )}
 
         <nav className="mobile-nav" aria-label="ניווט">
           {NAV.filter((n) => n.id !== 'backup' && n.id !== 'wealth').map((n) => {
