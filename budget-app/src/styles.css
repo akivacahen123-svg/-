@@ -461,3 +461,45 @@ tbody tr:hover td { background: color-mix(in srgb, var(--accent) 5%, transparent
 .badge svg { width: 22px; height: 22px; }
 .badge { color: var(--text); }
 .module { margin-bottom: 14px; }
+
+/* course: story, stats, homework */
+.module-intro { font-size: 15px; color: var(--text-2); background: var(--surface-2); border-radius: 18px 18px 18px 6px; padding: 12px 16px; }
+.story {
+  position: relative; background: linear-gradient(135deg, var(--tint-teal), var(--tint-violet)); border-radius: 26px 26px 26px 8px;
+  padding: 20px 22px 18px; margin: 0 0 18px; overflow: hidden;
+}
+.story p { margin: 0; font-size: 17px; line-height: 1.7; max-width: none; position: relative; }
+.story-mark { position: absolute; inset-inline-end: 12px; top: -18px; font-family: var(--font-display); font-size: 120px; line-height: 1; color: var(--accent); opacity: 0.18; }
+.lesson-h { font-size: 18px; margin: 20px 0 10px; }
+.steps { margin: 0 0 16px; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 8px; }
+.steps li { counter-increment: s; position: relative; padding-inline-start: 38px; min-height: 28px; max-width: 68ch; }
+.steps li::before {
+  content: counter(s); position: absolute; inset-inline-start: 0; top: -1px; width: 28px; height: 28px; display: grid; place-items: center;
+  border-radius: 10px 10px 10px 3px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-weight: 600; font-size: 14px;
+}
+.statbox {
+  display: flex; gap: 16px; align-items: center; background: var(--surface-solid); border: 1px solid var(--border);
+  border-radius: 22px 22px 22px 8px; padding: 14px 18px; margin: 0 0 16px; box-shadow: var(--shadow);
+}
+.statbox-v { font-family: var(--font-display); font-weight: 600; font-size: 28px; color: var(--expense); white-space: nowrap; direction: ltr; unicode-bidi: isolate; flex: none; }
+.homework {
+  border: 2px dashed color-mix(in srgb, var(--income) 45%, transparent); border-radius: 24px 24px 24px 8px; padding: 16px 18px; margin: 4px 0 16px;
+  background: color-mix(in srgb, var(--tint-teal) 45%, transparent); transition: background 0.4s, border-color 0.4s;
+}
+.homework.all { border-style: solid; border-color: var(--good); background: var(--good-bg); }
+.hw-item { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; padding: 8px 10px; border-radius: 14px 14px 14px 4px; transition: background 0.2s; }
+.hw-item:hover { background: color-mix(in srgb, var(--surface-solid) 70%, transparent); }
+.hw-item input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.hw-box {
+  flex: none; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 9px 9px 9px 3px; font-size: 13px; font-weight: 700;
+  background: var(--surface-solid); border: 2px solid color-mix(in srgb, var(--income) 50%, transparent); color: var(--income); transition: background 0.3s, transform 0.4s var(--ease);
+}
+.hw-item.on .hw-box { background: var(--income); color: #fff; border-color: var(--income); transform: rotate(-8deg) scale(1.05); }
+.hw-item.on > span:last-child { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent); }
+.hw-item input:focus-visible + .hw-box { outline: 3px solid color-mix(in srgb, var(--accent) 50%, transparent); outline-offset: 2px; }
+.sources { margin: 0 0 16px; font-size: 14px; }
+.sources summary { cursor: pointer; color: var(--text-2); font-weight: 600; }
+.sources ul { margin: 8px 0 0; }
+.sources li::before { background: var(--saving); }
+.course-nav { max-height: 70vh; overflow-y: auto; }
+@media (max-width: 760px) { .statbox { flex-direction: column; align-items: flex-start; gap: 4px; } .course-nav { max-height: none; } }
